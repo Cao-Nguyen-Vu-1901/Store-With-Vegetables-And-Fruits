@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+
+    <div class="container-fluid banner bg-secondary" style="margin-top: 7rem !important;">
+        <div class="container py-5">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-12">
+                    <div class="py-4">
+                        <h1 class="display-3 text-white">Đặt hàng thành công</h1>
+                        <p class="fw-normal display-3 text-dark mb-4">Xem thêm các sản phẩm tương tự</p>
+                        <p class="mb-4 text-dark">Đơn hàng của bạn đang được xử lý, vui lòng chờ đợi trong giây lát!</p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Banner Section End -->
+
+
+    <!-- Fruits Shop Start-->
+    <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+            <div class="tab-class">
+
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="row g-4">
+
+                                    <div th:each="item : ${products}" class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img th:src="@{'/img/products/' + ${item.image} }"
+                                                     style="height: 35vh;  object-fit: cover;"
+                                                     class="img-fluid w-100 rounded-top"
+                                                     alt="">
+                                            </div>
+                                            <div th:text="${item.category.name}" class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                 style="top: 10px; left: 10px;">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                 style="top: 10px; left: 100px;">sdsd</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <a th:text="${item.name}" th:href="@{'/product-detail/'+${item.id}}" style="font-size: 1.3rem;    display: -webkit-box;  -webkit-line-clamp: 1;  -webkit-line-clamp: 1;
+                                                -webkit-box-orient: vertical;  overflow: hidden;  text-overflow: ellipsis;"></a>
+                                                <p th:text="${ 'Hiện có' + item.remaningQuantity }"></p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p th:text="${item.price} + 'đ/ kg'" class="text-dark fw-bold mb-0" style="font-size: 1rem"></p>
+                                                    <form th:action="@{/cart}" method="post" class="cartForm">
+                                                        <input type="hidden" th:value="${item.id}" name="productId">
+                                                        <input type="hidden" th:value="${item.image}" name="image">
+                                                        <input type="hidden" th:value="${item.name}" name="name">
+                                                        <input type="hidden" th:value="${item.price}" name="price">
+                                                        <input type="hidden" th:value="1" name="quantity">
+
+                                                        <button type="submit"
+                                                                class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fruits Shop End-->
+    <script>
+
+        var productsRef = firebase.database().ref("carts/abc");
+
+        var data = {};
+
+        document.querySelectorAll('.cartForm').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+                const formData = new URLSearchParams(new FormData(this));
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                    if(key==='productId'){
+                        findProductById(value)
+                    }
+                });
+            });
+        });
+        function saveContactForm(data) {
+            var newContactForm = productsRef.push();
+            newContactForm.set(data);
+        }
+        function updateQuantity(id, quantity) {
+            if (quantity < 1) return;
+            productsRef.child(id).update({ id:id, quantity: quantity })
+                .then(() => console.log('Quantity updated successfully'))
+                .catch((error) => console.error('Error updating quantity:', error));
+        }
+        function findProductById(productId) {
+            productsRef.orderByChild("productId").equalTo(productId).once("value")
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+
+                        snapshot.forEach((childSnapshot) => {
+                            var key = childSnapshot.key; // Lấy key của sản phẩm
+                            var productData = childSnapshot.val(); // Lấy dữ liệu của sản phẩm
+
+                            updateQuantity(key,parseInt(productData.quantity)+1);
+                        });
+                    } else {
+                        saveContactForm(data)
+                    }
+                })
+                .catch((error) => {
+                });
+        }
+    </script>
+</section>
+</body>
+</html>

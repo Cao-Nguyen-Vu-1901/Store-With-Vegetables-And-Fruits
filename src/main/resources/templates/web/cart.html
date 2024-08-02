@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Giỏ hàng</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                <li class="breadcrumb-item active text-white">Giỏ hàng</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+
+        <!-- Cart Page Start -->
+        <form id="cart-form">
+            <div class="container-fluid py-5">
+                <div class="container py-5">
+                    <div class="table-responsive">
+                        <table class="table text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tổng</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody id="list-container">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-5">
+                        <form action="" method="post">
+                            <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Mã giảm giá">
+                            <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" >Áp dụng</button>
+                        </form>
+                    </div>
+                    <div class="row g-4 justify-content-end">
+                        <div class="col-8"></div>
+                        <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                            <div class="bg-light rounded">
+                                <div class="p-4">
+                                    <h1 class="display-6 mb-4">Tổng tiền</h1>
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="mb-0 me-4">Tạm tính:</h5>
+                                        <p class="mb-0">$96.00</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="mb-0 me-4">Phí giao hàng</h5>
+                                        <div class="">
+                                            <p class="mb-0">$3.00</p>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0 text-end">Standard Express.</p>
+                                </div>
+                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                    <h5 class="mb-0 ps-4 me-4">Tổng cộng</h5>
+                                    <p class="mb-0 pe-4" id="total-price-final"></p>
+                                </div>
+                                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit" >Proceed Checkout"</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!-- Cart Page End -->
+        <input th:if="${user != null}" type="hidden" id="userId" th:value="${user.id}">
+        <!-- lien ket voi functions.js -->
+        <script>
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+
+            const database = firebase.database();
+
+
+            // Đường dẫn đến nút trong database mà bạn muốn đọc dữ liệu từ đó
+            const itemsRef = database.ref('carts/' + document.getElementById('userId').value);
+
+            // Lắng nghe sự kiện value để nhận dữ liệu từ Firebase
+            itemsRef.on('value', (snapshot) => {
+                // const items = snapshot.val();
+
+                const listContainer = document.getElementById('list-container');
+
+                // Xóa các mục cũ trong danh sách
+                listContainer.innerHTML = '';
+
+                snapshot.forEach((childSnapshot) => {
+                    // Lấy key của childSnapshot
+                    const key = childSnapshot.key;
+
+                    // Lấy dữ liệu của mỗi child
+                    const childData = childSnapshot.val();
+                    const itemRow = createItemRow(childData, key);
+                    listContainer.appendChild(itemRow);
+                });
+
+            }, (error) => {
+                console.error('Error reading data:', error);
+            });
+
+
+            // Hàm tạo phần tử row
+            function createItemRow(item,key) {
+                const row = document.createElement('tr');
+                row.className = 'product-item';
+                selectedProducts = []
+                // Cột tổng giá
+                var pr = 0;
+                const checkCell = document.createElement('td');
+                const inputp = document.createElement('input');
+                inputp.type = "checkbox";
+                inputp.className='mt-4';
+                inputp.style = 'transform: scale(1.5);  -webkit-transform: scale(1.5); -moz-transform: scale(1.5); -ms-transform: scale(1.5); -o-transform: scale(1.5);';
+                inputp.addEventListener('change', function () {
+
+                    const parentElements = document.querySelectorAll('.product-item');
+                    parentElements.forEach(parent => {
+                        const checkbox = parent.querySelector('input[type="checkbox"]');
+                        if (checkbox && checkbox.checked) {
+                            const priceElement = parent.querySelector('.item-total-price');
+
+
+                            pr += parseFloat(priceElement.textContent);
+
+                            document.getElementById('total-price-final').innerHTML = 'Total Price: ' + pr;
+
+                        }
+                    });
+                    // Update the total price
+
+                });
+
+                checkCell.appendChild(inputp);
+                row.appendChild(checkCell);
+
+
+                // Cột id cart
+                const idCart = document.createElement('td');
+                const idCartP = document.createElement('p');
+                idCartP.className = 'mb-0 mt-4 item-cart-id';
+                idCart.style.display = 'none';
+                idCartP.textContent = key;
+                idCart.appendChild(idCartP);
+                row.appendChild(idCart);
+
+                // Cột id item
+                const idCell = document.createElement('td');
+                const idP = document.createElement('p');
+                idP.className = 'mb-0 mt-4 item-id';
+                idCell.style.display = 'none';
+                idP.textContent = item.productId;
+                idCell.appendChild(idP);
+                row.appendChild(idCell);
+
+                // Cột hình ảnh
+                const imgCell = document.createElement('th');
+                imgCell.scope = 'row';
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'd-flex align-items-center';
+                const img = document.createElement('img');
+                img.src ='/img/products/'+ item.image;
+                img.className = 'img-fluid me-5 rounded-circle item-image';
+                img.style.width = '80px';
+                img.style.height = '80px';
+                img.style.objectFit = 'cover';
+                img.alt = '';
+                imgDiv.appendChild(img);
+                imgCell.appendChild(imgDiv);
+                row.appendChild(imgCell);
+
+                // Cột tên item
+                const nameCell = document.createElement('td');
+                const nameP = document.createElement('p');
+                nameP.className = 'mb-0 mt-4 item-name';
+                nameP.textContent = item.name;
+                nameCell.appendChild(nameP);
+                row.appendChild(nameCell);
+
+                // Cột giá
+                const priceCell = document.createElement('td');
+                const priceP = document.createElement('p');
+                priceP.className = 'mb-0 mt-4 item-price';
+                priceP.textContent = item.price ;
+                priceCell.appendChild(priceP);
+                row.appendChild(priceCell);
+
+                // Cột số lượng
+                const quantityCell = document.createElement('td');
+                const quantityDiv = document.createElement('div');
+                quantityDiv.className = 'input-group mt-4';
+                const btnMinus = document.createElement('button');
+                btnMinus.className = 'btn btn-sm btn-minus rounded-circle bg-light border';
+                btnMinus.innerHTML = '<i class="fa fa-minus"></i>';
+                btnMinus.onclick = () => updateQuantity(key, parseInt(item.quantity) - 1);
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.className = 'form-control form-control-sm text-center border-0 item-quantity';
+                quantityInput.value = item.quantity;
+                quantityInput.style.width = '20px';
+                quantityInput.onchange = (e) => updateQuantity(item.id, parseInt(e.target.value));
+                const btnPlus = document.createElement('button');
+                btnPlus.className = 'btn btn-sm btn-plus rounded-circle bg-light border';
+                btnPlus.innerHTML = '<i class="fa fa-plus"></i>';
+                btnPlus.onclick = () => updateQuantity(key, parseInt(item.quantity) + 1);
+                quantityDiv.appendChild(btnMinus);
+                quantityDiv.appendChild(quantityInput);
+                quantityDiv.appendChild(btnPlus);
+                quantityCell.appendChild(quantityDiv);
+                row.appendChild(quantityCell);
+
+                // Cột tổng giá
+                const totalCell = document.createElement('td');
+                const totalP = document.createElement('p');
+                totalP.className = 'mb-0 mt-4 item-total-price';
+                totalP.textContent = (item.price * item.quantity) + "";
+                totalCell.appendChild(totalP);
+                row.appendChild(totalCell);
+
+                // Cột xóa
+                const removeCell = document.createElement('td');
+                const removeButton = document.createElement('button');
+                removeButton.className = 'btn btn-md rounded-circle bg-light border mt-4';
+                removeButton.innerHTML = '<i class="fa fa-times text-danger"></i>';
+                removeButton.onclick = () => removeItem(key);
+                removeCell.appendChild(removeButton);
+                row.appendChild(removeCell);
+
+                return row;
+            }
+
+            // Hàm cập nhật số lượng
+            function updateQuantity(id, quantity) {
+                if (quantity < 1) return;
+                itemsRef.child(id).update({  id: id,quantity: quantity })
+                    .then(() => console.log('Quantity updated successfully'))
+                    .catch((error) => console.error('Error updating quantity:', error));
+
+
+
+            }
+
+            // Hàm xóa mục
+            function removeItem(id) {
+                itemsRef.child(id).remove()
+                    .then(() => console.log('Item removed successfully'))
+                    .catch((error) => console.error('Error removing item:', error));
+            }
+
+
+
+
+            document.getElementById('cart-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+                const parentElements = document.querySelectorAll('.product-item');
+                parentElements.forEach(parent => {
+                    const checkbox = parent.querySelector('input[type="checkbox"]');
+                    if (checkbox && checkbox.checked) {
+
+                        selectedProducts.push({
+                            productId: parent.querySelector('.item-id').textContent,
+                            id: parent.querySelector('.item-cart-id').textContent,
+                            quantity:parent.querySelector('.item-quantity').value,
+                            productName: parent.querySelector('.item-name').textContent,
+                            image: parent.querySelector('.item-image').src,
+                            price:parent.querySelector('.item-price').textContent,
+                        });
+
+                    }
+                });
+
+
+                fetch('/user/api/selected-products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(selectedProducts)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            console.error('Unexpected response data:', data);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        </script>
+    </section>
+</body>
+</html>
