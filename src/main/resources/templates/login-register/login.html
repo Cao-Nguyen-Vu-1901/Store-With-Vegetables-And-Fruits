@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWebLoginRegister::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+</head>
+<body>
+<section>
+
+    <div class="wrapper">
+        <h2>Đăng nhập</h2>
+        <div>
+            <p th:if="${param.logout}" class="text-center fs-5" style="color: #81c408">
+                Đăng xuất thành công
+            </p>
+            <p th:if="${param.error}" class="text-center text-warning fs-5" style="color: red">
+                Tên đăng nhập hoặc mật không đúng
+            </p>
+        </div>
+
+        <form action="userLogin" method="post">
+            <div class="input-field">
+                <input type="text" id="username" name="username" required>
+                <label>Tên đăng nhập</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" name="password" required>
+                <label>Mật khẩu</label>
+            </div>
+            <button type="submit">Đăng nhập</button>
+            <div class="register">
+                <p>Bạn chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a></p>
+            </div>
+        </form>
+    </div>
+
+
+</section>
+
+
+</body>
+</html>

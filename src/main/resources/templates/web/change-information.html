@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Contact</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            <li class="breadcrumb-item active text-white">Contact</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container col-lg-7">
+            <div class="p-5 bg-light rounded">
+                <form th:action="@{/user/change-information}" method="post" enctype="multipart/form-data">
+                    <div class="form-item w-100 py-4 text-center">
+                        <img th:src="${user.image}"
+                             class="img-fluid rounded-circle"
+                             alt="First slide" style="width: 25vh">
+                    </div>
+                    <div class="form-item w-100">
+                        <input type="file" name="image" class="w-100 form-control border-0 py-3">
+                    </div>
+                    <div class="form-item w-100">
+                        <label class="form-label my-3">Họ và tên</label>
+                        <input th:value="${user.name}" name="name" type="text" class="w-100 form-control border-0 py-3">
+                    </div>
+                    <div class="form-item w-100 ">
+                        <label class="form-label my-3">Số điện thoại</label>
+                        <input th:value="${user.phoneNumber}" name="phoneNumber" type="text"
+                               class="w-100 form-control border-0 py-3">
+                    </div>
+                    <div class="form-item w-100 ">
+                        <label class="form-label my-3">Email</label>
+                        <input th:value="${user.email}" name="email" type="email"
+                               class="w-100 form-control border-0 py-3">
+                    </div>
+                    <div class="form-item w-100 py-4">
+                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary "
+                                type="submit">Lưu
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+</section>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<section>
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Chi tiết sản phẩm</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a th:href="@{/shop}">Của hàng</a></li>
+            <li class="breadcrumb-item active text-white">Chi tiết sản phẩm</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+
+    <!-- Single Product Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-8 col-xl-9">
+                    <div class="row g-4">
+                        <div class="col-lg-8">
+                            <div class="rounded">
+
+                                    <img th:src="@{'/img/products/' + ${product.image} }" class="rounded"
+                                        style="height: 54vh; object-fit: cover;  width: 85vh; border: none;" alt="Image">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h4 th:text="${product.name}" class="fw-bold mb-3"></h4>
+                            <p th:text="${product.category.name}" class="mb-3"></p>
+                            <h5 th:text="${product.price + ' đ'}" class="fw-bold mb-3"></h5>
+                            <h5 th:text="${product.discountPrice + ' đ'}" class="fw-bold mb-3 text-danger text-decoration-line-through"></h5>
+<!--                            <div class="d-flex mb-4">-->
+<!--                                <i class="fa fa-star text-secondary"></i>-->
+<!--                                <i class="fa fa-star text-secondary"></i>-->
+<!--                                <i class="fa fa-star text-secondary"></i>-->
+<!--                                <i class="fa fa-star text-secondary"></i>-->
+<!--                                <i class="fa fa-star"></i>-->
+<!--                            </div>-->
+
+                            <div class="input-group quantity mb-5" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <form th:if="${user!=null}" class="cartForm">
+                                <input type="hidden" th:value="${product.id}" name="productId">
+                                <input type="hidden" th:value="${product.image}" name="image">
+                                <input type="hidden" th:value="${product.name}" name="name">
+                                <input type="hidden" th:value="${product.price}" name="price">
+                                <input type="hidden" th:value="1" name="quantity">
+
+                                <button th:if="${user != null}" type="submit"
+                                        class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+                                <button th:unless="${user != null}" type="button"
+                                        class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+
+                            </form>
+                            <a th:unless="${user != null}" th:href="@{/login}"
+                               class="btn border border-secondary rounded-pill px-3 text-primary"><i
+                                    class="fa fa-shopping-bag me-2 text-primary"></i></a>
+                        </div>
+                        <div class="col-lg-12">
+                            <nav>
+                                <div class="nav nav-tabs mb-3">
+                                    <button class="nav-link active border-white border-bottom-0" type="button"
+                                            role="tab"
+                                            id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                                            aria-controls="nav-about" aria-selected="true">Mô tả
+                                    </button>
+                                    <button class="nav-link border-white border-bottom-0" type="button" role="tab"
+                                            id="nav-mission-tab" data-bs-toggle="tab" data-bs-target="#nav-mission"
+                                            aria-controls="nav-mission" aria-selected="false">Bình luận
+                                    </button>
+                                </div>
+                            </nav>
+                            <div class="tab-content mb-5 container-comment">
+                                <div class="tab-pane active" id="nav-about" role="tabpanel"
+                                     aria-labelledby="nav-about-tab">
+                                    <p th:utext="${product.description}"></p>
+                                </div>
+                                <div  class="tab-pane" id="nav-mission" role="tabpanel"
+                                     aria-labelledby="nav-mission-tab">
+                                    <div th:if="${user != null}" id="comments-container" class="bg-light rounded">
+
+
+                                    </div>
+
+                                    <form th:if="${user != null}" action="" method="post" id="comment-form" class="col-lg-12">
+                                        <div class="mb-0 ml-9 text-primary d-flex align-items-center" id="reply-name"></div>
+                                        <div class="border-bottom rounded d-flex mt-2" style="height: 5vh;">
+                                            <input type="text" id="comment-content" class="form-control border-0 me-4"
+                                                   placeholder="Bình luận">
+                                            <input type="hidden" id="parent-id">
+                                            <input type="submit" value="Gửi"
+                                                   class="btn btn-link border-2 border-primary">
+                                        </div>
+                                    </form>
+
+                                    <p th:unless="${user != null}" class="text-center">Vui lòng đăng nhập để xem bình luận</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <form action="#">
+
+                            <div class="row g-4">
+                                    <div class="d-flex justify-content-between py-3 mb-5">
+                                        <div class="d-flex align-items-center">
+                                            <p class="mb-0 me-3">Đánh giá:</p>
+                                            <div class="d-flex align-items-center" style="font-size: 12px;">
+                                                <i class="fa fa-star text-muted"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-3">
+                    <div class="row g-4 fruite">
+                        <div class="col-lg-12">
+                            <form th:action="@{/shop}" method="get">
+                                <div class="input-group w-100 mx-auto d-flex mb-4">
+                                    <input type="search" name="name" class="form-control p-3" placeholder="Tìm kiếm"
+                                           aria-describedby="search-icon-1">
+                                    <button id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12">
+                            <h4 class="mb-4">Có lẽ bạn sẽ thích</h4>
+                            <div th:each=" item : ${listProductsLikeName}" class="d-flex align-items-center justify-content-start">
+                                <div class="rounded" style="width: 100px; height: 100px;">
+                                    <img th:if="${item.image != null}"
+                                         th:src="@{'/img/products/'+${item.image}}"
+                                         class="img-fluid rounded"
+                                         style="width: 13vh; height: 12vh;object-fit: cover;" alt="">
+                                </div>
+                                <div>
+                                    <a th:text="${item.name}" th:href="@{'/product-detail/'+${item.id}}" style="font-size: 1.3rem;    display: -webkit-box;  -webkit-line-clamp: 1;  -webkit-line-clamp: 1;
+                                          -webkit-box-orient: vertical;  overflow: hidden;  text-overflow: ellipsis;"></a>
+
+                                    <div class="d-flex mb-2">
+                                        <h5 th:text="${item.discountPrice + 'đ/kg'}" class="fw-bold me-2"></h5>
+                                        <h5 th:text="${item.price + 'đ/kg'}" class="text-danger text-decoration-line-through"></h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center my-4">
+                                <a href="#"
+                                   class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Xem thêm</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="position-relative">
+                                <img th:src="@{/web/img/banner-fruits.jpg}" class="img-fluid w-100 rounded" alt="">
+                                <div class="position-absolute"
+                                     style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                    <h3 class="text-secondary fw-bold">Trái <br> cây <br> Organic</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1 class="fw-bold mb-0">Sản phẩm tương tự</h1>
+            <div class="vesitable">
+                <div class="owl-carousel vegetable-carousel justify-content-center">
+                    <div th:each=" item : ${listProductsWithCategory} " class="border border-primary rounded position-relative vesitable-item">
+                        <div class="vesitable-img">
+                            <img th:if="${item.image != null}"
+                                 th:src="@{'/img/products/'+${item.image}}"
+                                 class="img-fluid w-100 rounded-top"
+                                 style="height: 35vh;  object-fit: cover;" alt="">
+                        </div>
+                        <div th:text="${item.category.name}"
+                             class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                             style="top: 10px; left: 10px;">
+                        </div>
+                        <div th:if="${today.until(item.createDate).getDays() >= -3 && today.until(item.createDate).getDays() < 0}"
+                             class="text-secondary bg-danger px-3 py-1 rounded position-absolute"
+                             style="top: 10px; left: 120px; font-weight: bolder">
+                            Mới nhất
+                        </div>
+                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                            <a th:text="${item.name}" th:href="@{'/product-detail/'+${item.id}}" style="font-size: 1.3rem;    display: -webkit-box;  -webkit-line-clamp: 1;  -webkit-line-clamp: 1;
+                                          -webkit-box-orient: vertical;  overflow: hidden;  text-overflow: ellipsis;"></a>
+                            <p th:text="'Hiện có ' + ${item.remaningQuantity}"></p>
+                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                <p th:text="${item.discountPrice}+ 'đ/kg'" class="text-dark fw-bold mb-0"
+                                   style="font-size: 1rem"></p>
+                                <p th:text="${item.price}+ 'đ/kg'" class="text-danger fw-bold mb-0 text-decoration-underline"
+                                   style="font-size: 1rem"></p>
+                                <form th:if="${user!=null}" class="cartForm">
+                                    <input type="hidden" th:value="${item.id}" name="productId">
+                                    <input type="hidden" th:value="${item.image}" name="image">
+                                    <input type="hidden" th:value="${item.name}" name="name">
+                                    <input type="hidden" th:value="${item.price}" name="price">
+                                    <input type="hidden" th:value="1" name="quantity">
+
+                                    <button th:if="${user != null}" type="submit"
+                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+                                    <button th:unless="${user != null}" type="button"
+                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+
+                                </form>
+                                <a th:unless="${user != null}" th:href="@{/login}" class="btn border border-secondary rounded-pill px-3 text-primary myWish"><i class="fa fa-shopping-bag me-2 text-primary"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Single Product End -->
+    <input th:if="${user != null}" type="hidden" id="userId" th:value="${user.id}">
+
+    <script>
+
+
+        var productsRef = null;
+
+        var data = {};
+
+
+        document.querySelectorAll('.cartForm').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                productsRef = firebase.database().ref("carts/" + document.getElementById('userId').value)
+                const formData = new URLSearchParams(new FormData(this));
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                    if (key === 'productId') {
+                        findProductById(value)
+                    }
+                });
+
+            });
+
+        });
+
+        function saveContactForm(data) {
+            var newContactForm = productsRef.push();
+            newContactForm.set(data);
+        }
+
+        function updateQuantity(id, quantity) {
+            if (quantity < 1) return;
+            productsRef.child(id).update({id: id, quantity: quantity})
+                .then(() => console.log('Quantity updated successfully'))
+                .catch((error) => console.error('Error updating quantity:', error));
+
+
+        }
+
+        function findProductById(productId) {
+            productsRef.orderByChild("productId").equalTo(productId).once("value")
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+
+                        snapshot.forEach((childSnapshot) => {
+                            var key = childSnapshot.key; // Lấy key của sản phẩm
+                            var productData = childSnapshot.val(); // Lấy dữ liệu của sản phẩm
+
+
+                            updateQuantity(key, parseInt(productData.quantity) + 1);
+
+                        });
+
+                    } else {
+                        saveContactForm(data)
+
+                    }
+                })
+                .catch((error) => {
+
+                });
+        }
+    </script>
+    <script>
+        const apiUrl = 'http://localhost:8088/api/comments'; // Địa chỉ API của bạn
+
+        // Hiển thị bình luận
+        function renderComments(comments, parentElement) {
+            comments.forEach(comment => {
+                let commentElement = document.createElement('div');
+                commentElement.className = 'testimonial-item img-border-radius pd-l-r-3';
+                commentElement.innerHTML = `
+                                                    <div class="position-relative">
+                                                        <div class="d-flex align-items-center flex-nowrap">
+                                                            <img src="${comment.imageUser}" class="img-fluid rounded-circle"
+                                                                style="width: 40px; height: 40px;" alt="">
+                                                            <div class="ms-4 d-block">
+                                                                <h6 class="text-dark mt-1">${comment.username}</h6>
+                                                                <p class="m-0" style="font-size: 12px;">${comment.createDate}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="border-bottom border-secondary">
+                                                                 ${comment.content}
+                                                            <div class="d-flex justify-content-between" id="section-function-comment">
+
+                                                                <p class="reply-button mb-0 btn-show-hide-comment" onclick="showReplyForm('${comment.id}', '${comment.username}','${comment.content}')" >Trả lời</p>
+
+                                                                <p class="reply-button mb-0 btn-show-hide-comment" id="btn-show-hide-comment-${comment.id}" onclick="hideCommentsReply('${comment.id}')" >
+                                                                        ${ (comment.replies && comment.replies.length > 0) ? 'Xem'  : '' }
+                                                             </p>
+
+                                                           </div>
+                                                            <div class="reply-form" id="reply-form-${comment.id}" style="display:none;">
+                                                                 <div class="d-flex align-items-center ">
+                                                                     <input type="text"  id="reply-content-${comment.id}"
+                                                                                class="form-control border-0 me-4"
+                                                                                placeholder="Bình luận">
+                                                                     <button  onclick="addReply(${comment.id}); return false;"
+                                                                                class="m-3 btn btn-link border-2 border-primary">Gửi</button>
+                                                                </div>
+                                                           </div>
+                                                    </div>`;
+
+                if (comment.replies && comment.replies.length > 0) {
+                    let repliesContainer = document.createElement('div');
+                    repliesContainer.className = `replies-comment`;
+                    repliesContainer.id = `comment-parent-reply-${comment.id}`;
+
+                    // let btnShowHide = document.createElement('p');
+                    // btnShowHide.className = 'reply-button mb-0 btn-show-hide-comment';
+                    // btnShowHide.id = `btn-comment-${comment.id}`;
+                    // btnShowHide.onclick(hideCommentsReply(`${comment.id}`));
+                    //
+                    // document.getElementById('section-function-comment').appendChild(btnShowHide);
+
+                    repliesContainer.style.display = localStorage.getItem('displayCommentChild' + comment.id);
+                    renderComments(comment.replies, repliesContainer);
+                    commentElement.appendChild(repliesContainer);
+
+                }
+
+                parentElement.appendChild(commentElement);
+
+            });
+        }
+
+
+        // Tải bình luận từ API
+        function loadComments() {
+
+            fetch(apiUrl + '/[[${product.id}]]')
+                .then(response => response.json())
+                .then(data => {
+                    // console.log("Received comments data:", data); // Debug log
+                    const commentsContainer = document.getElementById('comments-container');
+                    commentsContainer.innerHTML = '';
+                    renderComments(data, commentsContainer);
+                })
+                .catch(error => console.error('Error loading comments:', error));
+        }
+
+
+        // Gửi bình luận mới
+        document.getElementById('comment-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const content = document.getElementById('comment-content').value;
+            let parent = document.getElementById('parent-id').value;
+
+            const newComment = {
+                content: content,
+                product: {
+                    id : '[[${product.id}]]'
+                },
+                parent: parent === '' ? null : {id: parent}
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newComment)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    loadComments();
+                    document.getElementById('comment-form').reset();
+                })
+                .catch(error => console.error('Error adding comment:', error));
+        });
+
+        // Hiển thị form trả lời
+        function showReplyForm(commentId, replyName, comment) {
+            // const replyForm = document.getElementById(`reply-form-${commentId}`);
+            // replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+            // document.getElementById('parent-id').value = commentId;
+            document.getElementById('parent-id').value = commentId;
+            // document.getElementById("reply-name").innerText = replyName;
+            document.getElementById("reply-name").innerHTML = '<i class="bi bi-arrow-right p-2"></i>' +
+                '<h6 style="margin-bottom: 0px; margin-right: 20px;text-decoration: underline;" class="text-primary text-primary" id="reply-name">'+
+                    replyName + ':</h6>' +
+                '<p style="margin-bottom: 0px; color: #747D8A;" id="reply-comment">"'+ comment +'"</p><button class="btn btn-link" type="button" onclick="reloadParent()">X</button>';
+
+        }
+
+        function reloadParent(){
+            document.getElementById('parent-id').value = '';
+            document.getElementById('reply-comment').innerText = '';
+            document.getElementById('reply-name').innerText = '';
+        }
+
+        function hideCommentsReply( commentId){
+            const commentsReply = document.getElementById(`comment-parent-reply-${commentId}`);
+            commentsReply.style.display = commentsReply.style.display === 'block' ? 'none' : 'block';
+            localStorage.setItem('displayCommentChild' + commentId , commentsReply.style.display);
+            // const btnShowHideComment = document.getElementById(`btn-show-hide-comment-${commentId}`);
+            // btnShowHideComment.innerText = btnShowHideComment.innerText === 'Ẩn' ? 'Hiện' : 'Ẩn';
+            // localStorage.setItem(`btn-show-hide-comment-${commentId}`, btnShowHideComment.innerText === 'Ẩn' ? 'Hiện' : 'Ẩn');
+        }
+
+        // Gửi bình luận trả lời
+        function addReply(parentId) {
+            const replyContent = document.getElementById(`reply-content-${parentId}`).value;
+            const newReply = {
+                content: replyContent,
+                product: {
+                    id : '[[${product.id}]]'
+                },
+                parent: {id: parentId}
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newReply)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    loadComments();
+                    document.getElementById(`reply-form-${parentId}`).style.display = 'none';
+                })
+                .catch(error => console.error('Error adding reply:', error));
+        }
+
+        // Tải bình luận khi trang tải
+        window.onload = loadComments;
+        document.addEventListener('DOMContentLoaded', function() {
+            var commentsContainer = document.getElementById('comments-container');
+            var intervalId;
+
+            // Start loading comments every 1.2 seconds
+            if (commentsContainer) {
+                intervalId = setInterval(loadComments, 2500);
+            }
+
+            // Add event listener to the button to stop refreshing
+            // document.getElementById('stopButton').addEventListener('click', function(event) {
+            //     event.preventDefault(); // Prevent default action if it's a link
+            //     clearInterval(intervalId); // Stop the interval
+            // });
+        });
+    </script>
+</section>
+</body>
+</html>

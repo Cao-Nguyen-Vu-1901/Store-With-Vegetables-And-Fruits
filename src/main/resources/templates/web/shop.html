@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Của hàng</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+            <li class="breadcrumb-item active text-white">Cửa hàng</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Fruits Shop Start-->
+    <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Fresh fruits shop</h1>
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <div class="row g-4">
+                        <div class="col-xl-3">
+
+                                <form th:action="@{/shop}" method="get"><div class="input-group w-100 mx-auto d-flex">
+                                    <input type="search" name="name" class="form-control p-3" placeholder="Tìm kiếm"
+                                           aria-describedby="search-icon-1">
+                                    <button id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i>
+                                    </button>
+                                    <input th:if="${condition} != null" type="hidden" th:value="${condition}"
+                                           name="condition">
+                                    <input th:if="${category} != null" type="hidden" th:value="${category}"
+                                           name="category">
+                                    <input th:if="${page} != null" type="hidden" th:value="${currentPage}" name="page">
+                                    <input th:if="${size} != null" type="hidden" th:value="${pageSize}" name="size">
+                                    <input th:if="${priceMin} != null" type="hidden" th:value="${priceMin}"
+                                           name="priceMin">
+                                    <input th:if="${priceMax} != null" type="hidden" th:value="${priceMax}"
+                                           name="priceMax">  </div>
+                                </form>
+
+                        </div>
+                        <div class="col-6"></div>
+                        <div class="col-xl-3">
+                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                <form th:action="@{/shop}" method="get" id="sortForm">
+
+                                    <label for="fruits">Lọc:</label>
+                                    <select onchange="submitFormSort()" id="fruits" name="fruitlist"
+                                            class="border-0 form-select-sm bg-light me-3"
+                                            th:name="condition">
+                                        <option value="newest" th:selected="${condition == 'newest'}">Mới nhất</option>
+                                        <option value="cheapest" th:selected="${condition == 'cheapest'}">Rẻ nhất
+                                        </option>
+                                        <option value="fast-sale" th:selected="${condition == 'fast-sale'}">Bán chạy
+                                            nhất
+                                        </option>
+                                    </select>
+
+                                    <input th:if="${category} != null" type="hidden" th:value="${category}"
+                                           name="category">
+                                    <input th:if="${name} != null" type="hidden" th:value="${name}" name="name">
+                                    <input th:if="${page} != null" type="hidden" th:value="${currentPage}" name="page">
+                                    <input th:if="${size} != null" type="hidden" th:value="${pageSize}" name="size">
+                                    <input th:if="${priceMin} != null" type="hidden" th:value="${priceMin}"
+                                           name="priceMin">
+                                    <input th:if="${priceMax} != null" type="hidden" th:value="${priceMax}"
+                                           name="priceMax">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-lg-3">
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4>Categories</h4>
+                                        <ul class="list-unstyled fruite-categorie">
+
+                                            <li th:each="item : ${categories}">
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a th:text="${item.name}" th:href="@{'/shop?category='+${item.id}}"><i
+                                                            class="fas fa-apple-alt me-2"></i></a>
+                                                    <span th:text="${'('+item.products.size()+')'}"></span>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <form method="get" th:action="@{/shop}">
+                                            <h4 class="mb-2">Price
+                                                <button type="submit"
+                                                        style="border: none;  background: transparent;  float: right;">
+                                                    <i class="bi-filter"></i>
+                                                </button>
+                                            </h4>
+
+
+                                            <input th:value="${priceMin}" type="range" class="form-range w-100"
+                                                   id="minIPrice" name="priceMin"
+                                                   min="0" max="49999" oninput="minOPrice.value=minIPrice.value">
+                                            <output th:text="${priceMin}" id="minOPrice" name="amount" min-velue="0"
+                                                    max-value="49999"
+                                                    for="minIPrice">
+                                            </output>
+                                            <input th:value="${priceMax}" type="range" class="form-range w-100"
+                                                   id="maxIPrice" name="priceMax"
+                                                   min="50000" max="1000000" oninput="maxOPrice.value=maxIPrice.value">
+                                            <output th:text="${priceMax}" id="maxOPrice" name="maxOPrice"
+                                                    min-velue="50000" max-value="1000000"
+                                                    for="rangeInput">
+                                            </output>
+
+                                            <input th:if="${condition} != null" type="hidden" th:value="${condition}"
+                                                   name="condition">
+                                            <input th:if="${category} != null" type="hidden" th:value="${category}"
+                                                   name="category">
+                                            <input th:if="${name} != null" type="hidden" th:value="${name}" name="name">
+                                            <input th:if="${page} != null" type="hidden" th:value="${currentPage}"
+                                                   name="page">
+                                            <input th:if="${size} != null" type="hidden" th:value="${pageSize}"
+                                                   name="size">
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="position-relative">
+                                        <img th:src="@{/web/img/banner-fruits.jpg}" class="img-fluid w-100 rounded"
+                                             alt="">
+                                        <div class="position-absolute"
+                                             style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                            <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="row g-4 justify-content-center">
+                                <div th:each="item : ${products}" class="col-md-6 col-lg-6 col-xl-4">
+                                    <div class="rounded position-relative fruite-item">
+                                        <div class="fruite-img">
+
+                                            <img th:if="${item.image != null}"
+                                                 th:src="@{'/img/products/'+${item.image}}"
+                                                 class="img-fluid w-100 rounded-top"
+                                                 style="height: 35vh;  object-fit: cover;" alt="">
+
+                                        </div>
+                                        <div th:text="${item.category.name}"
+                                             class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                             style="top: 10px; left: 10px;">
+                                        </div>
+                                        <div th:if="${today.until(item.createDate).getDays() > -3 && today.until(item.createDate).getDays() < 0}"
+                                             class="text-secondary bg-danger px-3 py-1 rounded position-absolute"
+                                             style="top: 10px; left: 120px; font-weight: bolder">
+                                            Mới nhất
+                                        </div>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                            <a th:text="${item.name}" th:href="@{'/product-detail/'+${item.id}}" style="font-size: 1.3rem;    display: -webkit-box;  -webkit-line-clamp: 1;  -webkit-line-clamp: 1;
+                                          -webkit-box-orient: vertical;  overflow: hidden;  text-overflow: ellipsis; font-weight: bolder"></a>
+                                            <p th:text="'Hiện có ' + ${item.remaningQuantity}"></p>
+                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                                <p th:text="${item.discountPrice}+ 'đ/kg'" class="text-dark fw-bold mb-0"
+                                                   style="font-size: 1rem"></p>
+                                                <p th:text="${item.price}+ 'đ/kg'" class="text-danger fw-bold mb-0 text-danger text-decoration-line-through"
+                                                   style="font-size: 1rem; font-weight: bolder"></p>
+                                                <form th:if="${user!=null}" class="cartForm">
+                                                    <input type="hidden" th:value="${item.id}" name="productId">
+                                                    <input type="hidden" th:value="${item.image}" name="image">
+                                                    <input type="hidden" th:value="${item.name}" name="name">
+                                                    <input type="hidden" th:value="${item.discountPrice}" name="price">
+                                                    <input type="hidden" th:value="1" name="quantity">
+
+                                                    <button th:if="${user != null}" type="submit"
+                                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+                                                    <button th:unless="${user != null}" type="button"
+                                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+
+                                                </form>
+                                                <a th:unless="${user != null}" th:href="@{/login}" class="btn border border-secondary rounded-pill px-3 text-primary myWish"><i class="fa fa-shopping-bag me-2 text-primary"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:unless="${products.size() > 0}" class="col-md-6 col-lg-6 col-xl-4">
+                                    <span>No tutorials found!</span>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <div class="pagination d-flex justify-content-center mt-5">
+                                        <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                                    <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+                                                </li>
+                                                <li class="page-item font-weight-bold"
+                                                    th:classappend="${currentPage == 1} ? 'disabled'">
+                                                    <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+                                                </li>
+                                                <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                                                    <a class="page-link" href="#">...</a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                                                    <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+                                                </li>
+                                                <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                                                    <a class="page-link" href="#">...</a>
+                                                </li>
+                                                <li class="page-item font-weight-bold"
+                                                    th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                                    <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+                                                </li>
+                                                <li class="page-item"
+                                                    th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                                    <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input th:if="${user != null}" type="hidden" id="userId" th:value="${user.id}">
+    <!-- Fruits Shop End-->
+    <script>
+
+
+        var productsRef = null;
+
+        var data = {};
+
+
+        function submitFormSort() {
+            document.getElementById('sortForm').submit();
+
+        }
+
+        document.querySelectorAll('.cartForm').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                productsRef = firebase.database().ref("carts/" + document.getElementById('userId').value)
+                const formData = new URLSearchParams(new FormData(this));
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                    if (key === 'productId') {
+                        findProductById(value)
+                    }
+                });
+
+            });
+
+        });
+
+        function saveContactForm(data) {
+            var newContactForm = productsRef.push();
+            newContactForm.set(data);
+        }
+
+        function updateQuantity(id, quantity) {
+            if (quantity < 1) return;
+            productsRef.child(id).update({id: id, quantity: quantity})
+                .then(() => console.log('Quantity updated successfully'))
+                .catch((error) => console.error('Error updating quantity:', error));
+
+
+        }
+
+        function findProductById(productId) {
+            productsRef.orderByChild("productId").equalTo(productId).once("value")
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+
+                        snapshot.forEach((childSnapshot) => {
+                            var key = childSnapshot.key; // Lấy key của sản phẩm
+                            var productData = childSnapshot.val(); // Lấy dữ liệu của sản phẩm
+
+
+                            updateQuantity(key, parseInt(productData.quantity) + 1);
+
+                        });
+
+                    } else {
+                        saveContactForm(data)
+
+                    }
+                })
+                .catch((error) => {
+
+                });
+        }
+    </script>
+
+
+</section>
+</body>
+</html>

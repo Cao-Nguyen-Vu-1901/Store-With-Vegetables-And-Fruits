@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWebLoginRegister::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+</head>
+<body>
+<section>
+
+    <div class="wrapper">
+        <form th:action="@{/save-user}" method="post">
+            <h2>Đăng ký</h2>
+            <th:block th:if="${session.msg}">
+                <p  style="color: red" class="text-center">[[${session.msg}]]</p>
+                <th:block th:text="${@userServiceImpl.removeSessionMessage()}"></th:block>
+
+            </th:block>
+            <div class="input-field">
+                <input type="text" name="name" required>
+                <label>Họ và tên</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="username" required>
+                <label>Tên đăng nhập</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="email" required>
+                <label>Email</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="phoneNumber" required>
+                <label>Số điện thoại</label>
+            </div>
+            <div class="input-field">
+                <input type="password" name="password" required>
+                <label>Mật khẩu</label>
+            </div>
+            <div class="input-field">
+                <input type="password" name="rePassword" required>
+                <label>Nhập lại mật khẩu</label>
+            </div>
+
+            <button type="submit">Đăng ký</button>
+            <div class="register">
+                <p>Bạn đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
+            </div>
+        </form>
+    </div>
+
+
+</section>
+
+
+</body>
+</html>
