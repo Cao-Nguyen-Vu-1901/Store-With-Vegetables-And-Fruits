@@ -57,14 +57,14 @@ public class HomeController {
             model.addAttribute("product", product);
             model.addAttribute("today", LocalDate.now());
             model.addAttribute("listProductsLikeName",
-                    listProductsLikeName.subList(0, Math.min(listProductsLikeName.size(), 6)));
+                    listProductsLikeName.subList(0, Math.min(listProductsLikeName.size(), 5)));
             model.addAttribute("listProductsWithCategory",
                     productService.findAllByCategoryName(product.getCategory().getName()));
         }
 
 
 
-        return "web/cmt";
+        return "web/product-detail";
     }
 
     @GetMapping("/shop")

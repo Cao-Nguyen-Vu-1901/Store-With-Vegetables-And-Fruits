@@ -17,10 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
     Page<Product> findAllByCategoryId(String id,Pageable pageable);
     Page<Product> findAllByCategoryIdAndName(String id,String name,Pageable pageable);
-    Page<Product> findAllByCategoryIdAndPriceBetween(String category_id, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findAllByNameAndPriceBetween(String name, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findAllByCategoryIdAndNameAndPriceBetween(String category_id,String name, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findByPriceBetween(BigDecimal priceMin, BigDecimal priceMax,Pageable pageable);
+    Page<Product> findAllByCategoryIdAndDiscountPriceBetween(String category_id, BigDecimal discountPrice, BigDecimal price2, Pageable pageable);
+    Page<Product> findAllByNameAndDiscountPriceBetween(String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
+    Page<Product> findAllByCategoryIdAndNameAndDiscountPriceBetween(String category_id,String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
+    Page<Product> findByDiscountPriceBetween(BigDecimal priceMin, BigDecimal priceMax,Pageable pageable);
 
     Page<Product> findByNameLike(String name, Pageable pageable);
 

@@ -140,7 +140,7 @@
                                              alt="">
                                         <div class="position-absolute"
                                              style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                            <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
+                                            <h3 class="text-secondary fw-bold">Thực <br> phẩm <br> Organic</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                              style="top: 10px; left: 10px;">
                                         </div>
-                                        <div th:if="${today.until(item.createDate).getDays() > -3 && today.until(item.createDate).getDays() < 0}"
+                                        <div th:if="${today.until(item.createDate).getDays() > -3 && today.until(item.createDate).getDays() <= 0}"
                                              class="text-secondary bg-danger px-3 py-1 rounded position-absolute"
                                              style="top: 10px; left: 120px; font-weight: bolder">
                                             Mới nhất
@@ -177,23 +177,24 @@
                                                    style="font-size: 1rem"></p>
                                                 <p th:text="${item.price}+ 'đ/kg'" class="text-danger fw-bold mb-0 text-danger text-decoration-line-through"
                                                    style="font-size: 1rem; font-weight: bolder"></p>
-                                                <form th:if="${user!=null}" class="cartForm">
-                                                    <input type="hidden" th:value="${item.id}" name="productId">
-                                                    <input type="hidden" th:value="${item.image}" name="image">
-                                                    <input type="hidden" th:value="${item.name}" name="name">
-                                                    <input type="hidden" th:value="${item.discountPrice}" name="price">
-                                                    <input type="hidden" th:value="1" name="quantity">
 
-                                                    <button th:if="${user != null}" type="submit"
-                                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
-                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
-                                                    <button th:unless="${user != null}" type="button"
-                                                            class="btn border border-secondary rounded-pill px-3 text-primary myWish">
-                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
-
-                                                </form>
-                                                <a th:unless="${user != null}" th:href="@{/login}" class="btn border border-secondary rounded-pill px-3 text-primary myWish"><i class="fa fa-shopping-bag me-2 text-primary"></i></a>
                                             </div>
+                                            <form th:if="${user!=null}" class="cartForm">
+                                                <input type="hidden" th:value="${item.id}" name="productId">
+                                                <input type="hidden" th:value="${item.image}" name="image">
+                                                <input type="hidden" th:value="${item.name}" name="name">
+                                                <input type="hidden" th:value="${item.discountPrice}" name="price">
+                                                <input type="hidden" th:value="1" name="quantity">
+
+                                                <button th:if="${user != null}" type="submit"
+                                                        class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+                                                <button th:unless="${user != null}" type="button"
+                                                        class="btn border border-secondary rounded-pill px-3 text-primary myWish">
+                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i></button>
+
+                                            </form>
+                                            <a th:unless="${user != null}" th:href="@{/login}" class="btn border border-secondary rounded-pill px-3 text-primary myWish"><i class="fa fa-shopping-bag me-2 text-primary"></i></a>
                                         </div>
                                     </div>
                                 </div>
