@@ -73,17 +73,17 @@ public class ProductServiceImpl implements IProductService {
 
 
         if (category != null && !category.isEmpty() && priceMin != null && priceMax != null && name != null) {
-            return productRepository.findAllByCategoryIdAndNameAndPriceBetween(category , name, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByCategoryIdAndNameAndDiscountPriceBetween(category , name, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null && !category.isEmpty() && priceMin != null && priceMax != null) {
-            return productRepository.findAllByCategoryIdAndPriceBetween(category, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByCategoryIdAndDiscountPriceBetween(category, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null && !category.isEmpty() && name != null) {
             return productRepository.findAllByCategoryIdAndName(category,name, pageable);
         } else if (priceMin != null && priceMax != null && name != null) {
-            return productRepository.findAllByNameAndPriceBetween(name,new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByNameAndDiscountPriceBetween(name,new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null) {
             return productRepository.findAllByCategoryId(category, pageable);
         } else if (priceMin != null && priceMax != null) {
-            return productRepository.findByPriceBetween( new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findByDiscountPriceBetween( new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         }else if (name != null ) {
             return productRepository.findByNameLike("%"+name+"%",pageable);
         } else {

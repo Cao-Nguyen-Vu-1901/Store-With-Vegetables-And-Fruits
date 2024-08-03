@@ -83,7 +83,7 @@
             // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 
-            const database = firebase.database();
+
 
 
             // Đường dẫn đến nút trong database mà bạn muốn đọc dữ liệu từ đó
@@ -92,7 +92,7 @@
             // Lắng nghe sự kiện value để nhận dữ liệu từ Firebase
             itemsRef.on('value', (snapshot) => {
                 // const items = snapshot.val();
-
+                countCart = 0;
                 const listContainer = document.getElementById('list-container');
 
                 // Xóa các mục cũ trong danh sách
@@ -101,9 +101,11 @@
                 snapshot.forEach((childSnapshot) => {
                     // Lấy key của childSnapshot
                     const key = childSnapshot.key;
-
+                    countCart++;
                     // Lấy dữ liệu của mỗi child
                     const childData = childSnapshot.val();
+                    const itemCount = Object.keys(key).length;
+                    console.log('Số dòng:', itemCount);
                     const itemRow = createItemRow(childData, key);
                     listContainer.appendChild(itemRow);
                 });
