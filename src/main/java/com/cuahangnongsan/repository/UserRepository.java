@@ -14,17 +14,18 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,String> {
 
 
-    User findByUsernameAndStatus(String username, String status);
+    User findByUsernameAndStatus(String username, boolean status);
+    User findByUsername(String username);
     List<User> findAllByNameLike(String name);
     List<User> findAllByDob(LocalDate date);
     List<User> findAllByGender(String gender);
     List<User> findAllByEmailLike(String email);
     List<User> findAllByPhoneNumberLike(String phoneNumber);
     List<User> findAllByAddressLike(String address);
-    List<User> findAllByStatus(String status);
+    List<User> findAllByStatus(boolean status);
 
-    @Query("select u from User u where u.roles <> :role")
-    List<User> findAllByRoleEqualUser(@Param("role") List<Role> role);
+    @Query("select user from User user join user.roles role where role.name = :name")
+    List<User> findAllByRoleEqualUser(@Param("name") String name);
 
 
 }

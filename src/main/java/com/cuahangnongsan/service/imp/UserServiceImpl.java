@@ -42,9 +42,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User save(User user) {
-
-        user.setStatus(StringConstant.USER_STATUS_ACTIVE);
-        user.setRoles(new HashSet<>(roleRepository.findByName(StringConstant.ROLE_USER)));
+        user.setRoles(new HashSet<>(roleRepository.findAllByName(StringConstant.ROLE_USER)));
         return userRepository.save(user);
     }
     @Override
@@ -97,13 +95,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> findAllByStatus(String status) {
+    public List<User> findAllByStatus(boolean status) {
         return userRepository.findAllByStatus(status);
     }
 
     @Override
-    public List<User> findAllByRoleEqualUser(List<Role> role) {
-        return userRepository.findAllByRoleEqualUser(role);
+    public List<User> findAllByRoleName(String id) {
+        return userRepository.findAllByRoleEqualUser(id);
     }
 
 }

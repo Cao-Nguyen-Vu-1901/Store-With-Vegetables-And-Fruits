@@ -1,7 +1,13 @@
 package com.cuahangnongsan.controller.admin;
 
 
+import com.cuahangnongsan.constant.StringConstant;
+import com.cuahangnongsan.entity.Invoice;
+import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.User;
+import com.cuahangnongsan.service.IInvoiceDetailService;
+import com.cuahangnongsan.service.IInvoiceService;
+import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +19,41 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
+    private IProductService productService;
+
+    @Autowired
     private IUserService userService;
 
-    @GetMapping({"/","/home" })
-    public String home(){
+    @Autowired
+    private IInvoiceService invoiceService;
+
+    @Autowired
+    private IInvoiceDetailService invoiceDetailService;
+
+    @GetMapping({"/",})
+    public String home(ModelMap modelMap){
+        List<Invoice> invoices = invoiceService.findAll();
+        double revenue = 0;
+        for (Invoice item : invoices){
+            if(!item.getStatus().equals(StringConstant.STATUS_ORDER_CANCEL)){
+                for (InvoiceDetail id: item.getInvoiceDetails()){
+                    revenue += id.getPrice() * id.getQuantity();
+                }
+            }
+        }
+
+        modelMap.addAttribute("productQuantity", productService.findAll().size());
+        modelMap.addAttribute("userQuantity", userService.findAllByRoleName(StringConstant.ROLE_USER).size());
+        modelMap.addAttribute("quantitySale", invoiceDetailService.fundAll().size());
+        modelMap.addAttribute("revenue", revenue);
+
         return "admin/index";
     }
 

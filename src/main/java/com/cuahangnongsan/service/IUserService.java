@@ -1,6 +1,5 @@
 package com.cuahangnongsan.service;
 
-import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.entity.User;
 
 import java.time.LocalDate;
@@ -33,9 +32,9 @@ public interface IUserService {
 
     List<User> findAllByAddressLike(String address);
 
-    List<User> findAllByStatus(String status);
+    List<User> findAllByStatus(boolean status);
 
-    List<User> findAllByRoleEqualUser(List<Role> role);
+    List<User> findAllByRoleName(String id);
 
 
 }

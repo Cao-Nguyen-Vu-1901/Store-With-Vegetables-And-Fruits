@@ -104,7 +104,17 @@
                                     <a class="nav-link" th:href="@{/admin/product/manage-product}">Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/user/manage-user}">Người dùng</a>
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5-1" aria-controls="submenu-5-1">Người dùng</a>
+                                    <div id="submenu-5-1" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=admin'}">Admin</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=user'}">User</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{/admin/invoice/manage-invoice}">Hoá đơn</a>

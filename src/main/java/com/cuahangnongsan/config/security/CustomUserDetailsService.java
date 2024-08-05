@@ -4,6 +4,7 @@ import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,18 +17,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepo;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		User user = userRepo.findByUsernameAndStatus(username, StringConstant.USER_STATUS_ACTIVE);
+		User user = userRepo.findByUsername(username);
 
 		if (user == null) {
-			throw new UsernameNotFoundException("user not found");
+			throw new UsernameNotFoundException("User not found");
 		} else {
-			return new CustomUser(user);
+			if(user.isStatus()){
+				return new CustomUser(user);
+			}else {
+				throw new DisabledException("User is disabled");
+			}
 		}
 
 	}

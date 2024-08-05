@@ -41,6 +41,8 @@
                                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                         <input type="text" class="form-control" name="value"
                                                placeholder="Tìm kiếm" required="">
+                                        <input th:if="${role != null}" type="hidden" class="form-control" name="role"
+                                               th:value="${role}">
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                                         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
@@ -98,8 +100,8 @@
                                     <td>
                                         <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/user/manage-user}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" >
-                                                <i class="far fa-trash-alt"></i>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])" >
+                                                <i class="fas fa-window-close"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -119,7 +121,15 @@
         </div>
 
     </div>
+    <script  th:inline="javascript">
+        function confirmAction(id) {
+            let text = "Bạn có muốn vô hiệu hoá";
+            if (confirm(text) === true) {
+                document.getElementById('form-confirm-'+id).submit();
+            }
 
+        }
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->
