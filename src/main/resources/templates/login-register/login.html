@@ -15,9 +15,12 @@
             <p th:if="${param.logout}" class="text-center fs-5" style="color: #81c408">
                 Đăng xuất thành công
             </p>
-            <p th:if="${param.error}" class="text-center text-warning fs-5" style="color: red">
-                Tên đăng nhập hoặc mật không đúng
-            </p>
+<!--            <p th:if="${param.error}"  class="text-center text-warning fs-5" style="color: red">-->
+
+<!--            </p>-->
+            <div th:if="${param.error}">
+                <p style="color: red;" th:text="${session.errorMessage}"></p>
+            </div>
         </div>
 
         <form action="userLogin" method="post">

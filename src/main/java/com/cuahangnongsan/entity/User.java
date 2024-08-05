@@ -44,7 +44,7 @@ public class User  implements Serializable {
 
     String address;
 
-    String status;
+    boolean status;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
