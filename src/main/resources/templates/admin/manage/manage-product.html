@@ -24,14 +24,39 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">General Tables </h2>
-                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <h2 class="pageheader-title">Quản lý</h2>
+                        <div class="card-body">
+                            <form class="needs-validation" method="get" th:action="@{/admin/product/manage-product}">
+                                <div class="form-row">
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <select class="form-control" name="type">
+                                            <option value="name">Tên</option>
+                                            <option value="category">Danh mục</option>
+                                            <option value="price">Giá</option>
+                                            <option value="discount-price">Giảm giá</option>
+                                            <option value="unit">Đơn vị tính</option>
+                                            <option value="quantity">Số lượng hiện có</option>
+                                            <option value="remaining-quantity">Số lượng hiện còn</option>
+                                            <option value="description">Mô tả</option>
+                                            <option value="created-date">Ngày tạo</option>
+                                            <option value="modified-date">Ngày cập nhật</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+                                        <input type="text" class="form-control" name="value"
+                                               placeholder="Tìm kiếm" required="">
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">General Tables</li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}" class="breadcrumb-link">Sản phẩm</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
                         </div>
@@ -50,36 +75,46 @@
                 <!-- ============================================================== -->
                 <div class="col-md-12 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header">Striped Table</h5>
+                        <h5 class="card-header">Danh sách sản phẩm</h5>
                         <div class="card-body">
                             <table class="table table-striped">
                                 <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                <tr class="text-center">
+                                    <th scope="col" class="col-2">Tên</th>
+                                    <th scope="col">Danh mục</th>
+                                    <th scope="col">Hình ảnh</th>
+                                    <th scope="col" class="col-1-10">Giá</th>
+                                    <th scope="col" class="col-1-10">Giảm giá</th>
+                                    <th scope="col" class="col-1-10">Số lượng <br> hiện có</th>
+                                    <th scope="col" class="col-1-10">Số luọng <br> hiện còn</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col" class="col-1-10">&nbsp;</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                <tbody class="text-center">
+                                <tr th:each=" item : ${products}">
+                                    <th th:text="${item.name}" scope="row"></th>
+                                    <th th:text="${item.category.name}" scope="row"></th>
+                                    <td>
+                                        <img class="rounded-circle" th:src="@{'/img/products/'+${item.image}}" width="80px" height="80px" style="object-fit: cover" alt="Hình ảnh"/>
+                                    </td>
+                                    <td th:text="${item.price}"></td>
+                                    <td th:text="${item.discountPrice}"></td>
+                                    <td th:text="${item.quantity}"></td>
+                                    <td th:text="${item.remaningQuantity}"></td>
+                                    <td th:text="${item.createdDate}"></td>
+                                    <td>
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/product/manage-product}" method="post">
+                                            <input type="hidden" th:value="${item.id}" name="id">
+                                            <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
+                                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -92,15 +127,18 @@
 
 
         </div>
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
 
-        <!-- ============================================================== -->
-        <!-- end footer -->
-        <!-- ============================================================== -->
     </div>
+    <script  th:inline="javascript">
+        function confirmAction(id) {
+            let text = "Bạn có muốn xoá";
+            if (confirm(text) === true) {
+                document.getElementById('action-form-confirm-'+id).value = 'delete';
+                document.getElementById('form-confirm-'+id).submit();
+            }
 
+        }
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->

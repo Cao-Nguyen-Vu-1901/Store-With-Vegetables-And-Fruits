@@ -24,16 +24,13 @@
       <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="page-header">
-            <h2 class="pageheader-title">Form Validations </h2>
-            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce
-              sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+            <h2 class="pageheader-title">Cập nhật</h2>
             <div class="page-breadcrumb">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
+                  <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}" class="breadcrumb-link">Sản phẩm</a>
                   </li>
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Forms</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Form Validations</li>
+                  <li class="breadcrumb-item active" aria-current="page">Thông tin sản phẩm</li>
                 </ol>
               </nav>
             </div>
@@ -51,83 +48,101 @@
         <!-- ============================================================== -->
         <div class="col-md-12 col-sm-12 col-12">
           <div class="card">
-            <h5 class="card-header">Basic Form</h5>
+            <h5 class="card-header">Chi tiết sản phẩm</h5>
             <div class="card-body">
-              <form action="#" id="basicform" data-parsley-validate="">
+              <form th:action="@{/admin/product/save-product}" method="post" id="basicform" enctype="multipart/form-data">
+                  <input th:if="${product != null}" type="hidden" name="id" th:value="${product.id}">
                 <div class="form-group">
-                  <label for="inputUserName">User Name</label>
-                  <input id="inputUserName" type="text" name="name" data-parsley-trigger="change"
-                         required="" placeholder="Enter user name" autocomplete="off"
+                  <label for="inputUserName">Tên sản phẩm</label>
+                  <input id="inputUserName" th:value="${product == null  ? '' : product.name}" type="text" name="name" data-parsley-trigger="change"
+                         required=""  autocomplete="off"
                          class="form-control">
                   <div class="text-danger">
                     Please provide a valid text.
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail">Email address</label>
-                  <input id="inputEmail" type="email" name="email" data-parsley-trigger="change"
-                         required="" placeholder="Enter email" autocomplete="off"
+                  <label for="inputPrice">Giá</label>
+                  <input id="inputPrice" th:value="${product == null  ? 0 : product.price}" type="number" name="price" data-parsley-trigger="change"
+                         required="" autocomplete="off"
                          class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="inputPassword">Password</label>
-                  <input id="inputPassword" type="password" placeholder="Password" required=""
+                  <label for="inputDiscount">Giảm giá</label>
+                  <input id="inputDiscount" type="number"  th:value="${product == null  ? 0 : product.discountPrice}" name="discountPrice" required=""
                          class="form-control">
                 </div>
-                <div class="custom-file mb-3 col-sm-6">
-                  <input type="file" class="custom-file-input" id="customFile">
-                  <label class="custom-file-label" for="customFile">File Input</label>
+                <div class="form-group">
+                  <label for="inputQuantity">Số lượng hiện có</label>
+                  <input id="inputQuantity" type="number"  th:value="${product == null  ? 0 : product.quantity}" name="quantity" required=""
+                         class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="input-select">Example Select</label>
-                  <select class="form-control col-sm-6" id="input-select">
-                    <option>Choose Example</option>
+                  <label for="inputRemaningQuantity">Số lượng hiện còn</label>
+                  <input id="inputRemaningQuantity" type="number"  th:value="${product == null  ? 0 : product.remaningQuantity}" name="remaningQuantity" required=""
+                         class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="input-select">Danh mục</label>
+                  <select class="form-control col-sm-6" id="input-select" name="categoryId" data-th-default="Chọn">
+                    <option th:each=" item : ${categories}" th:text="${item.name}" th:value="${item.id}"></option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Repeat Password</label>
+                  <label>Đơn vị tính</label>
                   <div class="col-sm-6">
                     <div class="custom-controls-stacked">
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck1" name="ck1" type="checkbox"
-                               data-parsley-multiple="groups" value="bar"
-                               data-parsley-mincheck="2"
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="kg"
                                data-parsley-errors-container="#error-container1"
+                               required th:checked="${product != null && product.unit == 'kg' ? true : false }"
                                class="custom-control-input"><span
-                              class="custom-control-label">Option 1</span>
+                              class="custom-control-label">kg</span>
                       </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck2" name="ck2" type="checkbox"
-                               data-parsley-multiple="groups" value="bar2"
-                               data-parsley-mincheck="2"
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="1/2kg"
+                               required th:checked="${product != null &&product.unit == '1/2kg' ? true : false }"
                                data-parsley-errors-container="#error-container1"
                                class="custom-control-input"><span
-                              class="custom-control-label">Option 2</span>
+                              class="custom-control-label"> 1/2 kg</span>
                       </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck3" name="ck3" type="checkbox"
-                               data-parsley-multiple="groups" value="bar3"
-                               data-parsley-mincheck="2" required=""
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="trái"
+                               required th:checked="${product != null && product.unit == 'trái' ? true : false }"
+                               data-parsley-errors-container="#error-container1"
+                               class="custom-control-input">
+                        <span class="custom-control-label">trái</span>
+                      </label>
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="củ"
+                               required  th:checked="${product != null && product.unit == 'củ' ? true : false }"
                                data-parsley-errors-container="#error-container1"
                                class="custom-control-input"><span
-                              class="custom-control-label">Option 3</span>
+                              class="custom-control-label">củ</span>
                       </label>
                       <div id="error-container1"></div>
                     </div>
                   </div>
                 </div>
 
+                <div class="custom-file mb-3 col-sm-6">
+                  <input type="file" class="custom-file-input" name="image" id="customFile">
+                  <label class="custom-file-label" for="customFile"  th:text="${product == null  ? 'Hình ảnh' : product.image}"></label>
+                </div>
+                <div class="form-group">
+                  <label>Mô tả</label>
+                  <textarea  th:text="${product == null  ? '' : product.description}" required name="description" class="form-control"></textarea>
+                </div>
                 <div class="row">
-                  <div class="col-sm-6 pb-2 pb-sm-4 pb-lg-0 pr-0">
-                    <label class="be-checkbox custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input"><span
-                            class="custom-control-label">Remember me</span>
-                    </label>
-                  </div>
-                  <div class="col-sm-6 pl-0">
+
+                  <div class="col-sm-12 pl-0">
                     <p class="text-right">
-                      <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                      <button class="btn btn-space btn-secondary">Cancel</button>
+                      <button type="submit" class="btn btn-space btn-primary">Lưu</button>
+                      <button class="btn btn-space btn-secondary">Huỷ</button>
                     </p>
                   </div>
                 </div>

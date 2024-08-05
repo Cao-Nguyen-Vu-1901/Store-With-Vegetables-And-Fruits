@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -27,7 +28,17 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("select u from Product u where u.name like :name and u.id <> :id")
     List<Product> findAllByNameLikeButId(@Param("name")String name, @Param("id")String id);
 
-    List<Product> findAllByCategoryName(String categoryName);
+    @Query("select p from Product p where p.category.name like :name")
+    List<Product> findAllByCategoryName(@Param("name") String name);
 
+    List<Product> findAllByNameLike(String name);
+    List<Product> findAllByPrice(BigDecimal price);
+    List<Product> findAllByDiscountPrice(BigDecimal discount);
+    List<Product> findAllByUnit(String unit);
+    List<Product> findAllByQuantity(int quantity);
+    List<Product> findAllByRemaningQuantity(int remaningQuantity);
+    List<Product> findAllByDescriptionLike(String description);
+    List<Product> findAllByCreatedDate(LocalDate date);
+    List<Product> findAllByModifiedDate(LocalDate date);
 
 }

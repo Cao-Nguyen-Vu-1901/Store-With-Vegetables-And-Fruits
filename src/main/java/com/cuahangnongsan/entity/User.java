@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class User  implements Serializable {
 
     String name;
 
-    Date dob;
+    LocalDate dob;
 
     String gender;
 
