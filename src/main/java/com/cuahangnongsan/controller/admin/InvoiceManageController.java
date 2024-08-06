@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -33,23 +30,66 @@ public class InvoiceManageController {
     @Autowired
     IUserService userService;
 
-    @GetMapping({"/manage-invoice/{id}" })
-    public String showInvoice(ModelMap modelMap , @PathVariable String id){
+    ///// Begin show Invoice /////
+    @GetMapping({"/show-invoice/{id}" })
+    public String showInvoiceDetailWithId(ModelMap modelMap , @PathVariable String id){
         Invoice invoice = invoiceService.findById(id);
 
         double totalPrice = 0;
         for (InvoiceDetail item : invoice.getInvoiceDetails()){
-            totalPrice = item.getPrice() * item.getQuantity();
+            totalPrice += item.getPrice() * item.getQuantity();
         }
 
         modelMap.addAttribute("invoice", invoice);
         modelMap.addAttribute("totalPrice",totalPrice );
-        return "admin/show/show-invoice";
+        return "admin/show/show-invoice-detail";
     }
 
 
+    @GetMapping("/show-invoices")
+    public String showAllInvoices(ModelMap modelMap, String type, String value){
+
+        modelMap.addAttribute("invoices", searchList(type,value));
+        return "admin/show/show-invoices";
+    }
+
+    ///// End show invoice /////
+
+    ///// Begin manage invoice /////
+
+    @PostMapping("/manage-invoice")
+    public String updateInvoice(ModelMap modelMap,  String status, String id){
+        Invoice invoice = invoiceService.findById(id);
+        if(invoice != null){
+            invoice.setStatus(status);
+            invoice.setCancelDate(LocalDate.now());
+            invoiceService.save(invoice);
+        }
+        return "redirect:/admin/invoice/manage-invoice";
+    }
     @GetMapping("/manage-invoice")
-    public String manageInvoice(ModelMap modelMap, String type, String value){
+    public String showInvoicesWithStatus (ModelMap modelMap,  String status){
+        modelMap.addAttribute("invoices", status == null ? invoiceService.findAll() : invoiceService.findAllByStatus(status));
+        modelMap.addAttribute("status", status);
+        return "admin/manage/manage-invoice";
+    }
+
+    ///// End manage invoice /////
+    @ModelAttribute
+    public void commonUser(Principal p, Model m, HttpSession session) {
+        if (p != null) {
+            String username = p.getName();
+            User user = userService.findByUsername(username);
+            if (user != null){
+                session.setAttribute("user", user);
+                m.addAttribute("user", user);
+            }
+
+
+        }
+    }
+
+    public List<Invoice> searchList(String type, String value){
         List<Invoice> invoices = new ArrayList<>();
 
         try {
@@ -70,22 +110,7 @@ public class InvoiceManageController {
         }catch (Exception e){
             invoices = null;
         }
-        modelMap.addAttribute("invoices", invoices);
-        return "admin/manage/manage-invoice";
+        return invoices;
     }
 
-
-    @ModelAttribute
-    public void commonUser(Principal p, Model m, HttpSession session) {
-        if (p != null) {
-            String username = p.getName();
-            User user = userService.findByUsername(username);
-            if (user != null){
-                session.setAttribute("user", user);
-                m.addAttribute("user", user);
-            }
-
-
-        }
-    }
 }

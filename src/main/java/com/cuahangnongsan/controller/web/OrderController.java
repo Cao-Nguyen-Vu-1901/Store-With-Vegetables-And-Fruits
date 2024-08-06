@@ -77,7 +77,7 @@ public class OrderController {
                 address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
             }
             Invoice invoice = Invoice.builder()
-                    .status("Đang xử lý")
+                    .status(StringConstant.STATUS_ORDER_WAIT_PROCESS)
                     .address(address)
                     .user(user)
                     .orderDate(LocalDate.now())

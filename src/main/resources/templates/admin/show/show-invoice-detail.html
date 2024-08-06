@@ -47,7 +47,7 @@
                                 <p th:text="${ 'Trạng thái: ' + invoice.status }" class="pt-2 d-inline-block"></p>
 
                                 <div class="float-right">
-                                    <h3 th:text="${'Hoá đơn: '+ invoice.id}" class="mb-0"></h3>
+                                    <h3 class="mb-0">Hoá đơn </h3>
                                     <p th:text="${invoice.orderDate}"></p>
                                 </div>
                             </div>
@@ -119,12 +119,15 @@
                                                 </td>
                                             </tr>
                                             </tbody>
+
                                         </table>
+
                                     </div>
+
                                 </div>
                             </div>
 
-                        </div>
+                        </div><button onclick="goBack()" class="col-lg-4 col-sm-5 btn btn-outline-primary btn-block">Quay lại</button>
                     </div>
                 </div>
             </div>
@@ -134,7 +137,12 @@
         <!-- end wrapper  -->
         <!-- ============================================================== -->
     </div>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
 
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->
