@@ -131,7 +131,7 @@
     </div>
     <script  th:inline="javascript">
         function confirmAction(id) {
-            let text = "Bạn có muốn xoá";
+            let text = "Bạn có muốn xoá?";
             if (confirm(text) === true) {
                 document.getElementById('action-form-confirm-'+id).value = 'delete';
                 document.getElementById('form-confirm-'+id).submit();

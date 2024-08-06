@@ -41,73 +41,109 @@
             <!-- ============================================================== -->
 
             <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
+                    <div class="tab-regular">
+                        <ul class="nav nav-tabs nav-fill" id="myTab7" role="tablist">
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="WAIT_PROCESS" name="status">
+                                    <input th:classappend="${status == null || status.equals('WAIT_PROCESS') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Chờ xử lý" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="DELIVERY" name="status">
+                                    <input th:classappend="${status != null && status.equals('DELIVERY') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Vận chuyển" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="WAIT_SHIPPING" name="status">
+                                    <input th:classappend="${status != null && status.equals('WAIT_SHIPPING') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Giao hàng" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="FINISH" name="status">
+                                    <input th:classappend="${status != null && status.equals('FINISH') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Hoàn thành" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="CANCEL" name="status">
+                                    <input th:classappend="${status != null && status.equals('CANCEL') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Huỷ" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                    <input type="hidden" value="REFUNDS" name="status">
+                                    <input th:classappend="${status != null && status.equals('REFUNDS') ? 'btn-outline-primary' : ''}"
+                                           type="submit" value="Hoàn tiền" class="btn btn-primary"/>
+                                </form>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3">
+                            <div class="tab-pane fade show active">
+                                <table class="table table-striped">
+                                    <thead class="text-center">
+                                    <tr>
+                                        <th scope="col">Ngày tạo</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Ngày huỷ</th>
+                                        <th scope="col" class="col-2">Địa chỉ</th>
+                                        <th scope="col">Người đặt</th>
+                                        <th scope="col">Số điện thoại</th>
+                                        <th scope="col" class="col-2">&nbsp;</th>
+<!--                                        <th th:if="${status != 'CANCEL' || status != null}" scope="col" class="col-2">&nbsp;</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                    <tr th:each=" item : ${invoices}">
+                                        <th th:text="${item.orderDate}" scope="row"></th>
+                                        <td th:if="${status != 'FINISH' && status  != 'CANCEL' && status  != 'REFUNDS' }" >
+                                            <form th:action="@{/admin/invoice/manage-invoice}" method="post" th:id="${'update-status-invoice-' + item.id}">
+                                                <input type="hidden" name="id" th:value="${item.id}">
+                                                <select class="form-control" name="status" th:onchange="submitStatusForm([[${item.id}]])">
+                                                    <option th:if="${ !item.status.equals('DELIVERY') && !item.status.equals('WAIT_SHIPPING') }"
+                                                            th:selected="${ item.status.equals('WAIT_PROCESS') }"
+                                                            value="WAIT_PROCESS">Chờ xử lý
+                                                    </option>
+                                                    <option th:if="${ !item.status.equals('WAIT_SHIPPING')}"
+                                                            th:selected="${item.status.equals('DELIVERY')}"
+                                                            value="DELIVERY">Đang vận chuyển
+                                                    </option>
+                                                    <option
+                                                            th:selected="${item.status.equals('WAIT_SHIPPING')}"
+                                                            value="WAIT_SHIPPING">Đang giao hàng
+                                                    </option>
+                                                    <option value="CANCEL">Huỷ</option>
+                                                </select>
+                                            </form>
+                                        </td>
+                                        <td th:unless="${ status != 'FINISH' && status  != 'CANCEL' && status  != 'REFUNDS' }"
+                                            th:text="${item.status}"></td>
+                                        <td th:text="${item.cancelDate}"></td>
+                                        <td th:text="${item.address}"></td>
+                                        <td th:text="${item.user.name}"></td>
+                                        <td th:text="${item.user.phoneNumber}"></td>
+                                        <td th:if="${status != 'CANCEL' || status != null}">
+                                            <a th:href="@{'/admin/invoice/show-invoice/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
 
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- striped table -->
-                <!-- ============================================================== -->
-                <div class="col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <h5 class="card-header">Danh sách hoá đơn</h5>
-                        <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/invoice/manage-invoice}">
-                                <div class="form-row">
-                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                        <select class="form-control" name="type">
-                                            <option value="order-date">Ngày tạo</option>
-                                            <option value="status">Trạng thái</option>
-                                            <option value="cancel-date">Ngày huỷ</option>
-                                            <option value="address">Địa chỉ</option>
-                                            <option value="name">Người đặt</option>
-                                            <option value="phone">Số điện thoại</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
-                                        <input type="text" class="form-control" name="value"
-                                               placeholder="Tìm kiếm" required="">
-                                    </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped">
-                                <thead class="text-center">
-                                <tr>
-                                    <th scope="col">Ngày tạo</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col">Ngày huỷ</th>
-                                    <th scope="col">Địa chỉ</th>
-                                    <th scope="col">Người đặt</th>
-                                    <th scope="col">Số điện thoại</th>
-                                    <th scope="col" class="col-2">&nbsp;</th>
-                                </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                <tr th:each=" item : ${invoices}">
-                                    <th th:text="${item.orderDate}" scope="row"></th>
-                                    <td th:text="${item.status}"></td>
-                                    <td th:text="${item.cancelDate}"></td>
-                                    <td th:text="${item.address}"></td>
-                                    <td th:text="${item.user.name}"></td>
-                                    <td th:text="${item.user.phoneNumber}"></td>
-                                    <td>
-                                        <a th:href="@{'/admin/invoice/manage-invoice/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- end striped table -->
-                <!-- ============================================================== -->
             </div>
 
 
@@ -120,7 +156,14 @@
         <!-- end footer -->
         <!-- ============================================================== -->
     </div>
-
+    <script th:inline="javascript">
+        function submitStatusForm(id){
+            let text = "Bạn có muốn cập nhật?";
+            if(confirm(text) === true ){
+                document.getElementById('update-status-invoice-' + id).submit();
+            }
+        }
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->

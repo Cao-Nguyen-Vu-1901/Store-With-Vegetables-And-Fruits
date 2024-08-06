@@ -40,14 +40,6 @@
                             </button>
                         </form>
                         <form method="get" th:action="@{/user/orders}">
-                            <input type="hidden" name="type" value="WAIT_PAY">
-                            <button th:classappend="${type == 'WAIT_PAY'} ? 'active' : ''"
-                                    class="nav-link border-white border-bottom-0" type="submit" role="tab"
-                                    id="nav-wait-pay-tab" data-bs-toggle="tab" data-bs-target="#nav-wait-pay"
-                                    aria-controls="nav-wait-pay" aria-selected="false">Chờ thanh toán
-                            </button>
-                        </form>
-                        <form method="get" th:action="@{/user/orders}">
                             <input type="hidden" name="type" value="DELIVERY">
                             <button th:classappend="${type == 'DELIVERY'} ? 'active' : ''"
                                     class="nav-link border-white border-bottom-0" type="submit" role="tab"

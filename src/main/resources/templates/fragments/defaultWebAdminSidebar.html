@@ -117,7 +117,18 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/invoice/manage-invoice}">Hoá đơn</a>
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6-1" aria-controls="submenu-6-1">Hoá đơn</a>
+                                    <div id="submenu-6-1" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{/admin/invoice/show-invoices}">Danh sách</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{/admin/invoice/manage-invoice}">Cập nhật trạng thái</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{/admin/post/manage-post}">Bài viết</a>
