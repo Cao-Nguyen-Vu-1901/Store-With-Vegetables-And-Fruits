@@ -31,14 +31,19 @@ public class CustomUser implements UserDetails {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		user.getRoles().forEach(
 				a-> {
-					SimpleGrantedAuthority authority = new SimpleGrantedAuthority(a.getName());
-					authorities.add(authority);
+					authorities.add(new SimpleGrantedAuthority(a.getName()));
+					a.getPermissions().forEach(p -> {
+						authorities.add(new SimpleGrantedAuthority(p.getName()));
+					});
+
 				}
 		);
 
 
 		return authorities;
 	}
+
+
 
 	@Override
 	public String getPassword() {

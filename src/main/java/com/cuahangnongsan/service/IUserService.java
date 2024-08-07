@@ -16,7 +16,6 @@ public interface IUserService {
 
     void removeSessionMessage();
 
-    void delete(User user);
 
     List<User> findAll();
 

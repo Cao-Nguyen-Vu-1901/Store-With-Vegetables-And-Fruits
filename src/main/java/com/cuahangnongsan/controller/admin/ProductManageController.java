@@ -8,6 +8,8 @@ import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -43,7 +46,10 @@ public class ProductManageController {
     private ICategoryService categoryService;
 
     @GetMapping("/manage-product")
+
     public String manageProduct(ModelMap modelMap, String type, String value) {
+
+
         List<Product> products = new ArrayList<>();
         try{
             if( type != null && value != null){
@@ -72,13 +78,13 @@ public class ProductManageController {
     }
 
     @PostMapping("/manage-product")
-    public String redirectActionManageProduct(ModelMap modelMap, String id, String action) {
+    public String redirectActionManageProduct(ModelMap modelMap, String id, String action, RedirectAttributes redirectAttributes) {
         String urlRedirect = "";
         Product product = productService.findById(id);
         if (action.equals("edit")) {
-            modelMap.addAttribute("product", product);
-            modelMap.addAttribute("categories", categoryService.findAll());
-            urlRedirect = "admin/create/create-product";
+            redirectAttributes.addFlashAttribute("product", product);
+            redirectAttributes.addFlashAttribute("categories", categoryService.findAll());
+            urlRedirect = "redirect:/admin/product/create-product";
         } else if (action.equals("delete")) {
             productService.delete(product);
             urlRedirect = "redirect:/admin/product/manage-product";
@@ -127,6 +133,7 @@ public class ProductManageController {
         productService.save(product);
         return "redirect:/admin/product/manage-product";
     }
+
 
 
 

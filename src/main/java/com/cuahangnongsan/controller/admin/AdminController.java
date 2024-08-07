@@ -71,7 +71,6 @@ public class AdminController {
     }
     @GetMapping("/manage-category" )
     public String manageCategory(ModelMap modelMap){
-
         return "admin/manage/manage-category";
     }
     @GetMapping("/manage-post" )

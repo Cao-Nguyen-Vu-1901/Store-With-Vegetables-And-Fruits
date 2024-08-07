@@ -45,7 +45,8 @@ public class User  implements Serializable {
     String address;
 
     boolean status;
-
+    boolean accountVerified;
+    int failedLoginAttempts;
 
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;
