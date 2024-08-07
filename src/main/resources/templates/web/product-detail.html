@@ -215,7 +215,7 @@
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p th:text="${item.discountPrice}+ 'đ/kg'" class="text-dark fw-bold mb-0"
                                    style="font-size: 1rem"></p>
-                                <p th:text="${item.price}+ 'đ/kg'" class="text-danger fw-bold mb-0 text-decoration-underline"
+                                <p th:text="${item.price}+ 'đ/kg'" class="text-danger fw-bold mb-0 text-decoration-line-through"
                                    style="font-size: 1rem"></p>
 
                             </div>
@@ -326,7 +326,7 @@
                                                                 style="width: 40px; height: 40px;" alt="">
                                                             <div class="ms-4 d-block">
                                                                 <h6 class="text-dark mt-1">${comment.username}</h6>
-                                                                <p class="m-0" style="font-size: 12px;">${comment.createdDate}</p>
+                                                                <p class="m-0" style="font-size: 12px;">${comment.createdDate.replace('T', "    ").substring(0,22)}</p>
                                                             </div>
                                                         </div>
                                                         <div class="border-bottom border-secondary">

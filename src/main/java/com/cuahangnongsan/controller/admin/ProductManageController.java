@@ -81,7 +81,7 @@ public class ProductManageController {
             urlRedirect = "admin/create/create-product";
         } else if (action.equals("delete")) {
             productService.delete(product);
-            urlRedirect = "redirect:/admin/manage-product";
+            urlRedirect = "redirect:/admin/product/manage-product";
         }
         return urlRedirect;
     }
@@ -121,10 +121,11 @@ public class ProductManageController {
                 .build();
         if(id != null){
             product.setId(id);
+        }else {
             product.setCreatedDate(LocalDate.now());
         }
         productService.save(product);
-        return "redirect:/admin/manage-product";
+        return "redirect:/admin/product/manage-product";
     }
 
 

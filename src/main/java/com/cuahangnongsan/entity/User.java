@@ -51,7 +51,10 @@ public class User  implements Serializable {
     Set<Role> roles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    List<Invoice> invoice ;
+    List<Invoice> invoice = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    List<Post> post = new ArrayList<>();
 
     @Override
     public String toString() {

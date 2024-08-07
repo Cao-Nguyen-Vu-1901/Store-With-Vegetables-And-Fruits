@@ -28,7 +28,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Comment> addComment(@RequestBody Comment comment, HttpSession modelMap) {
         User user = (User) modelMap.getAttribute("user");
-        comment.setCreateDate(LocalDateTime.now());
+        comment.setCreatedDate(LocalDateTime.now());
         if(user != null){
             comment.setUsername(user.getUsername());
             comment.setImageUser(user.getImage());

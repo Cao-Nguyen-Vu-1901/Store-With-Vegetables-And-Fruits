@@ -124,6 +124,22 @@
                                class="custom-control-input"><span
                               class="custom-control-label">củ</span>
                       </label>
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="bó"
+                               required  th:checked="${product != null && product.unit == 'bó' ? true : false }"
+                               data-parsley-errors-container="#error-container1"
+                               class="custom-control-input"><span
+                              class="custom-control-label">bó</span>
+                      </label>
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="cành"
+                               required  th:checked="${product != null && product.unit == 'cành' ? true : false }"
+                               data-parsley-errors-container="#error-container1"
+                               class="custom-control-input"><span
+                              class="custom-control-label">cành</span>
+                      </label>
                       <div id="error-container1"></div>
                     </div>
                   </div>
@@ -135,7 +151,7 @@
                 </div>
                 <div class="form-group">
                   <label>Mô tả</label>
-                  <textarea  th:text="${product == null  ? '' : product.description}" required name="description" class="form-control"></textarea>
+                  <textarea  id="summernote" th:text="${product == null  ? '' : product.description}" required name="description" class="form-control"></textarea>
                 </div>
                 <div class="row">
 
@@ -159,7 +175,20 @@
     </div>
 
   </div>
+  <script>
+    // $(document).ready(function() {
+    //   $('#summernote').summernote({
+    //     height: 300
+    //   });
+    // });
+    document.addEventListener('DOMContentLoaded', function() {
+      var summernoteElement = document.getElementById('summernote');
+      $(summernoteElement).summernote({
+        height: 300
+      });
+    });
 
+  </script>
 </section>
 
 <!-- JavaScript Libraries -->

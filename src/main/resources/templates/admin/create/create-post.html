@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layouts/defaultWebAdmin::layout(~{::section})}">
 <head>
-  <meta charset="utf-8">
-  <title>DASHMIN - Bootstrap Admin Template</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
 
 </head>
@@ -16,135 +16,102 @@
 <!-- Content Start -->
 <section>
 
-  <div class="dashboard-wrapper">
-    <div class="container-fluid  dashboard-content">
-      <!-- ============================================================== -->
-      <!-- pageheader -->
-      <!-- ============================================================== -->
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="page-header">
-            <h2 class="pageheader-title">Form Validations </h2>
-            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce
-              sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
-            <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Forms</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Form Validations</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ============================================================== -->
-      <!-- end pageheader -->
-      <!-- ============================================================== -->
-
-
-      <div class="row">
-        <!-- ============================================================== -->
-        <!-- basic form -->
-        <!-- ============================================================== -->
-        <div class="col-md-12 col-sm-12 col-12">
-          <div class="card">
-            <h5 class="card-header">Basic Form</h5>
-            <div class="card-body">
-              <form action="#" id="basicform" data-parsley-validate="">
-                <div class="form-group">
-                  <label for="inputUserName">User Name</label>
-                  <input id="inputUserName" type="text" name="name" data-parsley-trigger="change"
-                         required="" placeholder="Enter user name" autocomplete="off"
-                         class="form-control">
-                  <div class="text-danger">
-                    Please provide a valid text.
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail">Email address</label>
-                  <input id="inputEmail" type="email" name="email" data-parsley-trigger="change"
-                         required="" placeholder="Enter email" autocomplete="off"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label for="inputPassword">Password</label>
-                  <input id="inputPassword" type="password" placeholder="Password" required=""
-                         class="form-control">
-                </div>
-                <div class="custom-file mb-3 col-sm-6">
-                  <input type="file" class="custom-file-input" id="customFile">
-                  <label class="custom-file-label" for="customFile">File Input</label>
-                </div>
-                <div class="form-group">
-                  <label for="input-select">Example Select</label>
-                  <select class="form-control col-sm-6" id="input-select">
-                    <option>Choose Example</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Repeat Password</label>
-                  <div class="col-sm-6">
-                    <div class="custom-controls-stacked">
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck1" name="ck1" type="checkbox"
-                               data-parsley-multiple="groups" value="bar"
-                               data-parsley-mincheck="2"
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 1</span>
-                      </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck2" name="ck2" type="checkbox"
-                               data-parsley-multiple="groups" value="bar2"
-                               data-parsley-mincheck="2"
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 2</span>
-                      </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck3" name="ck3" type="checkbox"
-                               data-parsley-multiple="groups" value="bar3"
-                               data-parsley-mincheck="2" required=""
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 3</span>
-                      </label>
-                      <div id="error-container1"></div>
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Cập nhật</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/post/manage-post}"
+                                                                   class="breadcrumb-link">Danh sách bài đăng</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
-                  </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-sm-6 pb-2 pb-sm-4 pb-lg-0 pr-0">
-                    <label class="be-checkbox custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input"><span
-                            class="custom-control-label">Remember me</span>
-                    </label>
-                  </div>
-                  <div class="col-sm-6 pl-0">
-                    <p class="text-right">
-                      <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                      <button class="btn btn-space btn-secondary">Cancel</button>
-                    </p>
-                  </div>
-                </div>
-              </form>
             </div>
-          </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic form -->
+                <!-- ============================================================== -->
+                <div class="col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Chi tiết bài viết</h5>
+                        <div class="card-body">
+                            <form th:action="@{/admin/post/update-post}" enctype="multipart/form-data" id="basicform" method="post">
+                                <div class="form-group">
+                                    <label for="inputUserName">Tiêu đề</label>
+                                    <input id="inputUserName" type="text" name="title" data-parsley-trigger="change"
+                                           required autocomplete="off"
+                                           class="form-control">
+                                    <div class="text-danger">
+                                        Please provide a valid text.
+                                    </div>
+                                </div>
+                                <div class="custom-file mb-3 col-sm-6">
+                                    <input type="file" class="custom-file-input" name="image" id="customFile">
+                                    <label class="custom-file-label" for="customFile"
+                                           th:text="${post == null  ? 'Hình ảnh' : post.image}"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Mô tả ngắn</label>
+                                    <input id="inputEmail" type="text" name="shortDescription"
+                                           data-parsley-trigger="change"
+                                           required autocomplete="off"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nội dung</label>
+                                    <textarea id="summernote" th:text="${post == null  ? '' : post.content}"
+                                              required name="content" class="form-control"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 pl-0">
+                                        <p class="text-right">
+                                            <button type="submit" class="btn btn-space btn-primary">Lưu</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic form -->
+
+            </div>
+
+
         </div>
-        <!-- ============================================================== -->
-        <!-- end basic form -->
-
-      </div>
-
 
     </div>
+    <script>
+        // $(document).ready(function() {
+        //   $('#summernote').summernote({
+        //     height: 300
+        //   });
+        // });
+        document.addEventListener('DOMContentLoaded', function () {
+            var summernoteElement = document.getElementById('summernote');
+            $(summernoteElement).summernote({
+                height: 300
+            });
+        });
 
-  </div>
-
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->
