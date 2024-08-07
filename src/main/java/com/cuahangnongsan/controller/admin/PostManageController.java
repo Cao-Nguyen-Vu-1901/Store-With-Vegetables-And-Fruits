@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,25 +51,38 @@ public class PostManageController {
     }
 
     @PostMapping("/manage-post")
-    public String managePost(ModelMap modelMap, String type, String id){
+    public String managePost(ModelMap modelMap, String action, String id,
+                             RedirectAttributes redirectAttributes){
         Post post = id != null ? postService.findById(id) : null;
-        if(type.equals("delete")){
+        if(action.equals("delete")){
             postService.delete(post);
-            return "admin/manage/manage-post";
+            return "redirect:/admin/post/manage-post";
         }else {
-            modelMap.addAttribute("post", post);
-            return "redirect:/admin/post/update-post" ;
+            redirectAttributes.addFlashAttribute("post", post);
+            return "redirect:/admin/post/create-post" ;
         }
     }
 
     @GetMapping("/create-post")
     public String createPost(ModelMap modelMap){
+        Post post = modelMap.getAttribute("post") != null
+                        ? (Post) modelMap.getAttribute("post")
+                        : null;
+        modelMap.addAttribute("post", post);
         return "admin/create/create-post";
     }
 
     @PostMapping("update-post")
     public String updatePost(ModelMap modelMap, String id, String title,
-                             String content, MultipartFile image, String shortDescription ) throws IOException {
+                             String content, MultipartFile image, String shortDescription
+                             , RedirectAttributes redirectAttributes     ) throws IOException {
+
+        if(Objects.equals(image.getOriginalFilename(), "") || content == null){
+            redirectAttributes.addFlashAttribute("post",
+                    Post.builder().title(title).content(content)
+                            .shortDescription(shortDescription).build());
+            return "redirect:/admin/post/create-post" ;
+        }
 
         String currentDir = System.getProperty("user.dir");
         Path resourcePath = Paths.get(currentDir, "src", "main", "resources\\static\\img\\posts");

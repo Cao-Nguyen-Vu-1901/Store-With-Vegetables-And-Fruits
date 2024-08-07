@@ -52,10 +52,11 @@
                         <h5 class="card-header">Chi tiết bài viết</h5>
                         <div class="card-body">
                             <form th:action="@{/admin/post/update-post}" enctype="multipart/form-data" id="basicform" method="post">
+                                <input th:if="${post != null && post.id != null}" type="hidden" name="id" th:value="${post.id}">
                                 <div class="form-group">
-                                    <label for="inputUserName">Tiêu đề</label>
-                                    <input id="inputUserName" type="text" name="title" data-parsley-trigger="change"
-                                           required autocomplete="off"
+                                    <label for="title">Tiêu đề</label>
+                                    <input id="title" type="text" name="title" data-parsley-trigger="change"
+                                           required autocomplete="off" th:value="${post != null ? post.title : ''}"
                                            class="form-control">
                                     <div class="text-danger">
                                         Please provide a valid text.
@@ -67,10 +68,10 @@
                                            th:text="${post == null  ? 'Hình ảnh' : post.image}"></label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail">Mô tả ngắn</label>
-                                    <input id="inputEmail" type="text" name="shortDescription"
+                                    <label for="shortDescription">Mô tả ngắn</label>
+                                    <input id="shortDescription" type="text" name="shortDescription"
                                            data-parsley-trigger="change"
-                                           required autocomplete="off"
+                                           required autocomplete="off" th:value="${ post != null ? post.shortDescription : ''}"
                                            class="form-control">
                                 </div>
                                 <div class="form-group">

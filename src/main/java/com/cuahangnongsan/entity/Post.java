@@ -33,6 +33,7 @@ public class Post implements Serializable {
 
     String image;
 
+    @Column(columnDefinition = "TEXT")
     String shortDescription;
 
     @ManyToOne
