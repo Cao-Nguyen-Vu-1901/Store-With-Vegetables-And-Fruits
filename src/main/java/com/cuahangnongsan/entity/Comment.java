@@ -28,7 +28,7 @@ public class Comment {
 
     private String imageUser;
 
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")

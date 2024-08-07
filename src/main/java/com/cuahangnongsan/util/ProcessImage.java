@@ -1,6 +1,7 @@
 package com.cuahangnongsan.util;
 
 import com.cuahangnongsan.config.firebase.FirebaseInitializer;
+import com.cuahangnongsan.entity.Product;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -10,7 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ProcessImage {
     public static synchronized String upload(MultipartFile image) throws IOException {
@@ -58,5 +63,21 @@ public class ProcessImage {
 
         // Trả về dữ liệu ảnh dưới dạng byte array
         return baos.toByteArray();
+    }
+
+    public static String saveImageInServer(MultipartFile image,Path resourcePath) throws IOException {
+
+
+        // Tạo đường dẫn đến thư mục resource
+        StringBuilder fileNames = new StringBuilder();
+
+
+        if (!Objects.equals(image.getOriginalFilename(), "")) {
+            String imgName = UUID.randomUUID()+image.getOriginalFilename();
+            Path fileNameAndPath = Paths.get(resourcePath.toString(), imgName);
+            fileNames.append(imgName);
+            Files.write(fileNameAndPath, image.getBytes());
+        }
+        return fileNames.toString();
     }
 }
