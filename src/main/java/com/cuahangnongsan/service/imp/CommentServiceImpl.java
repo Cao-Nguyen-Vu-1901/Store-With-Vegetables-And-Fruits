@@ -5,6 +5,7 @@ import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.repository.CommentRepository;
 import com.cuahangnongsan.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public class CommentServiceImpl implements ICommentService {
         return commentRepository.findById(id).orElse(null);
     }
 
+
+    @PreAuthorize("hasAuthority('AUTHORITY_DELETE_COMMENT')")
     @Override
     public void delete(Comment comment) {
         commentRepository.delete(comment);

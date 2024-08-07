@@ -9,6 +9,7 @@ import com.cuahangnongsan.repository.UserRepository;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,12 +25,11 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private RoleRepository roleRepository;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public User findById(String id) {
         return userRepository.findById(id).orElseThrow();
@@ -54,10 +54,6 @@ public class UserServiceImpl implements IUserService {
         session.removeAttribute("msg");
     }
 
-    @Override
-    public void delete(User user) {
-        userRepository.delete(user);
-    }
 
     @Override
     public List<User> findAll() {

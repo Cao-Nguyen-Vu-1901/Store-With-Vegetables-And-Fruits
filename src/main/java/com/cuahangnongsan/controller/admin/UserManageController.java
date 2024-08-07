@@ -30,6 +30,9 @@ public class UserManageController {
     @Autowired
     IRoleService roleService;
 
+
+    ///// Start Manage User /////
+
     @GetMapping("/manage-user")
     public String showUsers(ModelMap modelMap, String type, String value, String role) {
         List<User> users = new ArrayList<>();
@@ -63,6 +66,22 @@ public class UserManageController {
         userService.save(user);
         return "redirect:/admin/user/manage-user";
     }
+
+    ///// End Manage User /////
+
+    ///// Start Create User /////
+
+    @GetMapping("/create-user")
+    public String showViewCreate(ModelMap modelMap){
+        return "admin/create/create-user";
+    }
+
+    @PostMapping("/save-user")
+    public String saveUser(ModelMap modelMap){
+        return "redirect:/admin/user/manage-user";
+    }
+
+    ///// End Create User /////
 
     @ModelAttribute
     public void commonUser(Principal p, Model m, HttpSession session) {

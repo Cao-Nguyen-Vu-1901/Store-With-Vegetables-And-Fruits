@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -44,12 +45,13 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> findAllByCategoryName(String categoryName) {
         return productRepository.findAllByCategoryName(categoryName);
     }
-
+    @PreAuthorize("hasAuthority('AUTHORITY_DELETE_PRODUCT')")
     @Override
     public void delete(Product product) {
         productRepository.delete(product);
     }
 
+    @PreAuthorize("hasAuthority('AUTHORITY_CREATE_PRODUCT')")
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
