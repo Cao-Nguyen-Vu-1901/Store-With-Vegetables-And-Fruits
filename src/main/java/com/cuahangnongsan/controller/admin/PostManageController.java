@@ -88,19 +88,19 @@ public class PostManageController {
         Path resourcePath = Paths.get(currentDir, "src", "main", "resources\\static\\img\\posts");
 
         Post oldPost = null;
-        String imageName  = !Objects.equals(image.getOriginalFilename(), "")
-                ? ProcessImage.saveImageInServer(image,resourcePath)
-                : "";
+        String imageName  = "";
         LocalDateTime createdTime = LocalDateTime.now();
         if(id != null){
             oldPost  = postService.findById(id);
-
+            imageName = !Objects.equals(image.getOriginalFilename(), "")
+                    ? ProcessImage.saveImageInServer(image,resourcePath)
+                    : oldPost.getImage();
         }
 
         Post post = Post.builder().id(id).title(title).content(content)
                 .shortDescription(shortDescription).modifiedTime(LocalDateTime.now())
                 .user((User) modelMap.getAttribute("user"))
-                .image(oldPost != null ? oldPost.getImage() : imageName)
+                .image(imageName)
                 .createdTime(oldPost != null ? oldPost.getCreatedTime() : createdTime)
                 .build();
 
