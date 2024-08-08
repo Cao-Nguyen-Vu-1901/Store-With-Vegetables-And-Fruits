@@ -18,15 +18,16 @@
                 <h1 class="text-primary" th:text="${post.title}"></h1>
                 <h4 class="mb-4"  th:text="${post.shortDescription}"></h4>
                 <div class="d-flex align-items-center justify-content-between">
-                  <p class="text-right text-style-italic text-bold" th:text="${post.createdDate}">
-                    <i class="fa fa-calendar text-primary me-2"></i>
+                  <p class="text-right text-style-italic text-bold">
+                    <i th:text="${'    Ngày tạo: ' + post.createdTime.toString().replace('T', ' ').substring(0,19)}" class="fa fa-calendar text-primary me-2"></i>
                   </p>
-                  <p class="text-right text-style-italic text-bold" th:text="${post.modifiedTime}">
-                    <i class="fa fa-calendar text-primary me-2"></i>
+                  <p th:if="${post.modifiedTime != null}" class="text-right text-style-italic text-bold">
+                    <i th:text="${'    Ngày cập nhật: ' + post.modifiedTime.toString().replace('T', ' ').substring(0,19)}" class="fa fa-calendar text-primary me-2"></i>
                   </p>
                 </div>
-                <p class="text-bold text-right" th:text="${post.user.username}"><i class="fas fa-user text-primary me-2"></i></p>
+                <img class="mb-3" th:src="@{'/img/posts/' + ${post.image}}" style="object-fit: cover; width: 116vh;" alt="">
                 <p class="text-justify" th:utext="${post.content}"></div>
+                <p class="text-bold text-right"><i th:text="${'    Người tạo: ' + post.user.username}" class="fas fa-user text-primary me-2"></i></p>
             </div>
 
 

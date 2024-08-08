@@ -1,9 +1,11 @@
 package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.entity.Category;
+import com.cuahangnongsan.entity.Post;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICategoryService;
+import com.cuahangnongsan.service.IPostService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import com.cuahangnongsan.util.ProcessString;
@@ -32,6 +34,8 @@ public class HomeController {
     @Autowired
     private IProductService productService;
     @Autowired
+    private IPostService postService;
+    @Autowired
     private IUserService userService;
 
     @Autowired
@@ -40,6 +44,7 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String homePage(ModelMap model) {
         model.addAttribute("pageCurr", "home");
+        model.addAttribute("posts", postService.findAll().subList(0,3));
         return "web/index";
     }
 
@@ -53,15 +58,12 @@ public class HomeController {
                         "%" + ProcessString.getFirstName(product.getName()) +"%"
                       ,product.getId());
 
-        if (product != null) {
-            model.addAttribute("product", product);
-            model.addAttribute("today", LocalDate.now());
-            model.addAttribute("listProductsLikeName",
-                    listProductsLikeName.subList(0, Math.min(listProductsLikeName.size(), 5)));
-            model.addAttribute("listProductsWithCategory",
-                    productService.findAllByCategoryName(product.getCategory().getName()));
-        }
-
+        model.addAttribute("product", product);
+        model.addAttribute("today", LocalDate.now());
+        model.addAttribute("listProductsLikeName",
+                listProductsLikeName.subList(0, Math.min(listProductsLikeName.size(), 5)));
+        model.addAttribute("listProductsWithCategory",
+                productService.findAllByCategoryName(product.getCategory().getName()));
 
 
         return "web/product-detail";
@@ -95,7 +97,6 @@ public class HomeController {
             model.addAttribute("pageSize", size);
             model.addAttribute("categories", categories);
 
-
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -105,9 +106,11 @@ public class HomeController {
         return "web/shop";
     }
 
-    @GetMapping("/cm")
-    public String comment(){
-        return "web/comment";
+    @GetMapping("/post-detail/{id}")
+    public String showPostDetail(ModelMap modelMap, @PathVariable String id){
+        Post post = postService.findById(id);
+        modelMap.addAttribute("post", post);
+        return "web/post-detail";
     }
 
     @ModelAttribute

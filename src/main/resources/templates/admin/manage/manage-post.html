@@ -66,8 +66,10 @@
                                     <td>
                                         <img class="rounded-circle" th:src="@{'/img/posts/'+${item.image}}" width="80px" height="80px" style="object-fit: cover" alt="Hình ảnh"/>
                                     </td>
-                                    <td th:text="${ item.createdTime.toString().replace('T', ' ').substring(0, 22) }"></td>
-                                    <td th:text="${ item.modifiedTime.toString().replace('T', ' ').substring(0, 22) }"></td>
+                                    <td th:text="${ item.createdTime.toString().replace('T', ' ').substring(0, 19) }"></td>
+                                    <td th:text="${item.modifiedTime != null
+                                                     ? item.modifiedTime.toString().replace('T', ' ').substring(0, 19)
+                                                     : ''}"></td>
                                     <td>
                                         <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/post/manage-post}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
