@@ -51,26 +51,26 @@ public class ProductManageController {
 
 
         List<Product> products = new ArrayList<>();
-        try{
-            if( type != null && value != null){
+        try {
+            if (type != null && value != null) {
                 value = value.trim();
-                products = switch (type){
-                    case "name" -> productService.findAllByNameLike("%"+value+"%");
-                    case "category" -> productService.findAllByCategoryName("%"+value+"%");
+                products = switch (type) {
+                    case "name" -> productService.findAllByNameLike("%" + value + "%");
+                    case "category" -> productService.findAllByCategoryName("%" + value + "%");
                     case "price" -> productService.findAllByPrice(new BigDecimal(value));
                     case "discount-price" -> productService.findAllByDiscountPrice(new BigDecimal(value));
                     case "unit" -> productService.findAllByUnit(value);
                     case "quantity" -> productService.findAllByQuantity(Integer.parseInt(value));
                     case "remaining-quantity" -> productService.findAllByRemaningQuantity(Integer.parseInt(value));
-                    case "description" -> productService.findAllByDescriptionLike("%"+value+"%");
+                    case "description" -> productService.findAllByDescriptionLike("%" + value + "%");
                     case "created-date" -> productService.findAllByCreatedDate(LocalDate.parse(value));
                     case "modified-date" -> productService.findAllByModifiedDate(LocalDate.parse(value));
                     default -> productService.findAll();
-                } ;
-            }else{
+                };
+            } else {
                 products = productService.findAll();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             products = null;
         }
         modelMap.addAttribute("products", products);
@@ -101,54 +101,68 @@ public class ProductManageController {
                               String unit, MultipartFile image, String description, RedirectAttributes redirectAttributes)
             throws IOException {
 
+        Product oldProduct = null;
+
         String currentDir = System.getProperty("user.dir");
 
         // Tạo đường dẫn đến thư mục resource
         Path resourcePath = Paths.get(currentDir, "src", "main", "resources\\static\\img\\products");
 
         StringBuilder fileNames = new StringBuilder();
-
         Category category = categoryService.findById(categoryId);
-        if(Objects.equals(image.getOriginalFilename(), "") && id == null){
-            redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
-            return "redirect:/admin/product/create-product";
-        }else if (!Objects.equals(image.getOriginalFilename(), "")) {
-            String imgName = UUID.randomUUID()+image.getOriginalFilename();
-            Path fileNameAndPath = Paths.get(resourcePath.toString(), imgName);
-            fileNames.append(imgName);
-            Files.write(fileNameAndPath, image.getBytes());
-        } else if(id != null){
-            Product oldProduct = productService.findById(id);
-            fileNames.append(oldProduct.getImage());
-        }
-        if(productService.findByName(name)!= null){
-            redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
-        }else {
-            Product product = Product.builder()
-                    .name(name).price(new BigDecimal(price != null ? price : "0"))
-                    .discountPrice(new BigDecimal(discountPrice != null ? discountPrice : "0"))
-                    .unit(unit).quantity(quantity).remaningQuantity(remaningQuantity)
-                    .image(fileNames.toString()).description(description)
-                    .category(category).modifiedDate(LocalDate.now())
-                    .build();
-            if(id != null){
-                product.setId(id);
-            }else {
-                product.setCreatedDate(LocalDate.now());
+        Product product = Product.builder()
+                .name(name).price(new BigDecimal(price != null ? price : "0"))
+                .discountPrice(new BigDecimal(discountPrice != null ? discountPrice : "0"))
+                .unit(unit).quantity(quantity).remaningQuantity(remaningQuantity)
+                .description(description).category(category)
+                .modifiedDate(LocalDate.now()).createdDate(LocalDate.now())
+                .build();
+        if (image != null) {
+            if (Objects.equals(image.getOriginalFilename(), "") && id.isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+                redirectAttributes.addFlashAttribute("product", product);
+                return "redirect:/admin/product/create-product";
+            } else if (!Objects.equals(image.getOriginalFilename(), "")) {
+                String imgName = UUID.randomUUID() + image.getOriginalFilename();
+                Path fileNameAndPath = Paths.get(resourcePath.toString(), imgName);
+                fileNames.append(imgName);
+                Files.write(fileNameAndPath, image.getBytes());
             }
+        } else if (!id.isEmpty()) {
+            oldProduct = productService.findById(id);
+            fileNames.append(oldProduct.getImage());
+            product.setId(id);
+            product.setCreatedDate(oldProduct.getCreatedDate());
+        } else {
+            product.setCreatedDate(LocalDate.now());
+            redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+            redirectAttributes.addFlashAttribute("product", product);
+            return "redirect:/admin/product/create-product";
+        }
+
+        name = name.trim();
+
+        if (productService.findByName(name) != null && id.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
+            redirectAttributes.addFlashAttribute("product", product);
+        } else if (unit.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorUnit", "Đơn vị tính không phù hợp!");
+            redirectAttributes.addFlashAttribute("product", product);
+        } else {
+            product.setImage(fileNames.toString());
             productService.save(product);
         }
 
-
         return "redirect:/admin/product/create-product";
+
     }
-
-
 
 
     @GetMapping("/create-product")
     public String createProduct(ModelMap model) {
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("errorName", model.getAttribute("errorName"));
+        model.addAttribute("errorImage", model.getAttribute("errorImage"));
         return "admin/create/create-product";
     }
 
