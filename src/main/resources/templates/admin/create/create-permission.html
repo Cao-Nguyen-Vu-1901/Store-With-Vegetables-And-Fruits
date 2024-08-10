@@ -57,8 +57,8 @@
                                     <input id="inputUserName" th:value="${permission == null  ? '' : permission.name}" type="text" name="name" data-parsley-trigger="change"
                                            required=""  autocomplete="off"
                                            class="form-control">
-                                    <div class="text-danger">
-                                        Please provide a valid text.
+                                    <div th:if="${error != null}" th:text="${error}" class="text-danger">
+
                                     </div>
                                 </div>
 

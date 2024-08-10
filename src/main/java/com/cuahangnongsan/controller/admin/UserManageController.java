@@ -105,7 +105,6 @@ public class UserManageController {
         if(password != null && password.equals(rePassword)){
             if(Objects.equals(image.getOriginalFilename(),"")){
                 redirectAttributes.addFlashAttribute("userNew", userRedirect);
-                return "redirect:/admin/user/create-user";
             }else {
                 imageName = ProcessImage.upload(image);
                 String address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
@@ -133,12 +132,11 @@ public class UserManageController {
                         .address(address).roles(listRole)
                         .build();
                 userService.save(user);
-                return "redirect:/admin/user/manage-user";
             }
         }else {
             redirectAttributes.addFlashAttribute("userNew", userRedirect);
-            return "redirect:/admin/user/create-user";
         }
+        return "redirect:/admin/user/create-user";
     }
 
     ///// End Create User /////

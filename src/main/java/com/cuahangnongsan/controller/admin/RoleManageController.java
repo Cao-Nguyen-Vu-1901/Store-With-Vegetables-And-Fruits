@@ -88,7 +88,7 @@ public class RoleManageController {
         role.setPermissions(permissionSet);
 
         roleService.save( role );
-        return "redirect:/admin/role/manage-role";
+        return "redirect:/admin/role/create-role";
     }
 
     @GetMapping("/create-role")

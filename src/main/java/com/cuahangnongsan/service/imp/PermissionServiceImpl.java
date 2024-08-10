@@ -30,6 +30,11 @@ public class PermissionServiceImpl implements IPermissionService {
         return permissionRepository.findById(id).orElseThrow();
     }
 
+    @Override
+    public Permission findByName(String name) {
+        return permissionRepository.findByName(name);
+    }
+
 
     @PreAuthorize("hasAuthority('AUTHORITY_CREATE_PERMISSION')")
     @Override

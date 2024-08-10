@@ -20,6 +20,16 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    public List<Category> findAllByNameLike(String name) {
+        return categoryRepository.findAllByNameLike(name);
+    }
+
+    @Override
+    public List<Category> findAllByCodeLike(String code) {
+        return categoryRepository.findAllByCodeLike(code);
+    }
+
+    @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
     }
@@ -27,6 +37,16 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public Category findById(String id) {
         return categoryRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Category findByName(String name) {
+        return categoryRepository.findByName(name);
+    }
+
+    @Override
+    public Category findByCode(String code) {
+        return categoryRepository.findByCode(code);
     }
 
     @Override

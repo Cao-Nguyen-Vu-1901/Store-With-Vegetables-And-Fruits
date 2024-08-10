@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/permission")
@@ -45,21 +46,23 @@ public class PermissionManageController {
     }
 
     @PostMapping("/save-permission")
-    public String savePermission(ModelMap modelMap, String id, String name){
-        Permission permission = null;
-        if(id != null){
-            permission = permissionService.findById(id);
-            permission.setName(name);
+    public String savePermission(ModelMap modelMap, String id, String name, RedirectAttributes redirectAttributes){
+        name = name.trim();
+        Permission permission = permissionService.findByName(name.toUpperCase());
+        if(permission != null){
+            redirectAttributes.addFlashAttribute("error", "Tên đã tồn tại!");
+            redirectAttributes.addFlashAttribute("permission", Permission.builder().name(name).build());
         }else {
-            permission = Permission.builder().name(name).build();
+            permission = Permission.builder().id(id).name(name.toUpperCase()).build();
         }
         permissionService.save(permission);
-        return "redirect:/admin/permission/manage-permission";
+        return "redirect:/admin/permission/create-permission";
     }
 
     @GetMapping("/create-permission")
     public String createPermission(ModelMap modelMap){
         modelMap.addAttribute("permission", modelMap.getAttribute("permission"));
+        modelMap.addAttribute("error", modelMap.getAttribute("error"));
         return "admin/create/create-permission";
     }
 
