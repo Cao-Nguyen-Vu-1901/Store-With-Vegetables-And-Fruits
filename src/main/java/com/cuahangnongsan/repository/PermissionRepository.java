@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission,String> {
+    Permission findByName(String name);
 
 }

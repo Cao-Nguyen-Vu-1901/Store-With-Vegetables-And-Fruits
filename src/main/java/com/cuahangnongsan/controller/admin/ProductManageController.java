@@ -131,7 +131,7 @@ public class ProductManageController {
             product.setCreatedDate(LocalDate.now());
         }
         productService.save(product);
-        return "redirect:/admin/product/manage-product";
+        return "redirect:/admin/product/create-product";
     }
 
 

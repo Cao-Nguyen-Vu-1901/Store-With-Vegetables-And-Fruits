@@ -81,7 +81,6 @@ public class PostManageController {
             redirectAttributes.addFlashAttribute("post",
                     Post.builder().title(title).content(content)
                             .shortDescription(shortDescription).build());
-            return "redirect:/admin/post/create-post" ;
         }
 
         String currentDir = System.getProperty("user.dir");
@@ -106,7 +105,7 @@ public class PostManageController {
 
 
         postService.save(post);
-        return "redirect:/admin/post/manage-post" ;
+        return "redirect:/admin/post/create-post" ;
     }
 
 
