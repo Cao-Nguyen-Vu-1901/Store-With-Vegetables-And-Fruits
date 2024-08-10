@@ -1,6 +1,7 @@
 package com.cuahangnongsan.service;
 
 import com.cuahangnongsan.entity.Permission;
+import com.cuahangnongsan.entity.Role;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;

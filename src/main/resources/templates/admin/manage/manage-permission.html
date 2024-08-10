@@ -25,33 +25,11 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
                         <h2 class="pageheader-title">Quản lý</h2>
-                        <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/user/manage-user}">
-                                <div class="form-row">
-                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                        <select class="form-control" name="type">
-                                            <option value="name">Tên</option>
-                                            <option value="email">Email</option>
-                                            <option value="address">Địa chỉ</option>
-                                            <option value="status">Trạng thái</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
-                                        <input type="text" class="form-control" name="value"
-                                               placeholder="Tìm kiếm" required="">
-                                        <input th:if="${role != null}" type="hidden" class="form-control" name="role"
-                                               th:value="${role}">
-                                    </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/user/manage-user}" class="breadcrumb-link">Người dùng</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/permission/manage-permission}" class="breadcrumb-link">Sản phẩm</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
@@ -71,32 +49,42 @@
                 <!-- ============================================================== -->
                 <div class="col-md-12 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header">Danh sách người dùng</h5>
+                        <h5 class="card-header">Danh sách sản phẩm</h5>
+                        <div class="card-body">
+                        <form class="needs-validation" method="get" th:action="@{/admin/permission/manage-permission}">
+                            <div class="form-row">
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                    <select class="form-control" name="type">
+                                        <option value="name">Tên</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+                                    <input type="text" class="form-control" name="value"
+                                           placeholder="Tìm kiếm" required="">
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                         <div class="card-body">
                             <table class="table table-striped">
                                 <thead>
                                 <tr class="text-center">
                                     <th scope="col" class="col-2">Tên</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col" class="col-1-10">Số điện thoại</th>
-                                    <th scope="col">Địa chỉ</th>
-                                    <th scope="col" class="col-1-10">Trạng thái</th>
                                     <th scope="col" class="col-1-10">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody class="text-center">
-                                <tr th:each=" item : ${users}">
+                                <tr th:each=" item : ${permissions}">
                                     <th th:text="${item.name}" scope="row"></th>
-                                    <td th:text="${item.email}"></td>
-                                    <td th:text="${item.phoneNumber}"></td>
-                                    <td th:text="${item.address}"></td>
-                                    <td th:text="${item.status}"></td>
+
                                     <td>
-                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/user/manage-user}" method="post">
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/permission/manage-permission}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])" >
-                                                <i class="fas fa-window-close"></i>
-                                            </button>
+                                            <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
+                                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -117,8 +105,9 @@
     </div>
     <script  th:inline="javascript">
         function confirmAction(id) {
-            let text = "Bạn có muốn vô hiệu hoá";
+            let text = "Bạn có muốn xoá?";
             if (confirm(text) === true) {
+                document.getElementById('action-form-confirm-'+id).value = 'delete';
                 document.getElementById('form-confirm-'+id).submit();
             }
 
