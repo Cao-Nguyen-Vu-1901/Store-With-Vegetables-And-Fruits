@@ -35,7 +35,7 @@ public class CommentController {
         }
         Product product = productService.findById(comment.getProduct().getId());
         comment.setProduct(product);
-        Comment savedComment = commentService.saveComment(comment);
+        Comment savedComment = commentService.save(comment);
         return ResponseEntity.ok(savedComment);
     }
 
@@ -51,7 +51,7 @@ public class CommentController {
 
     @GetMapping
     public List<Comment> getAllCommentsByProduct() {
-        List<Comment> allComments = commentService.findAllComments();
+        List<Comment> allComments = commentService.findAll();
         return allComments.stream()
                 .filter(comment -> comment.getParent() == null)
                 .collect(Collectors.toList());

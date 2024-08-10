@@ -54,38 +54,39 @@
                   <input th:if="${product != null}" type="hidden" name="id" th:value="${product.id}">
                 <div class="form-group">
                   <label for="inputUserName">Tên sản phẩm</label>
-                  <input id="inputUserName" th:value="${product == null  ? '' : product.name}" type="text" name="name" data-parsley-trigger="change"
+                  <input id="inputUserName" th:value="${product == null  ? null : product.name}" type="text" name="name" data-parsley-trigger="change"
                          required=""  autocomplete="off"
                          class="form-control">
-                  <div class="text-danger">
-                    Please provide a valid text.
+                  <div class="text-danger" th:if="${errorName != null}" th:text="${errorName}">
+
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="inputPrice">Giá</label>
                   <input id="inputPrice" th:value="${product == null  ? 0 : product.price}" type="number" name="price" data-parsley-trigger="change"
-                         required="" autocomplete="off"
+                         required="" autocomplete="off" min="1"
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputDiscount">Giảm giá</label>
-                  <input id="inputDiscount" type="number"  th:value="${product == null  ? 0 : product.discountPrice}" name="discountPrice" required=""
+                  <input id="inputDiscount" type="number"  min="1" th:value="${product == null  ? 0 : product.discountPrice}" name="discountPrice" required=""
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputQuantity">Số lượng hiện có</label>
-                  <input id="inputQuantity" type="number"  th:value="${product == null  ? 0 : product.quantity}" name="quantity" required=""
+                  <input id="inputQuantity" type="number" min="1"  th:value="${product == null  ? 0 : product.quantity}" name="quantity" required=""
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputRemaningQuantity">Số lượng hiện còn</label>
                   <input id="inputRemaningQuantity" type="number"  th:value="${product == null  ? 0 : product.remaningQuantity}" name="remaningQuantity" required=""
-                         class="form-control">
+                         class="form-control"  min="1" >
                 </div>
                 <div class="form-group">
                   <label for="input-select">Danh mục</label>
                   <select class="form-control col-sm-6" id="input-select" name="categoryId" data-th-default="Chọn">
-                    <option th:each=" item : ${categories}" th:text="${item.name}" th:value="${item.id}"></option>
+                    <option th:each=" item : ${categories}" th:text="${item.name}"
+                            th:value="${item.id}" th:checked="${product != null && product.category.id == item.id ? true : false}"></option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -140,14 +141,18 @@
                                class="custom-control-input"><span
                               class="custom-control-label">cành</span>
                       </label>
-                      <div id="error-container1"></div>
+                      <div class="text-danger" th:if="${errorUnit != null}" th:text="${errorUnit}">
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div class="custom-file mb-3 col-sm-6">
-                  <input type="file" class="custom-file-input" name="image" id="customFile">
-                  <label class="custom-file-label" for="customFile"  th:text="${product == null  ? 'Hình ảnh' : product.image}"></label>
+                  <img class="mt-5" id="preview" src="" alt="Image Preview">
+                  <input type="file" id="fileInput" class="custom-file-input" name="image">
+                  <label class="custom-file-label" for="fileInput"  th:text="${product == null  ? 'Hình ảnh' : product.image}"></label>
+                  <div class="text-danger" th:if="${errorImage != null}" th:text="${errorImage}">
+                  </div>
                 </div>
                 <div class="form-group">
                   <label>Mô tả</label>
@@ -176,15 +181,30 @@
 
   </div>
   <script>
-    // $(document).ready(function() {
-    //   $('#summernote').summernote({
-    //     height: 300
-    //   });
-    // });
+
     document.addEventListener('DOMContentLoaded', function() {
       var summernoteElement = document.getElementById('summernote');
       $(summernoteElement).summernote({
         height: 300
+      });
+
+      const fileInput = document.getElementById('fileInput');
+      const preview = document.getElementById('preview');
+
+      fileInput.addEventListener('change', function() {
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = 'none'; // Hide preview if no file is selected
+        }
       });
     });
 
