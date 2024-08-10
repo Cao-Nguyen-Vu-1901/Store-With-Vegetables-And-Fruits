@@ -1,9 +1,11 @@
 package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.config.firebase.FirebaseInitializer;
+import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IProductService;
+import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
 import com.cuahangnongsan.util.ProcessImage;
 import com.google.cloud.storage.*;
@@ -23,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.HashSet;
 
 import static com.cuahangnongsan.util.ProcessImage.reduceSize;
 import static com.cuahangnongsan.util.ProcessImage.upload;
@@ -32,11 +35,10 @@ import static com.cuahangnongsan.util.ProcessImage.upload;
 public class UserController {
 
     @Autowired
-    private IProductService productService;
-    @Autowired
     private IUserService userService;
+
     @Autowired
-    private ICategoryService categoryService;
+    private IRoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,6 +80,7 @@ public class UserController {
             user.setName(name);
             user.setPhoneNumber(phoneNumber);
             user.setEmail(email);
+            user.setRoles(new HashSet<>(roleService.findAllByName(StringConstant.ROLE_USER)));
             userService.save(user);
         }
 

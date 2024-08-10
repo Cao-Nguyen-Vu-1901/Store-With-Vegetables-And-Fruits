@@ -1,5 +1,6 @@
 package com.cuahangnongsan.service.imp;
 
+import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.repository.RoleRepository;
 import com.cuahangnongsan.service.IRoleService;
@@ -25,19 +26,45 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
+    public List<Role> findByNameLike(String name) {
+        return roleRepository.findByNameLike(name);
+    }
+
+    @Override
     public Role findByName(String name) {
         return roleRepository.findByName(name);
     }
 
+
+
+    @Override
+    public Role findById(String id) {
+        return roleRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Role> findAllByName(String name) {
+        return roleRepository.findAllByName(name);
+    }
+
     @PreAuthorize("hasAuthority('AUTHORITY_CREATE_ROLE')")
     @Override
-    public void save(Role role) {
-        roleRepository.save(role);
+    public Role save(Role role)
+    {
+        return roleRepository.save(role);
     }
 
     @PreAuthorize("hasAuthority('AUTHORITY_DELETE_ROLE')")
     @Override
     public void delete(Role role) {
         roleRepository.delete(role);
+    }
+
+
+
+    @Override
+    public void removePermissionsFromRole(Role role, Permission permission) {
+        role.getPermissions().remove(permission);
+        roleRepository.save(role);
     }
 }

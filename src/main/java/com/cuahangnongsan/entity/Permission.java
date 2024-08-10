@@ -7,13 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
 @Getter
 @Setter
-public class Permission {
+public class Permission  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

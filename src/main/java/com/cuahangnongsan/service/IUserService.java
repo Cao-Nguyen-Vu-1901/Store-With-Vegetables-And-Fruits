@@ -21,9 +21,7 @@ public interface IUserService {
 
     List<User> findAllByNameLike(String name);
 
-    List<User> findAllByDob(LocalDate date);
 
-    List<User> findAllByGender(String gender);
 
     List<User> findAllByEmailLike(String email);
 
@@ -33,7 +31,7 @@ public interface IUserService {
 
     List<User> findAllByStatus(boolean status);
 
-    List<User> findAllByRoleName(String id);
+    List<User> findAllByRoleName(String name);
 
 
 }

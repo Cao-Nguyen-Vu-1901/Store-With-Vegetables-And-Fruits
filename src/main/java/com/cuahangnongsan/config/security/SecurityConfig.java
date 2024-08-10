@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -45,14 +45,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*
-         * http.csrf().disable()
-         * .authorizeHttpRequests().requestMatchers("/","/register","/signin",
-         * "/saveUser").permitAll() .requestMatchers("/user/**").authenticated().and()
-         * .formLogin().loginPage("/signin").loginProcessingUrl("/userLogin")
-         * //.usernameParameter("email")
-         * .defaultSuccessUrl("/user/profile").permitAll();
-         */
         http.csrf().disable()
 
                 .authorizeHttpRequests().requestMatchers("/user/**").hasRole("USER")

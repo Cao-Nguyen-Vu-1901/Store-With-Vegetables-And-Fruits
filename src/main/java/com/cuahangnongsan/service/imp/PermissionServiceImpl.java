@@ -1,6 +1,7 @@
 package com.cuahangnongsan.service.imp;
 
 import com.cuahangnongsan.entity.Permission;
+import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.repository.PermissionRepository;
 import com.cuahangnongsan.service.IPermissionService;
 import lombok.AccessLevel;
@@ -22,6 +23,7 @@ public class PermissionServiceImpl implements IPermissionService {
     public List<Permission> findAll() {
         return permissionRepository.findAll();
     }
+
 
     @Override
     public Permission findById(String id) {

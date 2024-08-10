@@ -29,7 +29,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Override
     public User findById(String id) {
         return userRepository.findById(id).orElseThrow();
@@ -42,9 +42,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User save(User user) {
-        user.setRoles(new HashSet<>(roleRepository.findAllByName(StringConstant.ROLE_USER)));
         return userRepository.save(user);
     }
+
+
+
     @Override
     public void removeSessionMessage() {
 
@@ -65,15 +67,6 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findAllByNameLike(name);
     }
 
-    @Override
-    public List<User> findAllByDob(LocalDate date) {
-        return userRepository.findAllByDob(date);
-    }
-
-    @Override
-    public List<User> findAllByGender(String gender) {
-        return userRepository.findAllByGender(gender);
-    }
 
     @Override
     public List<User> findAllByEmailLike(String email) {
@@ -96,8 +89,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> findAllByRoleName(String id) {
-        return userRepository.findAllByRoleEqualUser(id);
+    public List<User> findAllByRoleName(String name) {
+        return userRepository.findAllByRoleName(name);
     }
 
 }

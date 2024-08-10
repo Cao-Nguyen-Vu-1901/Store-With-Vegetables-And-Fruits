@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,10 +27,6 @@ public class User  implements Serializable {
     String id ;
 
     String name;
-
-    LocalDate dob;
-
-    String gender;
 
     String email;
 
@@ -49,7 +46,10 @@ public class User  implements Serializable {
     int failedLoginAttempts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    Set<Role> roles;
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     List<Invoice> invoice = new ArrayList<>();
@@ -62,8 +62,6 @@ public class User  implements Serializable {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", dob=" + dob +
-                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", image='" + image + '\'' +
