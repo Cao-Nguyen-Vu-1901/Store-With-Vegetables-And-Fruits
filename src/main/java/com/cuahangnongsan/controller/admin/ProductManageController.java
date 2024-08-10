@@ -98,7 +98,7 @@ public class ProductManageController {
     public String saveProduct(ModelMap modelMap, String id, String name,
                               String price, String discountPrice, int quantity,
                               int remaningQuantity, String categoryId,
-                              String unit, MultipartFile image, String description)
+                              String unit, MultipartFile image, String description, RedirectAttributes redirectAttributes)
             throws IOException {
 
         String currentDir = System.getProperty("user.dir");
@@ -109,7 +109,10 @@ public class ProductManageController {
         StringBuilder fileNames = new StringBuilder();
 
         Category category = categoryService.findById(categoryId);
-        if (!Objects.equals(image.getOriginalFilename(), "")) {
+        if(Objects.equals(image.getOriginalFilename(), "") && id == null){
+            redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+            return "redirect:/admin/product/create-product";
+        }else if (!Objects.equals(image.getOriginalFilename(), "")) {
             String imgName = UUID.randomUUID()+image.getOriginalFilename();
             Path fileNameAndPath = Paths.get(resourcePath.toString(), imgName);
             fileNames.append(imgName);
@@ -118,19 +121,25 @@ public class ProductManageController {
             Product oldProduct = productService.findById(id);
             fileNames.append(oldProduct.getImage());
         }
-        Product product = Product.builder()
-                .name(name).price(new BigDecimal(price != null ? price : "0"))
-                .discountPrice(new BigDecimal(discountPrice != null ? discountPrice : "0"))
-                .unit(unit).quantity(quantity).remaningQuantity(remaningQuantity)
-                .image(fileNames.toString()).description(description)
-                .category(category).modifiedDate(LocalDate.now())
-                .build();
-        if(id != null){
-            product.setId(id);
+        if(productService.findByName(name)!= null){
+            redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
         }else {
-            product.setCreatedDate(LocalDate.now());
+            Product product = Product.builder()
+                    .name(name).price(new BigDecimal(price != null ? price : "0"))
+                    .discountPrice(new BigDecimal(discountPrice != null ? discountPrice : "0"))
+                    .unit(unit).quantity(quantity).remaningQuantity(remaningQuantity)
+                    .image(fileNames.toString()).description(description)
+                    .category(category).modifiedDate(LocalDate.now())
+                    .build();
+            if(id != null){
+                product.setId(id);
+            }else {
+                product.setCreatedDate(LocalDate.now());
+            }
+            productService.save(product);
         }
-        productService.save(product);
+
+
         return "redirect:/admin/product/create-product";
     }
 

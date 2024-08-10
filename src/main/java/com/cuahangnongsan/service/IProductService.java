@@ -15,6 +15,7 @@ public interface IProductService {
     List<Product> findAll();
 
     Product findById(String id);
+    Product findByName(String name);
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
     Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection,
                                String category, String priceMin, String priceMax);

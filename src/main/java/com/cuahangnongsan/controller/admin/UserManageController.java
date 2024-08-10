@@ -103,38 +103,52 @@ public class UserManageController {
                 .phoneNumber(phoneNumber).status(StringConstant.USER_STATUS_ACTIVE)
                 .email(email).build();
         if(password != null && password.equals(rePassword)){
-            if(Objects.equals(image.getOriginalFilename(),"")){
-                redirectAttributes.addFlashAttribute("userNew", userRedirect);
-            }else {
-                imageName = ProcessImage.upload(image);
-                String address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
-                if(optionsChoice.equals("yes")){
-                    roles.forEach( a-> {
-                        Role role = roleService.findById(a);
-                        listRole.add(role);
-                    });
-                }else if(optionsChoice.equals("no")) {
-                    Set<Permission> listPermissions = new HashSet<>();
-                    permissions.forEach(a-> {
-                        Permission permission = permissionService.findById(a);
-                        listPermissions.add(permission);
-                    });
-                    Role role = Role.builder().name( "ROLE_ADMIN_" + roleName).permissions(listPermissions).build();
-                    Role roleNew = roleService.save(role);
-
-                    listRole.add(roleNew);
+            if(userService.findByUsername(username) == null){
+                if(Objects.equals(image.getOriginalFilename(),"")){
+                    redirectAttributes.addFlashAttribute("userNew", userRedirect);
+                    redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+                }else {
+                    imageName = ProcessImage.upload(image);
+                    String address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
+                    if(optionsChoice.equals("yes")){
+                        roles.forEach( a-> {
+                            Role role = roleService.findById(a);
+                            listRole.add(role);
+                        });
+                    }else if(optionsChoice.equals("no")) {
+                        Set<Permission> listPermissions = new HashSet<>();
+                        permissions.forEach(a-> {
+                            Permission permission = permissionService.findById(a);
+                            listPermissions.add(permission);
+                        });
+                        if(roleService.findByName("ROLE_ADMIN_" + roleName) == null){
+                            Role role = Role.builder().name( "ROLE_ADMIN_" + roleName).permissions(listPermissions).build();
+                            Role roleNew = roleService.save(role);
+                            listRole.add(roleNew);
+                        }else {
+                            redirectAttributes.addFlashAttribute("userNew", userRedirect);
+                            redirectAttributes.addFlashAttribute("errorRole", "Tên vai trò đã tồn tại!");
+                            return "redirect:/admin/user/create-user";
+                        }
+                    }
+                    User user = User.builder()
+                            .name(name).username(username)
+                            .phoneNumber(phoneNumber).status(StringConstant.USER_STATUS_ACTIVE)
+                            .email(email).address(address).failedLoginAttempts(0)
+                            .password(passwordEncoder.encode(password)).image(imageName)
+                            .address(address).roles(listRole)
+                            .build();
+                    userService.save(user);
                 }
-                User user = User.builder()
-                        .name(name).username(username)
-                        .phoneNumber(phoneNumber).status(StringConstant.USER_STATUS_ACTIVE)
-                        .email(email).address(address).failedLoginAttempts(0)
-                        .password(passwordEncoder.encode(password)).image(imageName)
-                        .address(address).roles(listRole)
-                        .build();
-                userService.save(user);
+            }else{
+                redirectAttributes.addFlashAttribute("userNew", userRedirect);
+                redirectAttributes.addFlashAttribute("errorUserName", "Tên đăng nhập đã tồn tại!");
+
             }
         }else {
             redirectAttributes.addFlashAttribute("userNew", userRedirect);
+            redirectAttributes.addFlashAttribute("errorPassword", "Mật khẩu và mật khẩu nhập lại không trùng khớp!");
+
         }
         return "redirect:/admin/user/create-user";
     }

@@ -41,4 +41,5 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findAllByCreatedDate(LocalDate date);
     List<Product> findAllByModifiedDate(LocalDate date);
 
+    Product findByName(String name);
 }

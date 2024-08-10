@@ -74,9 +74,7 @@
                                                        th:value="${userNew != null && userNew.name != null ? userNew.name : ''}"
                                                        required autocomplete="off"
                                                        class="form-control">
-                                                <div class="text-danger">
-                                                    Please provide a valid text.
-                                                </div>
+
                                             </div>
                                             <div class="form-group">
                                                 <label for="inputUserName">Tên đăng nhập</label>
@@ -85,6 +83,8 @@
                                                        th:value="${userNew != null && userNew.username !=null ? userNew.username : ''}"
                                                        required autocomplete="off"
                                                        class="form-control">
+                                                <div class="text-danger" th:if="${errorUserName != null}" th:text="${errorUserName}">
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="inputEmail">Email</label>
@@ -126,6 +126,8 @@
                                                 <label for="inputPassword">Mật khẩu</label>
                                                 <input id="inputPassword" type="password" name="password"
                                                        class="form-control" required>
+                                                <div class="text-danger" th:if="${errorPassword != null}" th:text="${errorPassword}">
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="inputRePassword">Nhập lại mật khẩu</label>
@@ -136,6 +138,8 @@
                                                 <input type="file" class="custom-file-input" id="customFile"
                                                        name="image" required>
                                                 <label class="custom-file-label" for="customFile">Hình ảnh</label>
+                                                <div class="text-danger" th:if="${errorImage != null}" th:text="${errorImage}">
+                                                </div>
                                             </div>
 
                                             <div class="form-group">
@@ -170,6 +174,8 @@
                                                        placeholder="Ví dụ: MANAGE, STAFF, SUPERVISOR"
                                                        autocomplete="off"
                                                        class="form-control">
+                                                <div class="text-danger" th:if="${errorRole != null}" th:text="${errorRole}">
+                                                </div>
                                             </div>
 
                                             <div class="form-group" id="form-group-select-permission">
