@@ -68,7 +68,7 @@ public class CommentManageController {
 
     @PostMapping("/delete-comment")
     public String deleteComment(ModelMap modelMap, Long id){
-        Comment comment = commentService.getCommentById(id);
+        Comment comment = commentService.findById(id);
         commentService.delete(comment);
         return "redirect:/admin/comment/manage-comment";
     }

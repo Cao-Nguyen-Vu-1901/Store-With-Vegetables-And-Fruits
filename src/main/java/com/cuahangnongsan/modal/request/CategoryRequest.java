@@ -1,19 +1,19 @@
 package com.cuahangnongsan.modal.request;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Builder
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InvalidatedToken  implements Serializable {
-    String id;
 
-    Date expiryTime;
+public class CategoryRequest {
+    String code;
+    String name;
 }

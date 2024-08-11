@@ -43,7 +43,7 @@ public class CommentServiceImpl implements ICommentService {
         return commentRepository.findAllByContentLike(content);
     }
 
-    public Comment getCommentById(Long id) {
+    public Comment findById(Long id) {
         return commentRepository.findById(id).orElse(null);
     }
 

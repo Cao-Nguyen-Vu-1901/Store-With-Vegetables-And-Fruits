@@ -154,7 +154,7 @@
                                         <div class="fruite-img">
 
                                             <img th:if="${item.image != null}"
-                                                 th:src="@{'/img/products/'+${item.image}}"
+                                                 th:src=" ${item.image} "
                                                  class="img-fluid w-100 rounded-top"
                                                  style="height: 35vh;  object-fit: cover;" alt="">
 

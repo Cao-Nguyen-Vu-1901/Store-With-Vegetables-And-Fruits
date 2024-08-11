@@ -1,9 +1,13 @@
 package com.cuahangnongsan.service;
 
 import com.cuahangnongsan.entity.Product;
+import com.cuahangnongsan.modal.request.ProductRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +29,8 @@ public interface IProductService {
     List<Product> findAllByCategoryName(String categoryName);
     void delete(Product product);
     Product save(Product product);
+    Product saveTest(String id,
+                     MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes) throws IOException;
 
     List<Product> findAllByNameLike(String name);
     List<Product> findAllByPrice(BigDecimal price);

@@ -93,8 +93,8 @@
 
                             <table th:each=" item : ${invoices}" class="table">
                                 <div class="d-flex justify-content-between">
-                                    <p th:text="${'Ngày đặt hàng: '+item.orderDate}" class="mb-0 mt-4"></p>
-                                    <p th:if="${item.cancelDate != null}" th:text="${'Ngày huỷ: '+item.cancelDate}" class="mb-0 mt-4"></p>
+                                    <p th:text="${'Ngày đặt hàng: '+item.orderDate.toString()}" class="mb-0 mt-4"></p>
+                                    <p th:if="${item.cancelDate != null}" th:text="${'Ngày huỷ: '+item.cancelDate.toString()}" class="mb-0 mt-4"></p>
 
                                     <form th:if="${type == 'WAIT_PROCESS'}" th:action="@{/user/cancel-order}"
                                           method="post">
@@ -109,7 +109,7 @@
 
                                     <td style="width: 25%">
 
-                                        <img th:src="@{'/img/products/'+ ${invoiceDe.getProduct().image}}"
+                                        <img th:src="${invoiceDe.getProduct().image}"
                                              class="img-fluid me-5 rounded-circle align-items-center"
                                              style="width: 80px; height: 80px;object-fit: cover" alt="">
 

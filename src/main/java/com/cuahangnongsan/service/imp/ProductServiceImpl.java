@@ -1,8 +1,15 @@
 package com.cuahangnongsan.service.imp;
 
+import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Product;
+import com.cuahangnongsan.exception.StringException;
+import com.cuahangnongsan.mapper.ProductMapper;
+import com.cuahangnongsan.modal.request.ProductRequest;
+import com.cuahangnongsan.modal.response.ProductResponse;
 import com.cuahangnongsan.repository.ProductRepository;
+import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IProductService;
+import com.cuahangnongsan.util.ProcessImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,16 +17,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.awt.image.ImagingOpException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    ProductMapper productMapper;
+
+    @Autowired
+    ICategoryService categoryService;
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
@@ -55,6 +73,69 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public Product saveTest(String id,
+                            MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes) throws IOException {
+
+        Product oldProduct = null;
+
+        StringBuilder fileNames = new StringBuilder();
+        Category category = categoryService.findById(request.getCategoryId());
+
+        Product product = productMapper.toProduct(request);
+        product.setCreatedDate(LocalDate.now());
+        product.setCategory(category);
+        product.setId(id);
+        ProductResponse responseCreate = productMapper.toProductResponse(product);
+
+        if (file != null) {
+            if (Objects.equals(file.getOriginalFilename(), "") && id == null) {
+                redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+                redirectAttributes.addFlashAttribute("product",  responseCreate);
+//                return "redirect:/admin/product/create-product";
+                throw new ImagingOpException("Image is not found!");
+            } else if (!Objects.equals(file.getOriginalFilename(), "")) {
+                fileNames.append(ProcessImage.upload(file,"products/"));
+                product.setImage(fileNames.toString());
+                product.setModifiedDate(LocalDate.now());
+            }
+        } else if(id == null) {
+            redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
+            redirectAttributes.addFlashAttribute("product", responseCreate);
+//            return "redirect:/admin/product/create-product";
+            throw new ImagingOpException("Image is not found!");
+        }
+
+        if (id != null) {
+            oldProduct = findById(id);
+            product.setImage(!fileNames.toString().isEmpty() ? fileNames.toString() : oldProduct.getImage());
+            product.setId(id);
+            product.setCreatedDate(oldProduct.getCreatedDate());
+        }
+
+        Product checkProduct = findByName(request.getName().trim());
+
+        if (checkProduct != null) {
+            if (id != null && !checkProduct.getId().equals(id)) {
+                redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
+                redirectAttributes.addFlashAttribute("product", responseCreate);
+//                return "redirect:/admin/product/create-product";
+                throw new StringException("Name is existed");
+            } else if (id == null) {
+                redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
+                redirectAttributes.addFlashAttribute("product", responseCreate);
+//                return "redirect:/admin/product/create-product";
+                throw new StringException("Name is existed");
+            }
+        }
+
+        ;
+
+
+
+        return save(product);
     }
 
     @Override
