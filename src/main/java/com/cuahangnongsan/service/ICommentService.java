@@ -14,7 +14,7 @@ public interface ICommentService {
     List<Comment> findAllByUsernameLike(String username);
     List<Comment> findAllByContentLike(String content);
 
-    Comment getCommentById(Long id);
+    Comment findById(Long id);
 
     Comment save(Comment comment);
     void delete(Comment comment);

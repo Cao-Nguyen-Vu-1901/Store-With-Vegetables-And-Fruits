@@ -138,7 +138,7 @@ public class OrderController {
     public String showOrders(String type, ModelMap model){
         User user = (User) model.getAttribute("user");
         List<Invoice> invoices = null;
-        if(type == null){
+        if(type == null || type.equals("all")){
             type = "all";
             invoices = invoiceService.findAllByUser(user);
         }else {

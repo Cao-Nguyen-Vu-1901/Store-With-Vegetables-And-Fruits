@@ -73,7 +73,7 @@ public class UserController {
 
         User user = (User) model.getAttribute("user");
         if(user != null){
-            String urlImage = upload(image);
+            String urlImage = upload(image, "users/");
             if(urlImage != null){
                 user.setImage(urlImage);
             }

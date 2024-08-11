@@ -1,23 +1,23 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.modal.response;
 
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.Set;
 
-@Getter
+@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role implements Serializable {
+public class RoleResponse {
     @Id
     String name;
 
     String description;
 
-    Set<Permission> permissions;
+    Set<PermissionResponse> permissions;
 }
 

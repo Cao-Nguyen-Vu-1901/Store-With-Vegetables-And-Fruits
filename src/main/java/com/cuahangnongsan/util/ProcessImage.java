@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ProcessImage {
-    public static synchronized String upload(MultipartFile image) throws IOException {
+    public static synchronized String upload(MultipartFile image, String folder) throws IOException {
         if(!Objects.equals(image.getOriginalFilename(), "")){
             FirebaseInitializer.getFirebaseApp();
             // Lấy đối tượng Storage từ Firebase
@@ -26,16 +26,16 @@ public class ProcessImage {
             String bucketName = StorageClient.getInstance().bucket().getName();
             // Đọc dữ liệu từ MultipartFile
 
-//        byte[] data = image.getBytes();
-            byte[] data = reduceSize(image, 600, 600);
+        byte[] data = image.getBytes();
+//            byte[] data = reduceSize(image, 600, 600);
 
             String contentType = image.getContentType();
             if (contentType == null) {
                 contentType = "application/octet-stream"; // Đặt loại nội dung mặc định nếu không có
             }
-
+            String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
             // Tạo BlobInfo với tên, đường dẫn tệp và loại nội dung
-            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, "users/" + image.getOriginalFilename())
+            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, folder + fileName)
                     .setContentType(contentType) // Xác định loại nội dung ở đây
                     .build();
             // Tải ảnh lên Firebase Storage
@@ -47,9 +47,6 @@ public class ProcessImage {
         }else {
             return null;
         }
-
-
-
     }
 
     public static byte[] reduceSize(MultipartFile file, int width, int height) throws IOException {

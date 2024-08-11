@@ -1,4 +1,4 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.modal.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Invoice  implements Serializable {
+
+public class InvoiceResponse  {
 
 
     String id ;
@@ -24,6 +25,6 @@ public class Invoice  implements Serializable {
 
     List<InvoiceDetail> invoiceDetails = new ArrayList<>();
 
-    User user;
+    UserResponse user;
 
 }

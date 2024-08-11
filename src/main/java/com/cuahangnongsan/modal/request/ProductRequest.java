@@ -1,6 +1,5 @@
 package com.cuahangnongsan.modal.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,40 +8,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-@Getter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+public class ProductRequest {
 
-public class Product implements Serializable {
-
-
-    String id ;
-
-    String productName;
+    String name;
 
     BigDecimal price;
 
-
+    BigDecimal discountPrice;
 
     int quantity;
 
-
     int remaningQuantity;
-
-    String image;
 
     String description;
 
+    String categoryId;
 
-    LocalDate createDate;
-
-
-    Category category;
-
-    List<InvoiceDetail> invoiceDetail = new ArrayList<>();
-
-
+    String unit;
 }

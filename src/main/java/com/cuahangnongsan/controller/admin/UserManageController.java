@@ -108,7 +108,7 @@ public class UserManageController {
                     redirectAttributes.addFlashAttribute("userNew", userRedirect);
                     redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
                 }else {
-                    imageName = ProcessImage.upload(image);
+                    imageName = ProcessImage.upload(image,"users/");
                     String address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
                     if(optionsChoice.equals("yes")){
                         roles.forEach( a-> {

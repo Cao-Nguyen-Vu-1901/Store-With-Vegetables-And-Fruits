@@ -8,7 +8,6 @@ import com.cuahangnongsan.service.IProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -38,6 +37,12 @@ public class CommentController {
         Comment savedComment = commentService.save(comment);
         return ResponseEntity.ok(savedComment);
     }
+    @DeleteMapping
+    public void deleteComment(@RequestBody Comment comment) {
+        Comment cmt = commentService.findById(comment.getId());
+        commentService.delete(cmt);
+    }
+
 
     @GetMapping("/{id}")
     public List<Comment> getAllParentComments(@PathVariable String id) {

@@ -5,23 +5,21 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
-@Getter
+@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class InvoiceDetail  implements Serializable {
 
-    String id ;
+
 
     int quantity;
 
     double price;
 
-    Invoice invoice;
+    InvoiceRequest invoice;
 
-    Product product;
+    ProductRequest product;
 
 
 }

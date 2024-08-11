@@ -3,16 +3,14 @@ package com.cuahangnongsan.modal.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
-
-@Getter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Permission  implements Serializable {
+public class CommentRequest {
+    private String content;
+    private CommentRequest parent;
 
-    String name;
-
-    String description;
 }
+
