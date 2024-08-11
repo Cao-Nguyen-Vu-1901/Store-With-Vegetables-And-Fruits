@@ -1,15 +1,20 @@
 package com.cuahangnongsan.controller.web;
 
+import com.cuahangnongsan.dto.response.CategoryResponse;
+import com.cuahangnongsan.dto.response.ProductResponse;
 import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Post;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
+import com.cuahangnongsan.mapper.ProductMapper;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IPostService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import com.cuahangnongsan.util.ProcessString;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,19 +32,26 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class HomeController {
 
     @Autowired
-    private IProductService productService;
-    @Autowired
-    private IPostService postService;
-    @Autowired
-    private IUserService userService;
+    IProductService productService;
 
     @Autowired
-    private ICategoryService categoryService;
+    IPostService postService;
+
+    @Autowired
+    IUserService userService;
+
+    @Autowired
+    ICategoryService categoryService;
+
+    @Autowired
+    ProductMapper productMapper;
 
     @GetMapping({"/", "/home"})
     public String homePage(ModelMap model) {
@@ -51,12 +63,12 @@ public class HomeController {
     @GetMapping("/product-detail/{id}")
     public String productDetail(ModelMap model, @PathVariable("id") String id) {
         model.addAttribute("pageCurr", "shop");
-        Product product = productService.findById(id);
+        ProductResponse product = productService.findById(id);
 
-        List<Product> listProductsLikeName
+        List<ProductResponse> listProductsLikeName
                 = productService.findAllByNameLikeButCurrent(
                         "%" + ProcessString.getFirstName(product.getName()) +"%"
-                      ,product.getId());
+                      ,product.getId()) ;
 
         model.addAttribute("product", product);
         model.addAttribute("today", LocalDate.now());
@@ -75,11 +87,11 @@ public class HomeController {
                                 String name, String condition,
                                 String category, String priceMin, String priceMax) {
         try {
-            List<Category> categories = categoryService.findAll();
+            List<CategoryResponse> categories = categoryService.findAll();
 
-            List<Product> tutorials = new ArrayList<Product>();
+            List<ProductResponse> tutorials = new ArrayList<ProductResponse>();
 
-            Page<Product> pageTuts = productService.findPaginated(page, size, name, condition,
+            Page<ProductResponse> pageTuts = productService.findPaginated(page, size, name, condition,
                     category, priceMin,
                     priceMax);
             model.addAttribute("name", name);

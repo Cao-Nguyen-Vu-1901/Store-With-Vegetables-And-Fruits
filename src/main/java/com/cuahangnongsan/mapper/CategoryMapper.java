@@ -1,8 +1,8 @@
 package com.cuahangnongsan.mapper;
 
 import com.cuahangnongsan.entity.Category;
-import com.cuahangnongsan.modal.request.CategoryRequest;
-import com.cuahangnongsan.modal.response.CategoryResponse;
+import com.cuahangnongsan.dto.request.CategoryRequest;
+import com.cuahangnongsan.dto.response.CategoryResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

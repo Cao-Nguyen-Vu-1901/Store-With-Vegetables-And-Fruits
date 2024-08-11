@@ -1,9 +1,12 @@
 package com.cuahangnongsan.controller.admin;
 
 
+import com.cuahangnongsan.dto.request.PermissionRequest;
+import com.cuahangnongsan.dto.response.PermissionResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.entity.User;
+import com.cuahangnongsan.mapper.PermissionMapper;
 import com.cuahangnongsan.service.IPermissionService;
 import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
@@ -31,29 +34,35 @@ public class PermissionManageController {
     @Autowired
     IPermissionService permissionService;
 
+    @Autowired
+    PermissionMapper permissionMapper;
+
     @GetMapping("/manage-permission")
     public String showPermissions(ModelMap modelMap){
         modelMap.addAttribute("permissions", permissionService.findAll());
         return "admin/manage/manage-permission";
     }
     @PostMapping("/manage-permission")
-    public String managePermissions(ModelMap modelMap, String action, String id,
+    public String managePermissions(String action, String id,
                                     RedirectAttributes redirectAttributes){
         if(action.equals("edit")){
-            redirectAttributes.addFlashAttribute("permission", permissionService.findById(id));
+            redirectAttributes.addFlashAttribute("permission",(PermissionResponse) permissionService.findById(id));
         }
         return "redirect:/admin/permission/create-permission";
     }
 
     @PostMapping("/save-permission")
-    public String savePermission(ModelMap modelMap, String id, String name, RedirectAttributes redirectAttributes){
-        name = name.trim();
-        Permission permission = permissionService.findByName(name.toUpperCase());
-        if(permission != null){
+    public String savePermission(String id, PermissionRequest request, RedirectAttributes redirectAttributes){
+
+        Permission permission = permissionMapper.toPermission(request);
+        permission.setId(id);
+
+        PermissionResponse exist = permissionService.findByName(request.getName().toUpperCase());
+
+        if(exist != null){
             redirectAttributes.addFlashAttribute("error", "Tên đã tồn tại!");
-            redirectAttributes.addFlashAttribute("permission", Permission.builder().name(name).build());
-        }else {
-            permission = Permission.builder().id(id).name(name.toUpperCase()).build();
+            exist.setId(null);
+            redirectAttributes.addFlashAttribute("permission", exist);
         }
         permissionService.save(permission);
         return "redirect:/admin/permission/create-permission";

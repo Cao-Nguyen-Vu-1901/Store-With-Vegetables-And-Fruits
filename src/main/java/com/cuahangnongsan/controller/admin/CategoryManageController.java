@@ -1,7 +1,9 @@
 package com.cuahangnongsan.controller.admin;
 
-import com.cuahangnongsan.entity.Category;
+import com.cuahangnongsan.dto.request.CategoryRequest;
+import com.cuahangnongsan.dto.response.CategoryResponse;
 import com.cuahangnongsan.entity.User;
+import com.cuahangnongsan.mapper.CategoryMapper;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,11 +29,16 @@ public class CategoryManageController {
 
     @Autowired
     ICategoryService categoryService;
+
     @Autowired
     IUserService userService;
+
+    @Autowired
+    CategoryMapper categoryMapper;
+
     @GetMapping("/manage-category")
     public String showViewManage(ModelMap modelMap ,String type, String value){
-        List<Category> categories =
+        List<CategoryResponse> categories =
                 type != null && type.equals("code")
                     ? categoryService.findAllByCodeLike("%" + value + "%")
                         : type != null && type.equals("name")
@@ -43,36 +49,23 @@ public class CategoryManageController {
     }
     @PostMapping("/manage-category")
     public String manageCategory(ModelMap modelMap , String id, String action, RedirectAttributes redirectAttributes){
-        Category category = id != null ? categoryService.findById(id) : null;
+        CategoryResponse category = categoryService.findByIdCategoryResponse(id);
         if(action.equals("edit")){
             redirectAttributes.addFlashAttribute("category", category);
             return "redirect:/admin/category/create-category";
         }else if(action.equals("delete")){
-            categoryService.delete(category);
+            categoryService.deleteById(category.getId());
         }
         return "redirect:/admin/category/manage-category";
     }
     @GetMapping("/create-category")
     public String showViewCreate(ModelMap modelMap){
-        modelMap.addAttribute("category",(Category) modelMap.getAttribute("category"));
+        modelMap.addAttribute("category",(CategoryResponse) modelMap.getAttribute("category"));
         return "admin/create/create-category";
     }
     @PostMapping("/save-category")
-    public String saveCategory(ModelMap modelMap, String id, String code, String name , RedirectAttributes redirectAttributes){
-        String errorValue = "";
-        code = code.trim() ;
-        name = name.trim();
-        if(categoryService.findByName(name) != null){
-            redirectAttributes.addFlashAttribute("errorName", "Tên đã tồn tại!");
-            redirectAttributes.addFlashAttribute("category", Category.builder().name(name).code(code).build());
-        }else if(categoryService.findByCode(code) != null){
-            redirectAttributes.addFlashAttribute("errorCode", "Code đã tồn tại!");
-            redirectAttributes.addFlashAttribute("category", Category.builder().name(name).code(code).build());
-        }else {
-            Category category = Category.builder().id(id).code(code).name(name).build();
-            categoryService.save(category);
-        }
-
+    public String saveCategory(String id, CategoryRequest request, RedirectAttributes redirectAttributes){
+        categoryService.save(id, request, redirectAttributes);
         return "redirect:/admin/category/create-category";
     }
 

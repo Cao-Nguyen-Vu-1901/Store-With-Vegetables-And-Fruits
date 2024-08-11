@@ -1,7 +1,8 @@
 package com.cuahangnongsan.service;
 
+import com.cuahangnongsan.dto.response.ProductResponse;
 import com.cuahangnongsan.entity.Product;
-import com.cuahangnongsan.modal.request.ProductRequest;
+import com.cuahangnongsan.dto.request.ProductRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,32 +16,32 @@ import java.util.List;
 
 public interface IProductService {
 
-    Page<Product> findAll(Pageable pageable);
-    List<Product> findAll();
+    Page<ProductResponse> findAll(Pageable pageable);
+    List<ProductResponse> findAll();
 
-    Product findById(String id);
-    Product findByName(String name);
-    Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
-    Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection,
+    ProductResponse findById(String id);
+    ProductResponse findByName(String name);
+    Page<ProductResponse> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<ProductResponse> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection,
                                String category, String priceMin, String priceMax);
 
-    Page<Product> findAllByCate(Pageable pageable, String id);
-    List<Product> findAllByNameLikeButCurrent(String name, String id);
-    List<Product> findAllByCategoryName(String categoryName);
-    void delete(Product product);
-    Product save(Product product);
-    Product saveTest(String id,
+    Page<ProductResponse> findAllByCate(Pageable pageable, String id);
+    List<ProductResponse> findAllByNameLikeButCurrent(String name, String id);
+    List<ProductResponse> findAllByCategoryName(String categoryName);
+    void deleteById(String id);
+    ProductResponse save(Product product);
+    ProductResponse saveTest(String id,
                      MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes) throws IOException;
 
-    List<Product> findAllByNameLike(String name);
-    List<Product> findAllByPrice(BigDecimal price);
-    List<Product> findAllByDiscountPrice(BigDecimal discount);
-    List<Product> findAllByUnit(String unit);
-    List<Product> findAllByDescriptionLike(String description);
-    List<Product> findAllByQuantity(int quantity);
-    List<Product> findAllByRemaningQuantity(int remaningQuantity);
-    List<Product> findAllByCreatedDate(LocalDate date);
-    List<Product> findAllByModifiedDate(LocalDate date);
+    List<ProductResponse> findAllByNameLike(String name);
+    List<ProductResponse> findAllByPrice(BigDecimal price);
+    List<ProductResponse> findAllByDiscountPrice(BigDecimal discount);
+    List<ProductResponse> findAllByUnit(String unit);
+    List<ProductResponse> findAllByDescriptionLike(String description);
+    List<ProductResponse> findAllByQuantity(int quantity);
+    List<ProductResponse> findAllByRemaningQuantity(int remaningQuantity);
+    List<ProductResponse> findAllByCreatedDate(LocalDate date);
+    List<ProductResponse> findAllByModifiedDate(LocalDate date);
 
 
 }

@@ -1,6 +1,7 @@
 package com.cuahangnongsan.controller.admin;
 
 
+import com.cuahangnongsan.dto.response.PermissionResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.entity.User;
@@ -59,7 +60,7 @@ public class RoleManageController {
             , @RequestParam(value = "permissions[]", required = false) List<String> permissions){
         Role role = roleService.findById(id);
         permissions.forEach( a-> {
-            Permission permission = permissionService.findById(a);
+            PermissionResponse permission = permissionService.findById(a);
             role.getPermissions().remove(permission);
         });
         roleService.save(role);
@@ -80,7 +81,7 @@ public class RoleManageController {
         if (permissionsNew != null) {
             List<String> permissions = new ArrayList<>(permissionsNew);
             permissions.forEach( a-> {
-                Permission permission = permissionService.findById(a);
+                Permission permission = permissionService.findByIdPermisson(a);
                 permissionSet.add(permission);
             });
         }

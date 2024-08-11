@@ -1,13 +1,10 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

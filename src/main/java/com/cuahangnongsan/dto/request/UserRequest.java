@@ -1,30 +1,19 @@
-package com.cuahangnongsan.modal.response;
+package com.cuahangnongsan.dto.request;
 
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-public class UserResponse  {
-
-    String id ;
+public class UserRequest implements Serializable {
 
     String name;
-
-    Date dob;
-
-    String gender;
 
     String email;
 
@@ -37,11 +26,5 @@ public class UserResponse  {
     String password;
 
     String address;
-
-    String status;
-
-    Set<RoleResponse> roles;
-
-
 
 }

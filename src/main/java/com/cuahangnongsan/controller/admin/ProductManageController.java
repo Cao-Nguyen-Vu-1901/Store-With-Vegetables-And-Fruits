@@ -1,17 +1,14 @@
 package com.cuahangnongsan.controller.admin;
 
-import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.exception.StringException;
 import com.cuahangnongsan.mapper.CategoryMapper;
 import com.cuahangnongsan.mapper.ProductMapper;
-import com.cuahangnongsan.modal.request.ProductRequest;
-import com.cuahangnongsan.modal.response.ProductResponse;
+import com.cuahangnongsan.dto.request.ProductRequest;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
-import com.cuahangnongsan.util.ProcessImage;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -33,7 +30,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/product")
@@ -48,12 +44,6 @@ public class ProductManageController {
 
     @Autowired
     ICategoryService categoryService;
-
-    @Autowired
-    ProductMapper productMapper;
-
-    @Autowired
-    CategoryMapper categoryMapper;
 
     @GetMapping("/manage-product")
 
@@ -167,7 +157,6 @@ public class ProductManageController {
 //
 //    }
 
-
     @GetMapping("/create-product")
     public String createProduct(ModelMap model) {
         model.addAttribute("categories", categoryService.findAll());
@@ -176,6 +165,18 @@ public class ProductManageController {
         return "admin/create/create-product";
     }
 
+    @PostMapping("/save-product")
+    public String saveProduct( String id,
+                               MultipartFile file, ProductRequest request,
+                               RedirectAttributes redirectAttributes) {
+        try{
+            productService.saveTest(id, file, request, redirectAttributes);
+        }catch (IOException | ImagingOpException | StringException ioException){
+            return "redirect:/admin/product/create-product";
+        }
+        return "redirect:/admin/product/create-product";
+
+    }
     @ModelAttribute
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
@@ -192,18 +193,5 @@ public class ProductManageController {
 
 
 
-    @PostMapping("/save-product")
-    public String saveProduct(ModelMap modelMap, String id,
-                              MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes)
-            {
-
-        try{
-            productService.saveTest(id, file, request, redirectAttributes);
-        }catch (IOException | ImagingOpException | StringException ioException){
-            return "redirect:/admin/product/create-product";
-        }
-                return "redirect:/admin/product/create-product";
-
-    }
 
 }

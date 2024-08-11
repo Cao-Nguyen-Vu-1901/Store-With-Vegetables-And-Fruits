@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
+@Entity
 public class Category implements Serializable {
 
     @Id

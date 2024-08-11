@@ -1,9 +1,10 @@
-package com.cuahangnongsan.modal.response;
+package com.cuahangnongsan.dto.response;
 
+import com.cuahangnongsan.entity.Comment;
+import com.cuahangnongsan.entity.InvoiceDetail;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class ProductResponse{
 
     BigDecimal discountPrice;
 
+    String unit;
+
     int quantity;
 
     int remaningQuantity;
@@ -32,10 +35,13 @@ public class ProductResponse{
 
     String description;
 
-    LocalDate createDate;
+    LocalDate createdDate;
+
+    LocalDate modifiedDate;
 
     CategoryResponse category;
 
-    String unit;
+    List<Comment> comments = new ArrayList<>();
 
+    List<InvoiceDetail> invoiceDetail = new ArrayList<>();
 }

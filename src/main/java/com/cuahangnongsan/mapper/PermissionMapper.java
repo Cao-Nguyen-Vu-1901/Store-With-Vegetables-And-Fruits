@@ -1,8 +1,8 @@
 package com.cuahangnongsan.mapper;
 
 import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.modal.request.PermissionRequest;
-import com.cuahangnongsan.modal.response.PermissionResponse;
+import com.cuahangnongsan.dto.request.PermissionRequest;
+import com.cuahangnongsan.dto.response.PermissionResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

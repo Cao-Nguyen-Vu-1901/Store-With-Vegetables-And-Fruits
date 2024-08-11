@@ -1,16 +1,27 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.dto.request;
+
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionRequest implements Serializable {
+public class UserCreationRequest implements Serializable {
 
     String name;
-    String description;
+
+    String email;
+
+    String phoneNumber;
+
+    String username;
+
+    String password;
+
+
 }

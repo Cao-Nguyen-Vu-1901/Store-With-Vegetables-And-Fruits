@@ -1,4 +1,4 @@
-package com.cuahangnongsan.modal.response;
+package com.cuahangnongsan.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,14 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-public class CommentResponse {
-
-
+public class CommentRequest {
     private String content;
-
-    private CommentResponse parent;
-
+    private CommentRequest parent;
 
 }
 
