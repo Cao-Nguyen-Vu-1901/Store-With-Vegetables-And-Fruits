@@ -1,6 +1,6 @@
 package com.cuahangnongsan.service;
 
-import com.cuahangnongsan.modal.response.Cart;
+import com.cuahangnongsan.dto.response.Cart;
 
 import java.io.IOException;
 import java.util.List;

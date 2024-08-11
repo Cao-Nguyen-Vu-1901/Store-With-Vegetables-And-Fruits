@@ -1,10 +1,7 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Data
@@ -13,7 +10,12 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-public class CategoryRequest {
+public class CategoryResponse {
+
+    String id ;
+
     String code;
+
     String name;
+
 }

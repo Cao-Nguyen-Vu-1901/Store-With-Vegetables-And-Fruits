@@ -1,4 +1,4 @@
-package com.cuahangnongsan.modal.response;
+package com.cuahangnongsan.dto.response;
 
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.util.Set;
 
 @Data

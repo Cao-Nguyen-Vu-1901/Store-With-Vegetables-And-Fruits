@@ -27,7 +27,6 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id ;
 
-
     String name;
 
     BigDecimal price;
@@ -37,7 +36,6 @@ public class Product implements Serializable {
     String unit;
 
     int quantity;
-
 
     int remaningQuantity;
 

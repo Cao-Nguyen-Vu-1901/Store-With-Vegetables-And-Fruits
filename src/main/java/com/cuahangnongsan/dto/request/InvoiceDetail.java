@@ -1,4 +1,4 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

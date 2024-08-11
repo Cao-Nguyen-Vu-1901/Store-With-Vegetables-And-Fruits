@@ -1,12 +1,10 @@
-package com.cuahangnongsan.modal.request;
+package com.cuahangnongsan.dto.request;
 
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

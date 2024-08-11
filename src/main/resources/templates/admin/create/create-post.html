@@ -58,14 +58,14 @@
                                     <input id="title" type="text" name="title" data-parsley-trigger="change"
                                            required autocomplete="off" th:value="${post != null ? post.title : ''}"
                                            class="form-control">
-                                    <div class="text-danger">
-                                        Please provide a valid text.
-                                    </div>
                                 </div>
                                 <div class="custom-file mb-3 col-sm-6">
                                     <input type="file" class="custom-file-input" name="image" id="customFile">
                                     <label class="custom-file-label" for="customFile"
                                            th:text="${post == null  ? 'Hình ảnh' : post.image}"></label>
+
+                                    <div class="text-danger" th:if="${errorImage != null}" th:value="${errorImage}">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="shortDescription">Mô tả ngắn</label>
@@ -78,6 +78,8 @@
                                     <label>Nội dung</label>
                                     <textarea id="summernote" th:text="${post == null  ? '' : post.content}"
                                               required name="content" class="form-control"></textarea>
+                                    <div class="text-danger" th:if="${errorContent != null}" th:value="${errorContent}">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 pl-0">

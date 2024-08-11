@@ -1,6 +1,5 @@
 package com.cuahangnongsan.config.firebase;
 
-import com.cuahangnongsan.service.imp.CartServiceImpl;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;

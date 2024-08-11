@@ -1,9 +1,8 @@
-package com.cuahangnongsan.modal.response;
+package com.cuahangnongsan.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

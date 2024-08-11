@@ -1,16 +1,20 @@
 package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.constant.StringConstant;
+import com.cuahangnongsan.dto.response.ProductResponse;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
-import com.cuahangnongsan.modal.response.Cart;
+import com.cuahangnongsan.dto.response.Cart;
+import com.cuahangnongsan.mapper.ProductMapper;
 import com.cuahangnongsan.service.IInvoiceDetailService;
 import com.cuahangnongsan.service.IInvoiceService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import com.cuahangnongsan.util.ProcessString;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,19 +33,23 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderController {
 
     @Autowired
-    private IProductService productService;
+    IProductService productService;
 
     @Autowired
-    private IInvoiceService invoiceService;
+    IInvoiceService invoiceService;
 
     @Autowired
-    private IInvoiceDetailService invoiceDetailService;
+    IInvoiceDetailService invoiceDetailService;
 
     @Autowired
-    private IUserService userService;
+    IUserService userService;
+
+    @Autowired
+    ProductMapper productMapper;
 
     public List<Cart> selectedProductsCart = new ArrayList<>();
 
@@ -106,9 +114,12 @@ public class OrderController {
     public String successPay(ModelMap model) {
         if (!selectedProductsCart.isEmpty()) {
             model.addAttribute("currentPage", "");
-            List<Product> sameProducts = new ArrayList<>();
+            List<ProductResponse> sameProducts = new ArrayList<>();
             selectedProductsCart.forEach(a -> {
-                List<Product> products = productService.findAllByNameLikeButCurrent("%" + ProcessString.getFirstName(a.getProductName()) + "%", a.getProductId());
+                List<ProductResponse> products =
+                        productService.findAllByNameLikeButCurrent(
+                                "%" + ProcessString.getFirstName(a.getProductName()) + "%",
+                                a.getProductId());
                 sameProducts.addAll(products);
             });
             sameProducts.forEach(a -> {
