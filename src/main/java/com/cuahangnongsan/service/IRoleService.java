@@ -1,22 +1,26 @@
 package com.cuahangnongsan.service;
 
+import com.cuahangnongsan.dto.response.RoleResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 public interface IRoleService {
-    List<Role> findAll();
-    List<Role> findByNameLike(String name);
-    Role findByName(String name);
-    Role findById(String id);
+    List<RoleResponse> findAll();
+    List<RoleResponse> findByNameLike(String name);
+    RoleResponse findByName(String name);
+    RoleResponse findById(String id);
 
-    List<Role> findAllByName(String name);
+    List<RoleResponse> findAllByName(String name);
 
-    Role save(Role role);
+    RoleResponse save(String id, String name,
+                      List<String> permissionsNew);
+
+    void update(String id, List<String> permissions);
+
     void delete(Role role);
-
-
 
     void removePermissionsFromRole(Role role, Permission permission);
 }

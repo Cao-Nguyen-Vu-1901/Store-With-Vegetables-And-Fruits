@@ -146,12 +146,11 @@
                     </div>
                   </div>
                 </div>
-
+                <img th:if="${product != null && product.image != null}" class="mt-2 mb-2"
+                     th:src="${product.image}" alt="Image Preview" style="height: 60vh; object-fit: cover; width: 90vh;">
                 <div class="custom-file mb-3 col-sm-6">
-                  <img class="mt-5" id="preview" src="" alt="Image Preview">
                   <input type="file" id="fileInput" class="custom-file-input" name="file">
-<!--                  <input type="hidden" name="image" th:value="${product.image}" th:if="${product.image != null}">-->
-                  <label class="custom-file-label" for="fileInput"  th:text="${product == null  ? 'Hình ảnh' : product.image}"></label>
+                  <label class="custom-file-label" for="fileInput">Hình ảnh</label>
                   <div class="text-danger" th:if="${errorImage != null}" th:text="${errorImage}">
                   </div>
                 </div>

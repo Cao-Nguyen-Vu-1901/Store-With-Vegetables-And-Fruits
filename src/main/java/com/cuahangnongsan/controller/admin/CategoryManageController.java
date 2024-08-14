@@ -2,6 +2,7 @@ package com.cuahangnongsan.controller.admin;
 
 import com.cuahangnongsan.dto.request.CategoryRequest;
 import com.cuahangnongsan.dto.response.CategoryResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.mapper.CategoryMapper;
 import com.cuahangnongsan.service.ICategoryService;
@@ -73,7 +74,7 @@ public class CategoryManageController {
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null){
                 session.setAttribute("user", user);
                 m.addAttribute("user", user);

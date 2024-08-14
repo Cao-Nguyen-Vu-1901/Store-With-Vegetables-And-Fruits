@@ -1,5 +1,8 @@
 package com.cuahangnongsan.controller.admin;
 
+import com.cuahangnongsan.dto.response.CommentResponse;
+import com.cuahangnongsan.dto.response.ProductResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Comment;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
@@ -39,7 +42,7 @@ public class CommentManageController {
     @GetMapping("/manage-comment")
     public String showComments(ModelMap modelMap, String value, String type){
 
-        List<Comment> comments;
+        List<CommentResponse> comments;
         if(type!= null & value != null){
             switch (type) {
                 case "content" -> comments = commentService.findAllByContentLike("%" + value + "%");
@@ -47,11 +50,11 @@ public class CommentManageController {
                 case "username" -> comments = commentService.findAllByUsernameLike("%" + value + "%");
                 case "product" -> {
                                         comments = new ArrayList<>();
-                                        List<Product> products =
+                                        List<ProductResponse> products =
                                                 productService.findAllByNameLike(value);
                                         products.forEach(a -> {
-                                            List<Comment> subComment =
-                                                    commentService.findAllByProduct(a);
+                                            List<CommentResponse> subComment =
+                                                    commentService.findAllByProductId(a.getId());
                                             comments.addAll(subComment);
                                         });
                                     }
@@ -68,8 +71,8 @@ public class CommentManageController {
 
     @PostMapping("/delete-comment")
     public String deleteComment(ModelMap modelMap, Long id){
-        Comment comment = commentService.findById(id);
-        commentService.delete(comment);
+        CommentResponse comment = commentService.findById(id);
+        commentService.deleteById(comment.getId());
         return "redirect:/admin/comment/manage-comment";
     }
 
@@ -77,7 +80,7 @@ public class CommentManageController {
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null){
                 session.setAttribute("user", user);
                 m.addAttribute("user", user);

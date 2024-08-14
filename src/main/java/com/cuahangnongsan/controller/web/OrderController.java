@@ -2,6 +2,7 @@ package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.dto.response.ProductResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.Product;
@@ -175,7 +176,7 @@ public class OrderController {
     public void commonUser(Principal p, Model m) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null)
                 m.addAttribute("user", user);
         }

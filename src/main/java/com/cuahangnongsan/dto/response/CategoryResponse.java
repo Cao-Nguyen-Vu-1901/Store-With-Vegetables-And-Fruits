@@ -1,7 +1,11 @@
 package com.cuahangnongsan.dto.response;
 
+import com.cuahangnongsan.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -17,5 +21,7 @@ public class CategoryResponse {
     String code;
 
     String name;
+
+    List<Product> products = new ArrayList<>();
 
 }

@@ -2,9 +2,12 @@ package com.cuahangnongsan.controller.admin;
 
 
 import com.cuahangnongsan.dto.response.PermissionResponse;
+import com.cuahangnongsan.dto.response.RoleResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.entity.User;
+import com.cuahangnongsan.exception.AppException;
 import com.cuahangnongsan.service.IPermissionService;
 import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
@@ -38,17 +41,18 @@ public class RoleManageController {
     IPermissionService permissionService;
 
     @GetMapping("/manage-role")
-    public String manageRoles(ModelMap modelMap , String value){
+    public String manageRoles(ModelMap modelMap, String value) {
         modelMap.addAttribute("roles",
                 value == null
-                    ?  roleService.findAll()
-                    : roleService.findByNameLike("%" + value + "%") );
+                        ? roleService.findAll()
+                        : roleService.findByNameLike("%" + value + "%"));
         return "admin/manage/manage-role";
     }
+
     @PostMapping("/manage-role")
-    public String editRoles(ModelMap modelMap , String id, String action, RedirectAttributes redirectAttributes){
-        Role role = roleService.findById(id);
-        if(action.equals("edit")){
+    public String editRoles(ModelMap modelMap, String id, String action, RedirectAttributes redirectAttributes) {
+        RoleResponse role = roleService.findById(id);
+        if (action.equals("edit")) {
             redirectAttributes.addFlashAttribute("role", role);
             return "redirect:/admin/role/create-role";
         }
@@ -56,47 +60,30 @@ public class RoleManageController {
     }
 
     @PostMapping("/manage-role-permission")
-    public String editRolePermission(ModelMap modelMap , String id
-            , @RequestParam(value = "permissions[]", required = false) List<String> permissions){
-        Role role = roleService.findById(id);
-        permissions.forEach( a-> {
-            PermissionResponse permission = permissionService.findById(a);
-            role.getPermissions().remove(permission);
-        });
-        roleService.save(role);
+    public String updateRole(String id
+            , @RequestParam(value = "permissions[]", required = false) List<String> permissions) {
+        roleService.update(id, permissions);
         return "redirect:/admin/role/manage-role";
     }
 
     @PostMapping("/save-role")
-    public String saveRole(ModelMap modelMap ,String id, String name,
-                           @RequestParam(value = "permissionsNew[]", required = false) List<String> permissionsNew){
+    public String saveRole(RedirectAttributes model,String id, String name,
+                           @RequestParam(value = "permissionsNew[]", required = false) List<String> permissionsNew) {
 
-        Set<Permission> permissionSet = new HashSet<>();
-        Role role = new Role();
-        if(id != null){
-            role = roleService.findById(id);
-            permissionSet.addAll(role.getPermissions());
+        try{
+            roleService.save(id, name, permissionsNew);
+        }catch (AppException e){
+            model.addFlashAttribute("errorName", "Tên đã tồn tại!");
+            model.addFlashAttribute("role", RoleResponse.builder().name(name).build());
+            return "redirect:/admin/role/create-role";
         }
-
-        if (permissionsNew != null) {
-            List<String> permissions = new ArrayList<>(permissionsNew);
-            permissions.forEach( a-> {
-                Permission permission = permissionService.findByIdPermisson(a);
-                permissionSet.add(permission);
-            });
-        }
-
-        role.setName(name);
-        role.setPermissions(permissionSet);
-
-        roleService.save( role );
         return "redirect:/admin/role/create-role";
     }
 
     @GetMapping("/create-role")
-    public String createRole(ModelMap modelMap){
-        Role role = (Role) modelMap.getAttribute("role");
-        modelMap.addAttribute("role", role );
+    public String createRole(ModelMap modelMap) {
+        RoleResponse role = (RoleResponse) modelMap.getAttribute("role");
+        modelMap.addAttribute("role", role);
         modelMap.addAttribute("permissions", permissionService.findAll());
         return "admin/create/create-role";
     }
@@ -105,9 +92,8 @@ public class RoleManageController {
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
-            if (user != null){
-                session.setAttribute("user", user);
+            UserResponse user = userService.findByUsername(username);
+            if (user != null) {
                 m.addAttribute("user", user);
             }
         }

@@ -38,10 +38,6 @@ public class PermissionServiceImpl implements IPermissionService {
         return permissionMapper.toPermissionResponse(permissionRepository.findById(id).orElseThrow());
     }
 
-    @Override
-    public Permission findByIdPermisson(String id) {
-        return permissionRepository.findById(id).orElseThrow();
-    }
 
     @Override
     public PermissionResponse findByName(String name) {

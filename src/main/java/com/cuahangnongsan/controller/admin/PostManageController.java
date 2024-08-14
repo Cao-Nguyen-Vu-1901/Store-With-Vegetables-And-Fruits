@@ -3,6 +3,7 @@ package com.cuahangnongsan.controller.admin;
 
 import com.cuahangnongsan.dto.request.PostRequest;
 import com.cuahangnongsan.dto.response.PostResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Post;
 import com.cuahangnongsan.entity.Product;
@@ -129,9 +130,8 @@ public class PostManageController {
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null) {
-                session.setAttribute("user", user);
                 m.addAttribute("user", user);
             }
 
