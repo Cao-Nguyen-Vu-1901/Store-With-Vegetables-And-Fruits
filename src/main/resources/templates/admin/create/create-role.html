@@ -59,8 +59,7 @@
                                            name="name" data-parsley-trigger="change"
                                            required autocomplete="off"
                                            class="form-control">
-                                    <div class="text-danger">
-                                        Please provide a valid text.
+                                    <div class="text-danger" th:if="${errorName != null}" th:text="${errorName}">
                                     </div>
                                 </div>
 

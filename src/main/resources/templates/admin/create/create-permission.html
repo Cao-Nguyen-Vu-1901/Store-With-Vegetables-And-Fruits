@@ -61,10 +61,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputDescription">Tên quyền</label>
-                                    <input id="inputDescription" th:value="${permission == null  ? '' : permission.description}" type="text" name="description" data-parsley-trigger="change"
-                                           required=""  autocomplete="off"
-                                           class="form-control">
+                                    <label for="inputDescription">Mô tả</label>
+                                    <textarea class="form-control" name="description" id="inputDescription" cols="30" rows="10" th:text="${permission == null  ? '' : permission.description}">
+
+                                    </textarea>
+
 
                                 </div>
 

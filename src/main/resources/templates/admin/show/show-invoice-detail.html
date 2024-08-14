@@ -44,11 +44,15 @@
                     <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-header p-4">
-                                <p th:text="${ 'Trạng thái: ' + invoice.status }" class="pt-2 d-inline-block"></p>
+                                <div class="float-left">
+                                    <p class="mb-0" th:text="${ 'Trạng thái: ' + invoice.status }"></p>
+                                    <p th:if="${invoice.status == 'CANCEL'}" th:text="${'Ngày đặt: ' + invoice.cancelDate.toString()}"></p>
+                                </div>
+
 
                                 <div class="float-right">
                                     <h3 class="mb-0">Hoá đơn </h3>
-                                    <p th:text="${invoice.orderDate}"></p>
+                                    <p th:text="${'Ngày huỷ: ' + invoice.orderDate.toString()}"></p>
                                 </div>
                             </div>
                             <div class="card-body">

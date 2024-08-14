@@ -1,6 +1,7 @@
 package com.cuahangnongsan.controller.admin;
 
 
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.User;
@@ -76,12 +77,11 @@ public class InvoiceManageController {
 
     ///// End manage invoice /////
     @ModelAttribute
-    public void commonUser(Principal p, Model m, HttpSession session) {
+    public void commonUser(Principal p, Model m ) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null){
-                session.setAttribute("user", user);
                 m.addAttribute("user", user);
             }
 

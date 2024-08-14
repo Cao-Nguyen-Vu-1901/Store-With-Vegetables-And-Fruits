@@ -2,6 +2,8 @@ package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.config.firebase.FirebaseInitializer;
 import com.cuahangnongsan.constant.StringConstant;
+import com.cuahangnongsan.dto.request.UserUpdateRequest;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IProductService;
@@ -63,27 +65,11 @@ public class UserController {
 
     //    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
     @PostMapping("/change-information")
-    public String saveInformation(String name, String phoneNumber, String email,
-                                  MultipartFile image, Model model) throws IOException {
+    public String saveInformation(UserUpdateRequest request, ModelMap model) throws IOException {
         model.addAttribute("pageCurr", "");
-//        StringBuilder fileNames = new StringBuilder();
-//        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, image.getOriginalFilename());
-//        fileNames.append(image.getOriginalFilename());
-//        Files.write(fileNameAndPath, image.getBytes());
-
         User user = (User) model.getAttribute("user");
-        if(user != null){
-            String urlImage = upload(image, "users/");
-            if(urlImage != null){
-                user.setImage(urlImage);
-            }
-            user.setName(name);
-            user.setPhoneNumber(phoneNumber);
-            user.setEmail(email);
-            user.setRoles(new HashSet<>(roleService.findAllByName(StringConstant.ROLE_USER)));
-            userService.save(user);
-        }
-
+        model.remove("user");
+        model.addAttribute("user", userService.updateInformation(request, user,model));
         return "web/change-information";
     }
 
@@ -99,32 +85,17 @@ public class UserController {
     public String savePassword(ModelMap model, String oldPassword, String newPassword,
                                String reNewPassword) {
         model.addAttribute("pageCurr", "");
+        model.remove("user");
+        model.addAttribute("user", userService.updatePassword(oldPassword,newPassword,
+                reNewPassword, (User) model.getAttribute("user"),model));
 
-        User user = (User) model.getAttribute("user");
-        if (!newPassword.equals(reNewPassword) || user == null) {
-            model.addAttribute("error", "Mật khẩu nhập lại không đúng!");
-        } else if (passwordEncoder.matches(oldPassword,user.getPassword())) {
-            if(!passwordEncoder.matches(newPassword,user.getPassword())){
-                user.setPassword(passwordEncoder.encode(newPassword));
-                userService.save(user);
-                model.addAttribute("success", "Đổi mật khẩu thành công!");
-            }else {
-                model.addAttribute("error", "Mật khẩu cũ và mật khẩu mới không được trùng nhau!");
-            }
-
-        } else {
-            model.addAttribute("error", "Mật khẩu cũ không đúng!");
-
-        }
         return "web/change-password";
     }
-
-
     @ModelAttribute
     public void commonUser(Principal p, Model m) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null)
                 m.addAttribute("user", user);
         }

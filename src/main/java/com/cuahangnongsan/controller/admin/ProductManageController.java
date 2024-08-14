@@ -1,5 +1,7 @@
 package com.cuahangnongsan.controller.admin;
 
+import com.cuahangnongsan.dto.response.ProductResponse;
+import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.exception.StringException;
@@ -50,7 +52,7 @@ public class ProductManageController {
     public String manageProduct(ModelMap modelMap, String type, String value) {
 
 
-        List<Product> products = new ArrayList<>();
+        List<ProductResponse> products = new ArrayList<>();
         try {
             if (type != null && value != null) {
                 value = value.trim();
@@ -80,13 +82,13 @@ public class ProductManageController {
     @PostMapping("/manage-product")
     public String redirectActionManageProduct(ModelMap modelMap, String id, String action, RedirectAttributes redirectAttributes) {
         String urlRedirect = "";
-        Product product = productService.findById(id);
+        ProductResponse product = productService.findById(id);
         if (action.equals("edit")) {
             redirectAttributes.addFlashAttribute("product", product);
             redirectAttributes.addFlashAttribute("categories", categoryService.findAll());
             urlRedirect = "redirect:/admin/product/create-product";
         } else if (action.equals("delete")) {
-            productService.delete(product);
+            productService.deleteById(product.getId());
             urlRedirect = "redirect:/admin/product/manage-product";
         }
         return urlRedirect;
@@ -181,9 +183,8 @@ public class ProductManageController {
     public void commonUser(Principal p, Model m, HttpSession session) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null) {
-                session.setAttribute("user", user);
                 m.addAttribute("user", user);
             }
 

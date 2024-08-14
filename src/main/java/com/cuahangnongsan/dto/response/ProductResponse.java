@@ -2,6 +2,7 @@ package com.cuahangnongsan.dto.response;
 
 import com.cuahangnongsan.entity.Comment;
 import com.cuahangnongsan.entity.InvoiceDetail;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -41,6 +42,7 @@ public class ProductResponse{
 
     CategoryResponse category;
 
+    @JsonManagedReference(value = "product_json")
     List<Comment> comments = new ArrayList<>();
 
     List<InvoiceDetail> invoiceDetail = new ArrayList<>();
