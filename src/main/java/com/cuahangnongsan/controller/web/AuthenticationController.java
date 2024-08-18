@@ -1,25 +1,18 @@
 package com.cuahangnongsan.controller.web;
 
 
-import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.dto.request.UserRequest;
-import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.exception.AppException;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.security.Principal;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
 public class AuthenticationController {
 

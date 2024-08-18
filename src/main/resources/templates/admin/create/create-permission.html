@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/permission/manage-permission}" class="breadcrumb-link">Sản phẩm</a>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/permissions/manage-permissions}" class="breadcrumb-link">Sản phẩm</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin quyền</li>
                                 </ol>
@@ -50,7 +50,7 @@
                     <div class="card">
                         <h5 class="card-header">Chi tiết quyền</h5>
                         <div class="card-body">
-                            <form th:action="@{/admin/permission/save-permission}" method="post" id="basicform">
+                            <form th:action="@{/admin/permissions/save-permission}" method="post" id="basicform">
                                 <input th:if="${permission != null}" type="hidden" name="id" th:value="${permission.id}">
                                 <div class="form-group">
                                     <label for="inputName">Tên quyền</label>

@@ -1,8 +1,10 @@
 package com.cuahangnongsan.dto.response;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-public class InvoiceResponse  {
-
+public class InvoiceResponse {
 
     String id ;
 
@@ -22,7 +22,11 @@ public class InvoiceResponse  {
 
     String address;
 
-    List<InvoiceDetail> invoiceDetails = new ArrayList<>();
+    LocalDate orderDate;
+
+    LocalDate updateDate;
+
+    List<InvoiceDetailResponse> invoiceDetails = new ArrayList<>();
 
     UserResponse user;
 

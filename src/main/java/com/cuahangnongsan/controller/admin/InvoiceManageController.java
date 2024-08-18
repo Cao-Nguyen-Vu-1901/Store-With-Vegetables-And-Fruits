@@ -1,16 +1,14 @@
 package com.cuahangnongsan.controller.admin;
 
 
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.IInvoiceService;
 import com.cuahangnongsan.service.IUserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,9 +18,9 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
-@RequestMapping("/admin/invoice")
+@RequestMapping("/admin/invoices")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InvoiceManageController {
     @Autowired
@@ -32,7 +30,7 @@ public class InvoiceManageController {
     IUserService userService;
 
     ///// Begin show Invoice /////
-    @GetMapping({"/show-invoice/{id}" })
+    @GetMapping({"/show-invoices/{id}" })
     public String showInvoiceDetailWithId(ModelMap modelMap , @PathVariable String id){
         Invoice invoice = invoiceService.findById(id);
 
@@ -48,9 +46,20 @@ public class InvoiceManageController {
 
 
     @GetMapping("/show-invoices")
-    public String showAllInvoices(ModelMap modelMap, String type, String value){
+    public String showAllInvoices(ModelMap modelMap,
+                                  @RequestParam(defaultValue = "1") int page,
+                                  @RequestParam(defaultValue = "9") int size,
+                                  String type, String value){
+        Page<InvoiceResponse> invoicePage = invoiceService.invoicePaging(page, size, type,value);
 
-        modelMap.addAttribute("invoices", searchList(type,value));
+        modelMap.addAttribute("invoices", invoicePage.getContent());
+        modelMap.addAttribute("currentPage", invoicePage.getNumber() + 1);
+        modelMap.addAttribute("totalPages", invoicePage.getTotalPages());
+        modelMap.addAttribute("totalItems", invoicePage.getTotalElements());
+        modelMap.addAttribute("pageSize", size);
+        modelMap.addAttribute("type", type);
+        modelMap.addAttribute("value", value);
+
         return "admin/show/show-invoices";
     }
 
@@ -58,17 +67,17 @@ public class InvoiceManageController {
 
     ///// Begin manage invoice /////
 
-    @PostMapping("/manage-invoice")
+    @PostMapping("/manage-invoices")
     public String updateInvoice(ModelMap modelMap,  String status, String id){
         Invoice invoice = invoiceService.findById(id);
         if(invoice != null){
             invoice.setStatus(status);
-            invoice.setCancelDate(LocalDate.now());
+            invoice.setUpdateDate(LocalDate.now());
             invoiceService.save(invoice);
         }
-        return "redirect:/admin/invoice/manage-invoice";
+        return "redirect:/admin/invoices/manage-invoices";
     }
-    @GetMapping("/manage-invoice")
+    @GetMapping("/manage-invoices")
     public String showInvoicesWithStatus (ModelMap modelMap,  String status){
         modelMap.addAttribute("invoices", status == null ? invoiceService.findAll() : invoiceService.findAllByStatus(status));
         modelMap.addAttribute("status", status);

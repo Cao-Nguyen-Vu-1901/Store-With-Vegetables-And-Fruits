@@ -1,38 +1,26 @@
 package com.cuahangnongsan.dto.response;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostResponse {
+public class InvoiceDetailResponse {
+    String id ;
 
-    String id;
+    int quantity;
 
-    String title;
+    double price;
 
-    String content;
+    InvoiceResponse invoice;
 
-    LocalDateTime createdTime;
-
-    LocalDateTime modifiedTime;
-
-    String image;
-
-    String shortDescription;
-
-
-    UserResponse user;
-
+    ProductResponse product;
 
 
 }

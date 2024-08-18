@@ -1,13 +1,6 @@
 package com.cuahangnongsan.controller.web;
 
-import com.cuahangnongsan.dto.response.CategoryResponse;
-import com.cuahangnongsan.dto.response.ProductResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Post;
-import com.cuahangnongsan.entity.Product;
-import com.cuahangnongsan.entity.User;
-import com.cuahangnongsan.mapper.ProductMapper;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IPostService;
 import com.cuahangnongsan.service.IProductService;
@@ -18,8 +11,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,13 +19,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HomeController {
@@ -51,8 +40,6 @@ public class HomeController {
     @Autowired
     ICategoryService categoryService;
 
-    @Autowired
-    ProductMapper productMapper;
 
     @GetMapping({"/", "/home"})
     public String homePage(ModelMap model) {

@@ -1,14 +1,15 @@
 package com.cuahangnongsan.mapper;
 
-import com.cuahangnongsan.entity.Category;
-import com.cuahangnongsan.dto.request.CategoryRequest;
-import com.cuahangnongsan.dto.response.CategoryResponse;
+import com.cuahangnongsan.dto.request.InvoiceRequest;
+import com.cuahangnongsan.entity.Invoice;
 import org.mapstruct.Mapper;
-
+import com.cuahangnongsan.dto.response.*;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface InvoiceMapper {
-    Category toCategory(CategoryRequest request);
+    Invoice toInvoice(InvoiceRequest request);
 
-    CategoryResponse toCategoryResponse (Category category);
+    @Mapping(target = "invoiceDetails", ignore = true)
+    InvoiceResponse toInvoiceResponse (Invoice invoice);
 }

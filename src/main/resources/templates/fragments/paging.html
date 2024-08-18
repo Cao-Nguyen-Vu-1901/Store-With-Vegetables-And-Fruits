@@ -1,5 +1,6 @@
 <a th:fragment="paging(pageNum, label, tooltip)" class="page-link"
-  th:href="@{'/shop?' + ${condition!=null && condition!=''? 'condition=' + condition + '&' : ''} + 'page=' + ${pageNum} + '&size=' + ${pageSize}
+  th:href="@{'/shop?' + ${condition!=null && condition!=''? 'condition=' + condition + '&' : ''}
+          + 'page=' + ${pageNum} + '&size=' + ${pageSize}
           + ${sortField!=null && sortField!=''? 'sortField=' + sortField + '&' : ''}
           + ${sortDirection!=null && sortDirection!=''? 'sortDirection=' + sortDirection + '&' : ''}
           + ${category!=null && category!=''? 'category=' + category + '&' : ''}

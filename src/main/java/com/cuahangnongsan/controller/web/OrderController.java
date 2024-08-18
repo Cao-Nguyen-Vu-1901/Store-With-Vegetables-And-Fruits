@@ -1,8 +1,6 @@
 package com.cuahangnongsan.controller.web;
 
 import com.cuahangnongsan.constant.StringConstant;
-import com.cuahangnongsan.dto.response.ProductResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.Product;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
@@ -166,7 +164,7 @@ public class OrderController {
         Invoice invoice = invoiceService.findById(invoiceId);
         if(invoice != null){
             invoice.setStatus(StringConstant.STATUS_ORDER_CANCEL);
-            invoice.setCancelDate(LocalDate.now());
+            invoice.setUpdateDate(LocalDate.now());
             invoiceService.save(invoice);
         }
         return "redirect:/user/orders";

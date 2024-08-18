@@ -1,7 +1,5 @@
 package com.cuahangnongsan.service.imp;
 
-import com.cuahangnongsan.dto.response.PermissionResponse;
-import com.cuahangnongsan.dto.response.RoleResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.exception.AppException;
@@ -14,14 +12,13 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.cuahangnongsan.dto.response.*;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleServiceImpl implements IRoleService {

@@ -32,9 +32,13 @@ public class Test {
 //                + period.getDays() + " ngày.");
 //
 //        System.out.println("hi" + today.until(someDate).getDays());
-        String dn = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"));
-        LocalDateTime d = LocalDateTime.parse(dn);
-        System.out.println(d);
+//        String dn = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"));
+//        LocalDateTime d = LocalDateTime.parse(dn);
+//        System.out.println(d);
+
+        System.out.println(LocalDate.now().getMonthValue() + " - " + LocalDate.now().getYear());
+        System.out.println(LocalDate.parse("2024-08-23"));
+
     }
 
 }

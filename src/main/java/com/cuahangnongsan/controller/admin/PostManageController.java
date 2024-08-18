@@ -2,17 +2,10 @@ package com.cuahangnongsan.controller.admin;
 
 
 import com.cuahangnongsan.dto.request.PostRequest;
-import com.cuahangnongsan.dto.response.PostResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.Category;
 import com.cuahangnongsan.entity.Post;
-import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
-import com.cuahangnongsan.mapper.PostMapper;
-import com.cuahangnongsan.repository.UserRepository;
 import com.cuahangnongsan.service.IPostService;
 import com.cuahangnongsan.service.IUserService;
-import com.cuahangnongsan.util.ProcessImage;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -29,16 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.awt.image.ImagingOpException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.UUID;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
-@RequestMapping("/admin/post")
+@RequestMapping("/admin/posts")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostManageController {
 
@@ -50,22 +37,22 @@ public class PostManageController {
 
 
 
-    @GetMapping("/manage-post")
+    @GetMapping("/manage-posts")
     public String showPost(ModelMap modelMap){
         modelMap.addAttribute("posts", postService.findAll());
         return "admin/manage/manage-post";
     }
 
-    @PostMapping("/manage-post")
+    @PostMapping("/manage-posts")
     public String managePost(ModelMap modelMap, String action, String id,
                              RedirectAttributes redirectAttributes){
         Post post = id != null ? postService.findById(id) : null;
         if(action.equals("delete")){
             postService.delete(post);
-            return "redirect:/admin/post/manage-post";
+            return "redirect:/admin/posts/manage-posts";
         }else {
             redirectAttributes.addFlashAttribute("post", post);
-            return "redirect:/admin/post/create-post" ;
+            return "redirect:/admin/posts/create-post" ;
         }
     }
 
@@ -120,10 +107,10 @@ public class PostManageController {
         try {
             postService.save(id, image, request, redirectAttributes, (User) modelMap.getAttribute("user"));
         } catch (IOException | ImagingOpException e) {
-            return "redirect:/admin/post/create-post" ;
+            return "redirect:/admin/posts/create-post" ;
         }
 
-        return "redirect:/admin/post/create-post" ;
+        return "redirect:/admin/posts/create-post" ;
     }
 
     @ModelAttribute

@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/category/manage-category}" class="breadcrumb-link">Danh sách danh mục</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/categories/manage-categories}" class="breadcrumb-link">Danh sách danh mục</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Quản lý</li>
                                 </ol>
                             </nav>
@@ -50,7 +50,7 @@
                     <div class="card">
                         <h5 class="card-header">Thông tin danh mục</h5>
                         <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/category/manage-category}">
+                            <form class="needs-validation" method="get" th:action="@{/admin/categories/manage-categories}">
                                 <div class="form-row">
                                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                         <select class="form-control" name="type">
@@ -84,7 +84,7 @@
                                     <td th:text="${item.code}"></td>
                                     <td th:text="${item.products.size()}"></td>
                                     <td>
-                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/category/manage-category}" method="post">
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/categories/manage-categories}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
                                             <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
                                             <button type="submit" class="btn btn-sm btn-primary">Edit</button>

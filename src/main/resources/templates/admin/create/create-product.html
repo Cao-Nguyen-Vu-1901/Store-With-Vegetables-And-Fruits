@@ -28,7 +28,7 @@
             <div class="page-breadcrumb">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}" class="breadcrumb-link">Sản phẩm</a>
+                  <li class="breadcrumb-item"><a th:href="@{/admin/products/manage-products}" class="breadcrumb-link">Sản phẩm</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">Thông tin sản phẩm</li>
                 </ol>
@@ -50,7 +50,7 @@
           <div class="card">
             <h5 class="card-header">Chi tiết sản phẩm</h5>
             <div class="card-body">
-              <form th:action="@{/admin/product/save-product}" method="post" id="basicform" enctype="multipart/form-data">
+              <form th:action="@{/admin/products/save-product}" method="post" id="basicform" enctype="multipart/form-data">
                   <input th:if="${product != null && product.id != null}" type="hidden" name="id" th:value="${product.id}">
                 <div class="form-group">
                   <label for="inputUserName">Tên sản phẩm</label>

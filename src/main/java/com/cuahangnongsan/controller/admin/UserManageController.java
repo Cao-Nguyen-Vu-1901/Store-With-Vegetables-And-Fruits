@@ -1,39 +1,29 @@
 package com.cuahangnongsan.controller.admin;
 
-import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.dto.request.AdminUserCreationRequest;
-import com.cuahangnongsan.dto.response.PermissionResponse;
-import com.cuahangnongsan.dto.response.RoleResponse;
 import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.entity.Role;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.exception.AppException;
 import com.cuahangnongsan.service.IPermissionService;
 import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
-import com.cuahangnongsan.util.ProcessImage;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.*;
 
 @Controller
-@RequestMapping("/admin/user")
+@RequestMapping("/admin/users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserManageController {
     @Autowired
@@ -48,16 +38,27 @@ public class UserManageController {
 
     ///// Start Manage User /////
 
-    @GetMapping("/manage-user")
-    public String showUsers(ModelMap modelMap, String type, String value, String role) {
-        userService.showAndSearchUser(modelMap, type, value, role);
+    @GetMapping("/manage-users")
+    public String showUsers(ModelMap modelMap, @RequestParam(defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "9") int pageSize, String type, String value, String role) {
+
+        Page<UserResponse> userPaging =  userService.showAndSearchUser(page,pageSize,type,value,role);
+
+        modelMap.addAttribute("role", role);
+        modelMap.addAttribute("totalPages", userPaging.getTotalPages());
+        modelMap.addAttribute("totalItems", userPaging.getTotalElements());
+        modelMap.addAttribute("currentPage", userPaging.getNumber() + 1);
+        modelMap.addAttribute("pageSize", pageSize);
+        modelMap.addAttribute("type", type);
+        modelMap.addAttribute("value", value);
+        modelMap.addAttribute("users",userPaging.getContent());
         return "admin/manage/manage-user";
     }
 
-    @PostMapping("/manage-user")
+    @PostMapping("/manage-users")
     public String manageUser(ModelMap modelMap,String id) {
         modelMap.addAttribute("user", userService.updateStatusUser(id));
-        return "redirect:/admin/user/manage-user";
+        return "redirect:/admin/users/manage-users";
     }
 
     ///// End Manage User /////
@@ -135,11 +136,11 @@ public class UserManageController {
         try {
             userService.adminSave(roles, request, permissions,redirectAttributes);
         }catch (IOException | AppException e){
-            return "redirect:/admin/user/create-user";
+            return "redirect:/admin/users/create-user";
         }
 
 
-        return "redirect:/admin/user/create-user";
+        return "redirect:/admin/users/create-user";
     }
 
     ///// End Create User /////

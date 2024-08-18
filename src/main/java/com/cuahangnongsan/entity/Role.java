@@ -25,8 +25,6 @@ public class Role implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Permission> permissions = new HashSet<>();
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
-    Set<User> users = new HashSet<>();
 
 
 }

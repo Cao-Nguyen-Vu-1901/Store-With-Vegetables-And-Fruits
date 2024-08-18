@@ -5,7 +5,6 @@ import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.exception.StringException;
 import com.cuahangnongsan.mapper.ProductMapper;
 import com.cuahangnongsan.dto.request.ProductRequest;
-import com.cuahangnongsan.dto.response.ProductResponse;
 import com.cuahangnongsan.repository.ProductRepository;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IProductService;
@@ -27,7 +26,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
+import com.cuahangnongsan.dto.response.*;
 @Service
 public class ProductServiceImpl implements IProductService {
 
@@ -150,60 +149,15 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductResponse> findAllByPrice(BigDecimal price) {
-        return productRepository.findAllByPrice(price)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
+    public int findAllByCreatedDate(LocalDate date) {
+        return productRepository.findAllByCreatedDate(date).size();
     }
 
     @Override
-    public List<ProductResponse> findAllByDiscountPrice(BigDecimal discount) {
-        return productRepository.findAllByDiscountPrice(discount)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
+    public int findAllByMonthYear(int month, int year) {
+        return productRepository.findAllByMonthYear(month, year).size();
     }
 
-    @Override
-    public List<ProductResponse> findAllByUnit(String unit) {
-        return productRepository.findAllByUnit(unit)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByDescriptionLike(String description) {
-        return productRepository.findAllByDescriptionLike(description)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByQuantity(int quantity) {
-        return productRepository.findAllByQuantity(quantity)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByRemaningQuantity(int remaningQuantity) {
-        return productRepository.findAllByRemaningQuantity(remaningQuantity)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByCreatedDate(LocalDate date) {
-        return productRepository.findAllByCreatedDate(date)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByModifiedDate(LocalDate date) {
-        return productRepository.findAllByModifiedDate(date)
-                .stream().map(productMapper::toProductResponse)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public ProductResponse findById(String id) {
@@ -272,12 +226,48 @@ public class ProductServiceImpl implements IProductService {
                     new BigDecimal(priceMax), pageable)
                     .map(productMapper::toProductResponse);
         }else if (name != null ) {
-            return productRepository.findByNameLike("%" + name + "%", pageable)
+            return productRepository.findAllByNameLike("%" + name + "%", pageable)
                     .map(productMapper::toProductResponse)
                     ;
         } else {
             return productRepository.findAll(pageable).map(productMapper::toProductResponse);
         }
+
+    }
+
+    @Override
+    public Page<ProductResponse> findPaginatedManage(int pageNo, int pageSize, String type, String value) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        Page<ProductResponse> productResponses = null;
+        try{
+
+            productResponses = switch (type) {
+                case "name" -> productRepository.findAllByNameLike("%" + value + "%", pageable)
+                        .map(productMapper::toProductResponse);
+                case "category" -> productRepository.findAllByCategoryNameLike("%" + value + "%", pageable)
+                        .map(productMapper::toProductResponse);
+                case "price" -> productRepository.findAllByPriceLessThan(new BigDecimal(value), pageable)
+                        .map(productMapper::toProductResponse);
+                case "discount-price" -> productRepository.findAllByDiscountPriceLessThan(new BigDecimal(value), pageable)
+                        .map(productMapper::toProductResponse);
+                case "unit" -> productRepository.findAllByUnit(value, pageable)
+                        .map(productMapper::toProductResponse);
+                case "quantity" -> productRepository.findAllByQuantityLessThan(Integer.parseInt(value), pageable)
+                        .map(productMapper::toProductResponse);
+                case "remaining-quantity" -> productRepository.findAllByRemaningQuantityLessThan(Integer.parseInt(value), pageable)
+                        .map(productMapper::toProductResponse);
+                case "description" -> productRepository.findAllByDescriptionLike("%" + value + "%", pageable)
+                        .map(productMapper::toProductResponse);
+                case "created-date" -> productRepository.findAllByCreatedDate(LocalDate.parse(value), pageable)
+                        .map(productMapper::toProductResponse);
+                case "modified-date" -> productRepository.findAllByModifiedDate(LocalDate.parse(value), pageable)
+                        .map(productMapper::toProductResponse);
+                default -> productRepository.findAll(pageable).map(productMapper::toProductResponse);
+            };
+        }catch (Exception e){
+            return productRepository.findAll(pageable).map(productMapper::toProductResponse);
+        }
+        return productResponses;
 
     }
 

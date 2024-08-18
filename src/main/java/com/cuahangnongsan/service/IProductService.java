@@ -1,6 +1,5 @@
 package com.cuahangnongsan.service;
 
-import com.cuahangnongsan.dto.response.ProductResponse;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.dto.request.ProductRequest;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 
 public interface IProductService {
 
@@ -24,6 +23,7 @@ public interface IProductService {
     Page<ProductResponse> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
     Page<ProductResponse> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection,
                                String category, String priceMin, String priceMax);
+    Page<ProductResponse> findPaginatedManage(int pageNo, int pageSize, String type, String value);
 
     Page<ProductResponse> findAllByCate(Pageable pageable, String id);
     List<ProductResponse> findAllByNameLikeButCurrent(String name, String id);
@@ -34,14 +34,9 @@ public interface IProductService {
                      MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes) throws IOException;
 
     List<ProductResponse> findAllByNameLike(String name);
-    List<ProductResponse> findAllByPrice(BigDecimal price);
-    List<ProductResponse> findAllByDiscountPrice(BigDecimal discount);
-    List<ProductResponse> findAllByUnit(String unit);
-    List<ProductResponse> findAllByDescriptionLike(String description);
-    List<ProductResponse> findAllByQuantity(int quantity);
-    List<ProductResponse> findAllByRemaningQuantity(int remaningQuantity);
-    List<ProductResponse> findAllByCreatedDate(LocalDate date);
-    List<ProductResponse> findAllByModifiedDate(LocalDate date);
+
+    int findAllByCreatedDate(LocalDate date);
+    int findAllByMonthYear(int month, int year);
 
 
 }

@@ -1,11 +1,5 @@
 package com.cuahangnongsan.controller.admin;
 
-import com.cuahangnongsan.dto.response.CommentResponse;
-import com.cuahangnongsan.dto.response.ProductResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.Comment;
-import com.cuahangnongsan.entity.Product;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICommentService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
@@ -25,9 +19,9 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
-@RequestMapping("/admin/comment")
+@RequestMapping("/admin/comments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentManageController {
 
@@ -39,7 +33,7 @@ public class CommentManageController {
 
     @Autowired
     IUserService userService;
-    @GetMapping("/manage-comment")
+    @GetMapping("/manage-comments")
     public String showComments(ModelMap modelMap, String value, String type){
 
         List<CommentResponse> comments;
@@ -73,7 +67,7 @@ public class CommentManageController {
     public String deleteComment(ModelMap modelMap, Long id){
         CommentResponse comment = commentService.findById(id);
         commentService.deleteById(comment.getId());
-        return "redirect:/admin/comment/manage-comment";
+        return "redirect:/admin/comments/manage-comments";
     }
 
     @ModelAttribute

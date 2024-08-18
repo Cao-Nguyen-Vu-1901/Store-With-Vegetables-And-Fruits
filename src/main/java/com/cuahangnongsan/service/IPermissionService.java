@@ -1,12 +1,9 @@
 package com.cuahangnongsan.service;
 
-import com.cuahangnongsan.dto.response.PermissionResponse;
 import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.entity.Role;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 public interface IPermissionService {
     List<PermissionResponse> findAll();
 

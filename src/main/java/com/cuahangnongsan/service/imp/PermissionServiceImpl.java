@@ -1,8 +1,6 @@
 package com.cuahangnongsan.service.imp;
 
-import com.cuahangnongsan.dto.response.PermissionResponse;
 import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.mapper.PermissionMapper;
 import com.cuahangnongsan.repository.PermissionRepository;
 import com.cuahangnongsan.service.IPermissionService;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import com.cuahangnongsan.dto.response.*;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PermissionServiceImpl implements IPermissionService {

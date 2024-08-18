@@ -1,5 +1,8 @@
 package com.cuahangnongsan.dto.response;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,12 +11,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class PermissionResponse {
 
-    String id;
 
-    String name;
+     String id;
+     String name;
 
-    String description;
+
 }
