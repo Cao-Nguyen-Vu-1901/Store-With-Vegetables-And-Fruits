@@ -29,7 +29,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/permission/manage-permission}" class="breadcrumb-link">Quyền</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/permissions/manage-permissions}" class="breadcrumb-link">Quyền</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
@@ -51,7 +51,7 @@
                     <div class="card">
                         <h5 class="card-header">Danh sách quyền</h5>
                         <div class="card-body">
-                        <form class="needs-validation" method="get" th:action="@{/admin/permission/manage-permission}">
+                        <form class="needs-validation" method="get" th:action="@{/admin/permissions/manage-permissions}">
                             <div class="form-row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                     <input type="text" class="form-control" name="value"
@@ -76,7 +76,7 @@
                                     <th th:text="${item.name}" scope="row"></th>
 
                                     <td>
-                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/permission/manage-permission}" method="post">
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/permissions/manage-permissions}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
                                             <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
                                             <button type="submit" class="btn btn-sm btn-primary">Edit</button>

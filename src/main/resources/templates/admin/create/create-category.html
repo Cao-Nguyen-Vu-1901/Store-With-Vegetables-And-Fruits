@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/permission/manage-permission}" class="breadcrumb-link">Danh mục</a>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/permissions/manage-permissions}" class="breadcrumb-link">Danh mục</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin danh mục</li>
                                 </ol>
@@ -50,7 +50,7 @@
                     <div class="card">
                         <h5 class="card-header">Chi tiết danh mục</h5>
                         <div class="card-body">
-                            <form th:action="@{/admin/category/save-category}" method="post" id="basicform">
+                            <form th:action="@{/admin/categories/save-category}" method="post" id="basicform">
                                 <input th:if="${category != null}" type="hidden" name="id" th:value="${category.id}">
                                 <div class="form-group">
                                     <label for="inputName">Tên danh mục</label>

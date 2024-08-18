@@ -1,36 +1,18 @@
 package com.cuahangnongsan.controller.web;
 
-import com.cuahangnongsan.config.firebase.FirebaseInitializer;
-import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.dto.request.UserUpdateRequest;
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.User;
-import com.cuahangnongsan.service.ICategoryService;
-import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
-import com.cuahangnongsan.util.ProcessImage;
-import com.google.cloud.storage.*;
-import com.google.firebase.cloud.StorageClient;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.ByteArrayOutputStream;
+import com.cuahangnongsan.dto.response.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.HashSet;
-
-import static com.cuahangnongsan.util.ProcessImage.reduceSize;
-import static com.cuahangnongsan.util.ProcessImage.upload;
 
 @Controller
 @RequestMapping("/user")

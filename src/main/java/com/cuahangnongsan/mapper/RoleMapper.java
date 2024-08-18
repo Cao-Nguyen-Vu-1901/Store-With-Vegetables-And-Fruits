@@ -2,10 +2,9 @@ package com.cuahangnongsan.mapper;
 
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.dto.request.RoleRequest;
-import com.cuahangnongsan.dto.response.RoleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
+import com.cuahangnongsan.dto.response.*;
 @Mapper
 public interface RoleMapper {
 

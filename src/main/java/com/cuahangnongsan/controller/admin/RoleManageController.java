@@ -1,12 +1,6 @@
 package com.cuahangnongsan.controller.admin;
 
 
-import com.cuahangnongsan.dto.response.PermissionResponse;
-import com.cuahangnongsan.dto.response.RoleResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.entity.Role;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.exception.AppException;
 import com.cuahangnongsan.service.IPermissionService;
 import com.cuahangnongsan.service.IRoleService;
@@ -22,13 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
-@RequestMapping("/admin/role")
+@RequestMapping("/admin/roles")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleManageController {
     @Autowired
@@ -40,7 +31,7 @@ public class RoleManageController {
     @Autowired
     IPermissionService permissionService;
 
-    @GetMapping("/manage-role")
+    @GetMapping("/manage-roles")
     public String manageRoles(ModelMap modelMap, String value) {
         modelMap.addAttribute("roles",
                 value == null
@@ -49,21 +40,21 @@ public class RoleManageController {
         return "admin/manage/manage-role";
     }
 
-    @PostMapping("/manage-role")
+    @PostMapping("/manage-roles")
     public String editRoles(ModelMap modelMap, String id, String action, RedirectAttributes redirectAttributes) {
         RoleResponse role = roleService.findById(id);
         if (action.equals("edit")) {
             redirectAttributes.addFlashAttribute("role", role);
-            return "redirect:/admin/role/create-role";
+            return "redirect:/admin/roles/create-role";
         }
-        return "redirect:/admin/role/manage-role";
+        return "redirect:/admin/roles/manage-roles";
     }
 
-    @PostMapping("/manage-role-permission")
+    @PostMapping("/manage-role-permissions")
     public String updateRole(String id
             , @RequestParam(value = "permissions[]", required = false) List<String> permissions) {
         roleService.update(id, permissions);
-        return "redirect:/admin/role/manage-role";
+        return "redirect:/admin/roles/manage-roles";
     }
 
     @PostMapping("/save-role")
@@ -75,9 +66,9 @@ public class RoleManageController {
         }catch (AppException e){
             model.addFlashAttribute("errorName", "Tên đã tồn tại!");
             model.addFlashAttribute("role", RoleResponse.builder().name(name).build());
-            return "redirect:/admin/role/create-role";
+            return "redirect:/admin/roles/create-role";
         }
-        return "redirect:/admin/role/create-role";
+        return "redirect:/admin/roles/create-role";
     }
 
     @GetMapping("/create-role")

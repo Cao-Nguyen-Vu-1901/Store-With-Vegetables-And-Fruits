@@ -28,7 +28,8 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/invoice/show-invoice}" class="breadcrumb-link">Hoá đơn đặt hàng</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/invoice/show-invoice}"
+                                                                   class="breadcrumb-link">Hoá đơn đặt hàng</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin hoá đơn</li>
                                 </ol>
                             </nav>
@@ -50,7 +51,7 @@
                     <div class="card">
                         <h5 class="card-header">Danh sách hoá đơn</h5>
                         <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/invoice/show-invoice}">
+                            <form class="needs-validation" method="get" th:action="@{/admin/invoices/show-invoicess}">
                                 <div class="form-row">
                                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                         <select class="form-control" name="type">
@@ -78,7 +79,7 @@
                                 <tr>
                                     <th scope="col">Ngày tạo</th>
                                     <th scope="col">Trạng thái</th>
-                                    <th scope="col">Ngày huỷ</th>
+                                    <th scope="col">Ngày cập nhật</th>
                                     <th scope="col">Địa chỉ</th>
                                     <th scope="col">Người đặt</th>
                                     <th scope="col">Số điện thoại</th>
@@ -89,12 +90,13 @@
                                 <tr th:each=" item : ${invoices}">
                                     <th th:text="${item.orderDate}" scope="row"></th>
                                     <td th:text="${item.status}"></td>
-                                    <td th:text="${item.cancelDate}"></td>
+                                    <td th:text="${item.updateDate}"></td>
                                     <td th:text="${item.address}"></td>
                                     <td th:text="${item.user.name}"></td>
                                     <td th:text="${item.user.phoneNumber}"></td>
                                     <td>
-                                        <a th:href="@{'/admin/invoice/show-invoice/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                        <a th:href="@{'/admin/invoices/show-invoices/' + ${item.id}}"
+                                           class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
@@ -109,7 +111,46 @@
                 <!-- end striped table -->
                 <!-- ============================================================== -->
             </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info" role="status" th:text="${'Tổng ' + currentPage + ' trên ' + totalPages}">
 
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers">
+                        <ul class="pagination">
+                            <li class="paginate_button page-item"
+                                th:classappend="${currentPage == 1 ? 'disabled' : 'previous'}">
+                                <a th:replace="fragments/adminInvoicePaging :: adminInvoicePaging(1, '<<', 'First Page')"
+                                   class="page-link"></a>
+                            </li>
+                            <li class="paginate_button page-item" th:classappend="${currentPage == 1 ? 'disabled' : 'previous'}">
+                                <a th:replace="fragments/adminInvoicePaging :: adminInvoicePaging(${currentPage - 1}, '<', 'Previous')" class="page-link"></a></li>
+                            <li class="paginate_button page-item" th:if="${currentPage - 2 > 1}">
+                                <a class="page-link">...</a>
+                            </li>
+                            <li class="paginate_button page-item"
+                                th:classappend="${ page==currentPage ? 'active' : ''}"
+                                th:each="page : ${#numbers.sequence(currentPage - 2 > 1 ? currentPage - 2 : 1,
+                                                                     currentPage + 2 < totalPages ? currentPage + 2 : totalPages )}">
+                                <a th:replace="fragments/adminInvoicePaging :: adminInvoicePaging(${page}, ${page}, 'Page '+ ${page})" class="page-link"></a>
+                            </li>
+                            <li class="paginate_button page-item" th:if="${currentPage + 2 < totalPages}">
+                                <a class="page-link">...</a>
+                            </li>
+                            <li class="paginate_button page-item"
+                                th:classappend="${currentPage + 2 < totalPages  ? 'next' : 'disabled'}">
+                                <a th:replace="fragments/adminInvoicePaging :: adminInvoicePaging(${currentPage + 1}, '>', 'Next')" class="page-link"></a>
+                            </li>
+                            <li class="paginate_button page-item"
+                                th:classappend="${currentPage + 2 < totalPages ? 'next' : 'disabled'}">
+                                <a th:replace="fragments/adminInvoicePaging :: adminInvoicePaging(${totalPages}, '>>', 'Last Page')" class="page-link"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <!-- ============================================================== -->

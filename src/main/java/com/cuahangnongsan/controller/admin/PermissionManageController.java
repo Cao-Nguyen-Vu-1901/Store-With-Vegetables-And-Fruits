@@ -1,17 +1,11 @@
 package com.cuahangnongsan.controller.admin;
 
-
+import com.cuahangnongsan.dto.response.*;
 import com.cuahangnongsan.dto.request.PermissionRequest;
-import com.cuahangnongsan.dto.response.PermissionResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Permission;
-import com.cuahangnongsan.entity.Role;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.mapper.PermissionMapper;
 import com.cuahangnongsan.service.IPermissionService;
-import com.cuahangnongsan.service.IRoleService;
 import com.cuahangnongsan.service.IUserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
-@RequestMapping("/admin/permission")
+@RequestMapping("/admin/permissions")
 public class PermissionManageController {
 
     @Autowired
@@ -38,18 +31,18 @@ public class PermissionManageController {
     @Autowired
     PermissionMapper permissionMapper;
 
-    @GetMapping("/manage-permission")
+    @GetMapping("/manage-permissions")
     public String showPermissions(ModelMap modelMap){
         modelMap.addAttribute("permissions", permissionService.findAll());
         return "admin/manage/manage-permission";
     }
-    @PostMapping("/manage-permission")
+    @PostMapping("/manage-permissions")
     public String managePermissions(String action, String id,
                                     RedirectAttributes redirectAttributes){
         if(action.equals("edit")){
             redirectAttributes.addFlashAttribute("permission",(PermissionResponse) permissionService.findById(id));
         }
-        return "redirect:/admin/permission/create-permission";
+        return "redirect:/admin/permissions/create-permission";
     }
 
     @PostMapping("/save-permission")
@@ -66,7 +59,7 @@ public class PermissionManageController {
             redirectAttributes.addFlashAttribute("permission", exist);
         }
         permissionService.save(permission);
-        return "redirect:/admin/permission/create-permission";
+        return "redirect:/admin/permissions/create-permission";
     }
 
     @GetMapping("/create-permission")

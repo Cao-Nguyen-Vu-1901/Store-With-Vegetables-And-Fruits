@@ -1,0 +1,11 @@
+
+<a th:fragment="adminUserPaging(pageNum, label, tooltip)"
+   th:href="@{'/admin/users/manage-users?' + 'page=' + ${pageNum}
+               + '&size='+ ${pageSize}
+               + ${role != null ? '&role='+ role : ''}
+               + ${type != null ? '&type='+ type : ''}
+               + ${value!= null ? '&value=' + value : '' }
+                } "
+  class="page-link" th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>

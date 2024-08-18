@@ -87,7 +87,7 @@
                                                 <div class="d-flex justify-content-between fruite-name">
                                                     <a th:text="${item.name}" th:href="@{'/shop?category='+${item.id}}"><i
                                                             class="fas fa-apple-alt me-2"></i></a>
-                                                    <span th:text="${'('+item.products.size()+')'}"></span>
+<!--                                                    <span th:text="${'('+item.products.size()+')'}"></span>-->
                                                 </div>
                                             </li>
 
@@ -218,7 +218,8 @@
                                                     <a class="page-link" href="#">...</a>
                                                 </li>
                                                 <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
-                                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1,
+                                                                currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
                                                     <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
                                                 </li>
                                                 <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">

@@ -3,7 +3,6 @@ package com.cuahangnongsan.controller.admin;
 import com.cuahangnongsan.dto.request.CategoryRequest;
 import com.cuahangnongsan.dto.response.CategoryResponse;
 import com.cuahangnongsan.dto.response.UserResponse;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.mapper.CategoryMapper;
 import com.cuahangnongsan.service.ICategoryService;
 import com.cuahangnongsan.service.IUserService;
@@ -24,7 +23,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/category")
+@RequestMapping("/admin/categories")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryManageController {
 
@@ -37,7 +36,7 @@ public class CategoryManageController {
     @Autowired
     CategoryMapper categoryMapper;
 
-    @GetMapping("/manage-category")
+    @GetMapping("/manage-categories")
     public String showViewManage(ModelMap modelMap ,String type, String value){
         List<CategoryResponse> categories =
                 type != null && type.equals("code")
@@ -48,16 +47,16 @@ public class CategoryManageController {
         modelMap.addAttribute("categories", categories);
         return "admin/manage/manage-category";
     }
-    @PostMapping("/manage-category")
+    @PostMapping("/manage-categories")
     public String manageCategory(ModelMap modelMap , String id, String action, RedirectAttributes redirectAttributes){
         CategoryResponse category = categoryService.findByIdCategoryResponse(id);
         if(action.equals("edit")){
             redirectAttributes.addFlashAttribute("category", category);
-            return "redirect:/admin/category/create-category";
+            return "redirect:/admin/categories/create-category";
         }else if(action.equals("delete")){
             categoryService.deleteById(category.getId());
         }
-        return "redirect:/admin/category/manage-category";
+        return "redirect:/admin/categories/manage-categories";
     }
     @GetMapping("/create-category")
     public String showViewCreate(ModelMap modelMap){
@@ -67,7 +66,7 @@ public class CategoryManageController {
     @PostMapping("/save-category")
     public String saveCategory(String id, CategoryRequest request, RedirectAttributes redirectAttributes){
         categoryService.save(id, request, redirectAttributes);
-        return "redirect:/admin/category/create-category";
+        return "redirect:/admin/categories/create-category";
     }
 
     @ModelAttribute

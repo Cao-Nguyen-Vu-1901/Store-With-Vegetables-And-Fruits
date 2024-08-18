@@ -1,8 +1,9 @@
 package com.cuahangnongsan.dto.response;
 
-import com.cuahangnongsan.entity.Comment;
-import com.cuahangnongsan.entity.InvoiceDetail;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,12 +12,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Data
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse{
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ProductResponse {
+
 
     String id ;
 
@@ -42,8 +45,8 @@ public class ProductResponse{
 
     CategoryResponse category;
 
-    @JsonManagedReference(value = "product_json")
-    List<Comment> comments = new ArrayList<>();
+    List<InvoiceDetailResponse> invoiceDetail = new ArrayList<>();
 
-    List<InvoiceDetail> invoiceDetail = new ArrayList<>();
+    List<CommentResponse> comments  = new ArrayList<>();
+
 }

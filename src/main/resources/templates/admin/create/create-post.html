@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/post/manage-post}"
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/posts/manage-posts}"
                                                                    class="breadcrumb-link">Danh sách bài đăng</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
@@ -51,7 +51,7 @@
                     <div class="card">
                         <h5 class="card-header">Chi tiết bài viết</h5>
                         <div class="card-body">
-                            <form th:action="@{/admin/post/update-post}" enctype="multipart/form-data" id="basicform" method="post">
+                            <form th:action="@{/admin/posts/update-post}" enctype="multipart/form-data" id="basicform" method="post">
                                 <input th:if="${post != null && post.id != null}" type="hidden" name="id" th:value="${post.id}">
                                 <div class="form-group">
                                     <label for="title">Tiêu đề</label>

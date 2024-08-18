@@ -1,10 +1,15 @@
 package com.cuahangnongsan.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -12,16 +17,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-public class UserResponse  {
+public class UserResponse {
 
     String id ;
 
     String name;
-
-    Date dob;
-
-    String gender;
 
     String email;
 
@@ -35,10 +35,17 @@ public class UserResponse  {
 
     String address;
 
-    String status;
+    boolean status;
+    boolean accountVerified;
+    int failedLoginAttempts;
 
-    Set<RoleResponse> roles;
+    Set<RoleResponse> roles = new HashSet<>();
 
+//    @JsonManagedReference(value = "user_invoice_dto")
+//    List<InvoiceResponse> invoice = new ArrayList<>();
+
+//    @JsonManagedReference(value = "user_post_dto")
+//    List<PostResponse> post = new ArrayList<>();
 
 
 }

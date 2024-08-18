@@ -1,6 +1,9 @@
 package com.cuahangnongsan.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,14 +16,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
+@Entity
 public class Product implements Serializable {
 
     @Id
@@ -48,16 +51,16 @@ public class Product implements Serializable {
 
     LocalDate modifiedDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<InvoiceDetail> invoiceDetail = new ArrayList<>();
 
 
-    @JsonManagedReference(value = "product_json")
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    List<Comment> comments = new ArrayList<>();
+    @JsonManagedReference(value = "product_comment_json")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<Comment> comments  = new ArrayList<>();
 
 }

@@ -1,11 +1,7 @@
 package com.cuahangnongsan.controller.web;
 
-import com.cuahangnongsan.dto.response.CommentResponse;
-import com.cuahangnongsan.dto.response.ProductResponse;
-import com.cuahangnongsan.dto.response.UserResponse;
+import com.cuahangnongsan.dto.response.*;
 import com.cuahangnongsan.entity.Comment;
-import com.cuahangnongsan.entity.Product;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICommentService;
 import com.cuahangnongsan.service.IProductService;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

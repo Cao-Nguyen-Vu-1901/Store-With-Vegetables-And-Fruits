@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Danh sách quản trị viên</a>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/users/manage-users}" class="breadcrumb-link">Danh sách</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
                                 </ol>
@@ -65,7 +65,7 @@
                                 <div class="card">
                                     <h5 class="card-header">Thông tin chi tiết</h5>
                                     <div class="card-body">
-                                        <form th:action="@{/admin/user/save-user}" id="basicform"
+                                        <form th:action="@{/admin/users/save-user}" id="basicform"
                                               enctype="multipart/form-data" method="post">
                                             <div class="form-group">
                                                 <label for="inputName">Họ và tên</label>

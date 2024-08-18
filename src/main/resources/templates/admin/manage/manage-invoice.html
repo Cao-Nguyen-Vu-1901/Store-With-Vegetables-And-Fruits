@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/invoice/manage-invoice}" class="breadcrumb-link">Hoá đơn đặt hàng</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/invoices/manage-invoices}" class="breadcrumb-link">Hoá đơn đặt hàng</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin hoá đơn</li>
                                 </ol>
                             </nav>
@@ -45,42 +45,42 @@
                     <div class="tab-regular">
                         <ul class="nav nav-tabs nav-fill" id="myTab7" role="tablist">
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="WAIT_PROCESS" name="status">
                                     <input th:classappend="${status == null || status.equals('WAIT_PROCESS') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Chờ xử lý" class="btn btn-primary"/>
                                 </form>
                             </li>
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="DELIVERY" name="status">
                                     <input th:classappend="${status != null && status.equals('DELIVERY') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Vận chuyển" class="btn btn-primary"/>
                                 </form>
                             </li>
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="WAIT_SHIPPING" name="status">
                                     <input th:classappend="${status != null && status.equals('WAIT_SHIPPING') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Giao hàng" class="btn btn-primary"/>
                                 </form>
                             </li>
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="FINISH" name="status">
                                     <input th:classappend="${status != null && status.equals('FINISH') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Hoàn thành" class="btn btn-primary"/>
                                 </form>
                             </li>
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="CANCEL" name="status">
                                     <input th:classappend="${status != null && status.equals('CANCEL') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Huỷ" class="btn btn-primary"/>
                                 </form>
                             </li>
                             <li class="nav-item">
-                                <form th:action="@{/admin/invoice/manage-invoice}" method="get">
+                                <form th:action="@{/admin/invoices/manage-invoices}" method="get">
                                     <input type="hidden" value="REFUNDS" name="status">
                                     <input th:classappend="${status != null && status.equals('REFUNDS') ? 'btn-outline-primary' : ''}"
                                            type="submit" value="Hoàn tiền" class="btn btn-primary"/>
@@ -94,7 +94,7 @@
                                     <tr>
                                         <th scope="col">Ngày tạo</th>
                                         <th scope="col">Trạng thái</th>
-                                        <th scope="col">Ngày huỷ</th>
+                                        <th scope="col">Ngày cập nhật</th>
                                         <th scope="col" class="col-2">Địa chỉ</th>
                                         <th scope="col">Người đặt</th>
                                         <th scope="col">Số điện thoại</th>
@@ -106,7 +106,7 @@
                                     <tr th:each=" item : ${invoices}">
                                         <th th:text="${item.orderDate}" scope="row"></th>
                                         <td th:if="${status != 'FINISH' && status  != 'CANCEL' && status  != 'REFUNDS' }" >
-                                            <form th:action="@{/admin/invoice/manage-invoice}" method="post" th:id="${'update-status-invoice-' + item.id}">
+                                            <form th:action="@{/admin/invoices/manage-invoices}" method="post" th:id="${'update-status-invoice-' + item.id}">
                                                 <input type="hidden" name="id" th:value="${item.id}">
                                                 <select class="form-control" name="status" th:onchange="submitStatusForm([[${item.id}]])">
                                                     <option th:if="${ !item.status.equals('DELIVERY') && !item.status.equals('WAIT_SHIPPING') }"
@@ -127,12 +127,12 @@
                                         </td>
                                         <td th:unless="${ status != 'FINISH' && status  != 'CANCEL' && status  != 'REFUNDS' }"
                                             th:text="${item.status}"></td>
-                                        <td th:text="${item.cancelDate}"></td>
+                                        <td th:text="${item.updateDate}"></td>
                                         <td th:text="${item.address}"></td>
                                         <td th:text="${item.user.name}"></td>
                                         <td th:text="${item.user.phoneNumber}"></td>
                                         <td th:if="${status != 'CANCEL' || status != null}">
-                                            <a th:href="@{'/admin/invoice/show-invoice/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                            <a th:href="@{'/admin/invoices/show-invoices/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>
 

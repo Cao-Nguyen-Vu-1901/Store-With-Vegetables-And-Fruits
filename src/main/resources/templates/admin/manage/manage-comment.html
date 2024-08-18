@@ -26,7 +26,7 @@
                     <div class="page-header">
                         <h2 class="pageheader-title">Quản lý</h2>
                         <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/comment/manage-comment}">
+                            <form class="needs-validation" method="get" th:action="@{/admin/comments/manage-comments}">
                                 <div class="form-row">
                                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                         <select class="form-control" name="type">
@@ -50,7 +50,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/comment/manage-comment}" class="breadcrumb-link">Bình luận</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/comments/manage-comments}" class="breadcrumb-link">Bình luận</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
@@ -78,14 +78,18 @@
                                     <th scope="col" class="col-2">Nội dung</th>
                                     <th scope="col">Người tạo</th>
                                     <th scope="col" class="col-1-10">Ngày tạo</th>
-                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col" class="col-1-10">Sản phẩm</th>
                                     <th scope="col" class="col-1-10">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody class="text-center">
                                 <tr th:each=" item : ${comments}">
                                     <th th:text="${item.content}" scope="row"></th>
-                                    <td th:text="${item.username}"></td>
+                                    <td>
+                                        <img class="rounded-circle" th:src=" ${item.imageUser} " width="80px" height="80px"
+                                             style="object-fit: cover" alt="Hình ảnh"/>
+                                        <p th:text="${item.username}"></p>
+                                    </td>
                                     <td th:text="${item.createdDate}"></td>
                                     <td th:text="${item.product.name}"></td>
                                     <td>
@@ -94,6 +98,9 @@
                                             <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])" >
                                                 <i class="fas fa-window-close"></i>
                                             </button>
+                                            <a th:href="@{'/admin/comments/show-detail-comments/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
                                         </form>
                                     </td>
                                 </tr>

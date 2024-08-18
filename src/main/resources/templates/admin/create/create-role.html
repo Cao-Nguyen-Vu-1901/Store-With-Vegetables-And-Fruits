@@ -28,7 +28,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}"
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/roles/manage-roles}"
                                                                    class="breadcrumb-link">Vai trò</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin Vai trò</li>
@@ -51,7 +51,7 @@
                     <div class="card">
                         <h5 class="card-header">Chi tiết Vai trò</h5>
                         <div class="card-body">
-                            <form th:action="@{/admin/role/save-role}" method="post" id="basicform">
+                            <form th:action="@{/admin/roles/save-role}" method="post" id="basicform">
                                 <input th:if="${role != null}" type="hidden" name="id" th:value="${role.id}">
                                 <div class="form-group">
                                     <label for="inputName">Tên vai trò</label>

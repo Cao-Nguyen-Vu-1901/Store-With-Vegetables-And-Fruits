@@ -1,7 +1,9 @@
 package com.cuahangnongsan.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,28 +16,28 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class CommentResponse {
 
 
-    private Long id;
+     Long id;
 
-    private String content;
+     String content;
 
-    private String username;
+     String username;
 
-    private String imageUser;
+     String imageUser;
 
-    private LocalDateTime createdDate;
-    @JsonBackReference(value = "comment_json")
+     LocalDateTime createdDate;
 
-    private CommentResponse parent;
 
-    @JsonManagedReference(value = "comment_json")
-    private List<CommentResponse> replies = new ArrayList<>();
+    CommentResponse parent;
 
-    @JsonBackReference(value = "product_json")
-    private ProductResponse product;
+     List<CommentResponse> replies = new ArrayList<>();
 
+
+    ProductResponse product;
+//    String productName;
 }
+
+
 

@@ -3,12 +3,12 @@ package com.cuahangnongsan.service;
 import com.cuahangnongsan.dto.request.AdminUserCreationRequest;
 import com.cuahangnongsan.dto.request.UserRequest;
 import com.cuahangnongsan.dto.request.UserUpdateRequest;
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.User;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.cuahangnongsan.dto.response.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public interface IUserService {
 
     UserResponse updateInformation(UserUpdateRequest request, User user, ModelMap modelMap) throws IOException;
 
-    void showAndSearchUser(ModelMap modelMap, String type, String value, String role);
+    Page<UserResponse> showAndSearchUser(int pageNo, int pageSize, String type, String value, String role);
 
     void removeSessionMessage();
 
@@ -44,15 +44,9 @@ public interface IUserService {
 
     List<UserResponse> findAllByNameLike(String name);
 
-    List<UserResponse> findAllByEmailLike(String email);
-
-    List<UserResponse> findAllByPhoneNumberLike(String phoneNumber);
-
-    List<UserResponse> findAllByAddressLike(String address);
-
-    List<UserResponse> findAllByStatus(boolean status);
-
     List<UserResponse> findAllByRoleName(String name);
+    List<UserResponse> findAllByCreateDateAndRoleName(LocalDate date, String roleName);
+    List<UserResponse> findAllByMonthYearAndRoleName(int month, int year, String roleName);
 
 
 }

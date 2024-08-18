@@ -26,7 +26,7 @@
                     <div class="page-header">
                         <h2 class="pageheader-title">Quản lý</h2>
                         <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/product/manage-product}">
+                            <form class="needs-validation" method="get" th:action="@{/admin/products/manage-products}">
                                 <div class="form-row">
                                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                         <select class="form-control" name="type">
@@ -55,7 +55,8 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}" class="breadcrumb-link">Sản phẩm</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/products/manage-products}"
+                                                                   class="breadcrumb-link">Sản phẩm</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
@@ -96,7 +97,8 @@
                                     <th th:text="${item.name}" scope="row"></th>
                                     <th th:text="${item.category.name}" scope="row"></th>
                                     <td>
-                                        <img class="rounded-circle" th:src=" ${item.image} " width="80px" height="80px" style="object-fit: cover" alt="Hình ảnh"/>
+                                        <img class="rounded-circle" th:src=" ${item.image} " width="80px" height="80px"
+                                             style="object-fit: cover" alt="Hình ảnh"/>
                                     </td>
                                     <td th:text="${item.price}"></td>
                                     <td th:text="${item.discountPrice}"></td>
@@ -104,11 +106,14 @@
                                     <td th:text="${item.remaningQuantity}"></td>
                                     <td th:text="${item.createdDate}"></td>
                                     <td>
-                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/product/manage-product}" method="post">
+                                        <form th:id="${'form-confirm-'+item.id}"
+                                              th:action="@{/admin/products/manage-products}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
-                                            <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
+                                            <input type="hidden" value="edit" name="action"
+                                                   th:id="${'action-form-confirm-'+item.id}">
                                             <button type="submit" class="btn btn-sm btn-primary">Edit</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                    th:onclick="confirmAction([[${item.id}]])">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -124,17 +129,57 @@
                 <!-- end striped table -->
                 <!-- ============================================================== -->
             </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-5" >
+                    <div class="dataTables_info" id="example4_info" role="status" aria-live="polite"
+                        th:if="${totalPages > 0}" th:text="${'Tổng cộng: '+ currentPage + '/'+ totalPages }"></div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example4_paginate"
+                         >
+                        <ul class="pagination">
+                            <li th:classappend="${currentPage == 1} ? 'disabled': 'previous'" class="paginate_button page-item">
+                                <a th:replace="fragments/adminProductPaging :: adminProductPaging(1, '<<', 'First Page')" ></a>
+                            </li>
+                            <li th:classappend="${currentPage == 1} ? 'disabled'" class="paginate_button page-item">
+                                <a th:replace="fragments/adminProductPaging :: adminProductPaging(${currentPage - 1}, 'Prev', 'Previous Page')" ></a>
+                            </li>
+                            <li class="paginate_button page-item disabled" th:if="${currentPage - 2 > 1}">
+                                <a href="#" class="page-link">...</a>
+                            </li>
+                            <li class="paginate_button page-item " th:classappend="${page == currentPage} ? 'active' "
+                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2  : 1,
+                                                        currentPage + 2 < totalPages ? currentPage + 2 : totalPages )}">
+                                <a th:replace=" fragments/adminProductPaging :: adminProductPaging(${page}, ${page}, 'Page'+ ${page})"></a>
+                            </li>
+
+                            <li class="paginate_button page-item" th:if="${currentPage + 2 < totalPages}">
+                                <a href="#" class="page-link">...</a>
+                            </li>
+
+                            <li class="paginate_button page-item"
+                            th:classappend="${currentPage == totalPages} ? 'disabled' : 'next'">
+                                <a th:replace="fragments/adminProductPaging :: adminProductPaging(${currentPage+1}, 'Next', 'Next Page')"></a>
+                            </li>
+
+                            <li class="paginate_button page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : 'next'" >
+                                <a th:replace="fragments/adminProductPaging :: adminProductPaging(${totalPages}, '>>', 'Last Page')" >Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
 
         </div>
 
     </div>
-    <script  th:inline="javascript">
+    <script th:inline="javascript">
         function confirmAction(id) {
             let text = "Bạn có muốn xoá?";
             if (confirm(text) === true) {
-                document.getElementById('action-form-confirm-'+id).value = 'delete';
-                document.getElementById('form-confirm-'+id).submit();
+                document.getElementById('action-form-confirm-' + id).value = 'delete';
+                document.getElementById('form-confirm-' + id).submit();
             }
 
         }

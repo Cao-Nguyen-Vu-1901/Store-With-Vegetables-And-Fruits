@@ -5,7 +5,6 @@ import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.dto.request.AdminUserCreationRequest;
 import com.cuahangnongsan.dto.request.UserRequest;
 import com.cuahangnongsan.dto.request.UserUpdateRequest;
-import com.cuahangnongsan.dto.response.UserResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
 import com.cuahangnongsan.entity.User;
@@ -15,10 +14,11 @@ import com.cuahangnongsan.repository.PermissionRepository;
 import com.cuahangnongsan.repository.RoleRepository;
 import com.cuahangnongsan.repository.UserRepository;
 import com.cuahangnongsan.service.IUserService;
-import com.cuahangnongsan.util.ProcessImage;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -32,7 +32,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.cuahangnongsan.util.ProcessImage.upload;
-
+import com.cuahangnongsan.dto.response.*;
 @Service
 public class UserServiceImpl implements IUserService {
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements IUserService {
                     redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
                     throw new AppException("Image is not found!");
                 }else {
-                    imageName = ProcessImage.upload(request.getImage(),"users/");
+                    imageName = upload(request.getImage(),"users/");
                     String address = request.getSpecificAddress() + ", "
                             + request.getWard() + ", " + request.getDistrict()
                             + ", " + request.getCityProvince();
@@ -117,6 +117,7 @@ public class UserServiceImpl implements IUserService {
                     user.setStatus(StringConstant.USER_STATUS_ACTIVE);
                     user.setRoles(listRole);
                     user.setAddress(address);
+                    user.setCreateDate(LocalDate.now());
                     userMapper.toUserResponse(userRepository.save(user));
                 }
             }else{
@@ -139,32 +140,43 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void showAndSearchUser(ModelMap modelMap, String type, String value, String role) {
+    public Page<UserResponse> showAndSearchUser(int pageNo, int pageSize, String type, String value, String role){
         List<UserResponse> users = new ArrayList<>();
-        try {
-            if (type != null && value != null) {
-                value = value.trim();
-                users = switch (type) {
-                    case "name" -> findAllByNameLike("%" + value + "%");
-                    case "email" -> findAllByEmailLike("%" + value + "%");
-                    case "address" -> findAllByAddressLike("%" + value + "%");
-                    default -> null;
-                };
-            } else {
-                users = findAllByRoleName(
-                        role != null && role.equals("admin") ? StringConstant.ROLE_ADMIN : StringConstant.ROLE_USER);
-            }
-        } catch (Exception e) {
-            users = null;
+        Page<UserResponse> userPaging = null;
+
+        Pageable pageable = PageRequest.of(pageNo -1, pageSize);
+        Set<Role> roles = new HashSet<>();
+        if(role != null && role.equals("admin")){
+            roles.add(roleRepository.findByName(StringConstant.ROLE_ADMIN));
+        }else {
+            roles.add(roleRepository.findByName(StringConstant.ROLE_USER));
         }
-        modelMap.addAttribute("role", role);
-        modelMap.addAttribute("users", users);
+        try{
+            userPaging = switch (type){
+                case "name" -> userRepository.findAllByNameLike("%" + value + "%", pageable)
+                        .map(userMapper::toUserResponse);
+                case "email" -> userRepository.findAllByEmailLike("%" + value + "%", pageable)
+                        .map(userMapper::toUserResponse);
+                case "address" -> userRepository.findAllByAddressLike("%" + value + "%", pageable)
+                        .map(userMapper::toUserResponse);
+                case "status" -> userRepository.findAllByStatus( Boolean.parseBoolean(value), pageable)
+                        .map(userMapper::toUserResponse);
+                default -> userRepository.findAllByRoles(roles, pageable)
+                        .map(userMapper::toUserResponse);
+
+            };
+        }catch (Exception e){
+            return userRepository.findAllByRoles(roles, pageable)
+                    .map(userMapper::toUserResponse);
+        }
+       return userPaging;
     }
 
     @Override
     public UserResponse registerUser(UserRequest request,String rePassword, HttpSession session) {
 
         User user = userMapper.toUser(request);
+        user.setCreateDate(LocalDate.now());
         if(!request.getPassword().equals(rePassword)){
             session.setAttribute("msg", "Mật khẩu và mật khẩu nhập lại không đúng");
             throw new AppException("Password is not correct!");
@@ -249,37 +261,25 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-    @Override
-    public List<UserResponse> findAllByEmailLike(String email) {
-        return userRepository.findAllByEmailLike(email)
-                .stream().map(userMapper::toUserResponse)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<UserResponse> findAllByPhoneNumberLike(String phoneNumber) {
-        return userRepository.findAllByPhoneNumberLike(phoneNumber)
-                .stream().map(userMapper::toUserResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserResponse> findAllByAddressLike(String address) {
-        return userRepository.findAllByAddressLike(address)
-                .stream().map(userMapper::toUserResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserResponse> findAllByStatus(boolean status) {
-        return userRepository.findAllByStatus(status)
-                .stream().map(userMapper::toUserResponse)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public List<UserResponse> findAllByRoleName(String name) {
         return userRepository.findAllByRoleName(name)
+                .stream().map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserResponse> findAllByCreateDateAndRoleName(LocalDate date, String roleName) {
+        return userRepository.findAllByCreateDateAndRoleName(date, roleName)
+                .stream().map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserResponse> findAllByMonthYearAndRoleName(int month, int year, String roleName) {
+        return userRepository.findAllByMothYearRoleName(month, year, roleName)
                 .stream().map(userMapper::toUserResponse)
                 .collect(Collectors.toList());
     }

@@ -1,12 +1,10 @@
 package com.cuahangnongsan.service;
 
-import com.cuahangnongsan.dto.response.RoleResponse;
 import com.cuahangnongsan.entity.Permission;
 import com.cuahangnongsan.entity.Role;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 public interface IRoleService {
     List<RoleResponse> findAll();
     List<RoleResponse> findByNameLike(String name);
