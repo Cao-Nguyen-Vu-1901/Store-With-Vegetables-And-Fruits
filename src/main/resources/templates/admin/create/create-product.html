@@ -28,7 +28,7 @@
             <div class="page-breadcrumb">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a th:href="@{/admin/product/manage-product}" class="breadcrumb-link">Sản phẩm</a>
+                  <li class="breadcrumb-item"><a th:href="@{/admin/products/manage-products}" class="breadcrumb-link">Sản phẩm</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">Thông tin sản phẩm</li>
                 </ol>
@@ -50,42 +50,43 @@
           <div class="card">
             <h5 class="card-header">Chi tiết sản phẩm</h5>
             <div class="card-body">
-              <form th:action="@{/admin/product/save-product}" method="post" id="basicform" enctype="multipart/form-data">
-                  <input th:if="${product != null}" type="hidden" name="id" th:value="${product.id}">
+              <form th:action="@{/admin/products/save-product}" method="post" id="basicform" enctype="multipart/form-data">
+                  <input th:if="${product != null && product.id != null}" type="hidden" name="id" th:value="${product.id}">
                 <div class="form-group">
                   <label for="inputUserName">Tên sản phẩm</label>
-                  <input id="inputUserName" th:value="${product == null  ? '' : product.name}" type="text" name="name" data-parsley-trigger="change"
+                  <input id="inputUserName" th:value="${product == null  ? null : product.name}" type="text" name="name" data-parsley-trigger="change"
                          required=""  autocomplete="off"
                          class="form-control">
-                  <div class="text-danger">
-                    Please provide a valid text.
+                  <div class="text-danger" th:if="${errorName != null}" th:text="${errorName}">
+
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="inputPrice">Giá</label>
                   <input id="inputPrice" th:value="${product == null  ? 0 : product.price}" type="number" name="price" data-parsley-trigger="change"
-                         required="" autocomplete="off"
+                         required="" autocomplete="off" min="1"
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputDiscount">Giảm giá</label>
-                  <input id="inputDiscount" type="number"  th:value="${product == null  ? 0 : product.discountPrice}" name="discountPrice" required=""
+                  <input id="inputDiscount" type="number"  min="1" th:value="${product == null  ? 0 : product.discountPrice}" name="discountPrice" required=""
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputQuantity">Số lượng hiện có</label>
-                  <input id="inputQuantity" type="number"  th:value="${product == null  ? 0 : product.quantity}" name="quantity" required=""
+                  <input id="inputQuantity" type="number" min="1"  th:value="${product == null  ? 0 : product.quantity}" name="quantity" required=""
                          class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="inputRemaningQuantity">Số lượng hiện còn</label>
                   <input id="inputRemaningQuantity" type="number"  th:value="${product == null  ? 0 : product.remaningQuantity}" name="remaningQuantity" required=""
-                         class="form-control">
+                         class="form-control"  min="1" >
                 </div>
                 <div class="form-group">
                   <label for="input-select">Danh mục</label>
                   <select class="form-control col-sm-6" id="input-select" name="categoryId" data-th-default="Chọn">
-                    <option th:each=" item : ${categories}" th:text="${item.name}" th:value="${item.id}"></option>
+                    <option th:each=" item : ${categories}" th:text="${item.name}"
+                            th:value="${item.id}" th:checked="${product != null && product.category.id == item.id ? true : false}"></option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -124,18 +125,38 @@
                                class="custom-control-input"><span
                               class="custom-control-label">củ</span>
                       </label>
-                      <div id="error-container1"></div>
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="bó"
+                               required  th:checked="${product != null && product.unit == 'bó' ? true : false }"
+                               data-parsley-errors-container="#error-container1"
+                               class="custom-control-input"><span
+                              class="custom-control-label">bó</span>
+                      </label>
+                      <label class="custom-control custom-radio">
+                        <input name="unit" type="radio"
+                               data-parsley-multiple="groups" value="cành"
+                               required  th:checked="${product != null && product.unit == 'cành' ? true : false }"
+                               data-parsley-errors-container="#error-container1"
+                               class="custom-control-input"><span
+                              class="custom-control-label">cành</span>
+                      </label>
+                      <div class="text-danger" th:if="${errorUnit != null}" th:text="${errorUnit}">
+                      </div>
                     </div>
                   </div>
                 </div>
-
+                <img th:if="${product != null && product.image != null}" class="mt-2 mb-2"
+                     th:src="${product.image}" alt="Image Preview" style="height: 60vh; object-fit: cover; width: 90vh;">
                 <div class="custom-file mb-3 col-sm-6">
-                  <input type="file" class="custom-file-input" name="image" id="customFile">
-                  <label class="custom-file-label" for="customFile"  th:text="${product == null  ? 'Hình ảnh' : product.image}"></label>
+                  <input type="file" id="fileInput" class="custom-file-input" name="file">
+                  <label class="custom-file-label" for="fileInput">Hình ảnh</label>
+                  <div class="text-danger" th:if="${errorImage != null}" th:text="${errorImage}">
+                  </div>
                 </div>
                 <div class="form-group">
                   <label>Mô tả</label>
-                  <textarea  th:text="${product == null  ? '' : product.description}" required name="description" class="form-control"></textarea>
+                  <textarea  id="summernote" th:text="${product == null  ? '' : product.description}" required name="description" class="form-control"></textarea>
                 </div>
                 <div class="row">
 
@@ -159,7 +180,35 @@
     </div>
 
   </div>
+  <script>
 
+    document.addEventListener('DOMContentLoaded', function() {
+      var summernoteElement = document.getElementById('summernote');
+      $(summernoteElement).summernote({
+        height: 300
+      });
+
+      const fileInput = document.getElementById('fileInput');
+      const preview = document.getElementById('preview');
+
+      fileInput.addEventListener('change', function() {
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = 'none'; // Hide preview if no file is selected
+        }
+      });
+    });
+
+  </script>
 </section>
 
 <!-- JavaScript Libraries -->

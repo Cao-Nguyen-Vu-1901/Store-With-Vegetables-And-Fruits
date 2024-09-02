@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWeb::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <section>
+
+    <!-- Post Start -->
+    <div class="container-fluid contact py-5">
+      <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="text-center mx-auto" style="max-width: 900px;">
+                <h1 class="text-primary" th:text="${post.title}"></h1>
+                <h4 class="mb-4"  th:text="${post.shortDescription}"></h4>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="text-right text-style-italic text-bold">
+                    <i th:text="${'    Ngày tạo: ' + post.createdTime.toString().replace('T', ' ').substring(0,19)}" class="fa fa-calendar text-primary me-2"></i>
+                  </p>
+                  <p th:if="${post.modifiedTime != null}" class="text-right text-style-italic text-bold">
+                    <i th:text="${'    Ngày cập nhật: ' + post.modifiedTime.toString().replace('T', ' ').substring(0,19)}" class="fa fa-calendar text-primary me-2"></i>
+                  </p>
+                </div>
+                <img class="mb-3" th:src="@{'/img/posts/' + ${post.image}}" style="object-fit: cover; width: 116vh;" alt="">
+                <p class="text-justify" th:utext="${post.content}"></div>
+                <p class="text-bold text-right"><i th:text="${'    Người tạo: ' + post.user.username}" class="fas fa-user text-primary me-2"></i></p>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Post End -->
+  </section>
+</body>
+</html>

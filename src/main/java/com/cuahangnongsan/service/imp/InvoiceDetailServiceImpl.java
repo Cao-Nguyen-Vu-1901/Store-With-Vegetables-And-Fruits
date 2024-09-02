@@ -6,8 +6,9 @@ import com.cuahangnongsan.service.IInvoiceDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 @Service
 public class InvoiceDetailServiceImpl implements IInvoiceDetailService {
 
@@ -24,7 +25,14 @@ public class InvoiceDetailServiceImpl implements IInvoiceDetailService {
     }
 
     @Override
-    public List<InvoiceDetail> fundAll() {
+    public List<InvoiceDetail> findAll() {
         return invoiceDetailRepository.findAll();
     }
+
+    @Override
+    public List<InvoiceDetail> findAllByInvoiceUpdateDate(LocalDate date) {
+        return invoiceDetailRepository.findAllByInvoiceUpdateDate(date);
+    }
+
+
 }
