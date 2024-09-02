@@ -80,14 +80,14 @@
                             <div class="row g-4">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <h4>Categories</h4>
+                                        <h4>Danh mục</h4>
                                         <ul class="list-unstyled fruite-categorie">
 
                                             <li th:each="item : ${categories}">
                                                 <div class="d-flex justify-content-between fruite-name">
                                                     <a th:text="${item.name}" th:href="@{'/shop?category='+${item.id}}"><i
                                                             class="fas fa-apple-alt me-2"></i></a>
-                                                    <span th:text="${'('+item.products.size()+')'}"></span>
+<!--                                                    <span th:text="${'('+item.products.size()+')'}"></span>-->
                                                 </div>
                                             </li>
 
@@ -97,7 +97,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <form method="get" th:action="@{/shop}">
-                                            <h4 class="mb-2">Price
+                                            <h4 class="mb-2">Giá
                                                 <button type="submit"
                                                         style="border: none;  background: transparent;  float: right;">
                                                     <i class="bi-filter"></i>
@@ -154,7 +154,7 @@
                                         <div class="fruite-img">
 
                                             <img th:if="${item.image != null}"
-                                                 th:src="@{'/img/products/'+${item.image}}"
+                                                 th:src=" ${item.image} "
                                                  class="img-fluid w-100 rounded-top"
                                                  style="height: 35vh;  object-fit: cover;" alt="">
 
@@ -199,7 +199,9 @@
                                     </div>
                                 </div>
                                 <div th:unless="${products.size() > 0}" class="col-md-6 col-lg-6 col-xl-4">
-                                    <span>Không có dữ liệu! Vui lòng thử lại!</span>
+
+                                    <span>Không có dữ liệu trùng khớp! Vui lòng thử lại!</span>
+
                                 </div>
 
 
@@ -218,7 +220,8 @@
                                                     <a class="page-link" href="#">...</a>
                                                 </li>
                                                 <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
-                                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                                                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1,
+                                                                currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
                                                     <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
                                                 </li>
                                                 <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">

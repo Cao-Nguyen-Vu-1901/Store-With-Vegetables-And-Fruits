@@ -24,14 +24,12 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">General Tables </h2>
-                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <h2 class="pageheader-title">Quản lý</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">General Tables</li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/categories/manage-categories}" class="breadcrumb-link">Danh sách danh mục</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Quản lý</li>
                                 </ol>
                             </nav>
                         </div>
@@ -50,61 +48,50 @@
                 <!-- ============================================================== -->
                 <div class="col-md-12 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header">Striped Table</h5>
+                        <h5 class="card-header">Thông tin danh mục</h5>
+                        <div class="card-body">
+                            <form class="needs-validation" method="get" th:action="@{/admin/categories/manage-categories}">
+                                <div class="form-row">
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <select class="form-control" name="type">
+                                            <option value="name">Tên</option>
+                                            <option value="code">Code</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+                                        <input type="text" class="form-control" name="value"
+                                               placeholder="Tìm kiếm" required="">
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="card-body">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col" class="col-2"> </th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Số lượng sản phẩm</th>
+                                    <th scope="col" class="col-2">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                <tr th:each=" item : ${categories}">
+                                    <th th:text="${item.name}" scope="row"></th>
+                                    <td th:text="${item.code}"></td>
+                                    <td th:text="${item.products.size()}"></td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary">Edit</a>
-                                        <a class="btn btn-sm btn-outline-primary">
-                                            <i class="far fa-trash-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>
-                                        <a class="btn btn-sm btn-primary">Edit</a>
-                                        <a class="btn btn-sm btn-outline-primary">
-                                            <i class="far fa-trash-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>
-                                        <a class="btn btn-sm btn-primary">Edit</a>
-                                        <a class="btn btn-sm btn-outline-primary">
-                                            <i class="far fa-trash-alt"></i>
-                                        </a>
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/categories/manage-categories}" method="post">
+                                            <input type="hidden" th:value="${item.id}" name="id">
+                                            <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
+                                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -127,7 +114,15 @@
         <!-- end footer -->
         <!-- ============================================================== -->
     </div>
-
+    <script  th:inline="javascript">
+        function confirmAction(id) {
+            let text = "Bạn có muốn xoá?";
+            if (confirm(text) === true) {
+                document.getElementById('action-form-confirm-'+id).value = 'delete';
+                document.getElementById('form-confirm-'+id).submit();
+            }
+        }
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->

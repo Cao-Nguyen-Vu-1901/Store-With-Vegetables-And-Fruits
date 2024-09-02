@@ -1,6 +1,9 @@
 package com.cuahangnongsan.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,27 +12,24 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User  implements Serializable {
+@Entity
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id ;
 
     String name;
-
-    LocalDate dob;
-
-    String gender;
 
     String email;
 
@@ -44,22 +44,29 @@ public class User  implements Serializable {
 
     String address;
 
-    boolean status;
+    LocalDate createDate;
 
+    boolean status;
+    boolean accountVerified;
+    int failedLoginAttempts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    Set<Role> roles;
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    List<Invoice> invoice ;
+    List<Invoice> invoice = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    List<Post> post = new ArrayList<>();
 
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", dob=" + dob +
-                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", image='" + image + '\'' +

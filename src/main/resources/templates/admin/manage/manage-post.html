@@ -24,14 +24,12 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">General Tables </h2>
-                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <h2 class="pageheader-title">Quản lý</h2>
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">General Tables</li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/posts/manage-posts}" class="breadcrumb-link">Quản lý bài viết</a></li>
+                                     <li class="breadcrumb-item active" aria-current="page">Thông tin bài viết</li>
                                 </ol>
                             </nav>
                         </div>
@@ -50,61 +48,37 @@
                 <!-- ============================================================== -->
                 <div class="col-md-12 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header">Striped Table</h5>
+                        <h5 class="card-header">Chi tiết bài viết</h5>
                         <div class="card-body">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col" class="col-2"> </th>
+                                    <th scope="col">Tiêu đề</th>
+                                    <th scope="col">Hình ảnh</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col">Ngày cập nhật</th>
+                                    <th scope="col" class="col-2">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                <tr th:each=" item : ${posts}">
+                                    <th th:text="${item.title}" scope="row"></th>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-light">Edit</button>
-                                        <button class="btn btn-sm btn-outline-light">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
+                                        <img class="rounded-circle" th:src="${item.image}" width="80px" height="80px" style="object-fit: cover" alt="Hình ảnh"/>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <td th:text="${ item.createdTime.toString().replace('T', ' ').substring(0, 19) }"></td>
+                                    <td th:text="${item.modifiedTime != null
+                                                     ? item.modifiedTime.toString().replace('T', ' ').substring(0, 19)
+                                                     : ''}"></td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-light">Edit</button>
-                                        <button class="btn btn-sm btn-outline-light">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-light">Edit</button>
-                                        <button class="btn btn-sm btn-outline-light">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/posts/manage-posts}" method="post">
+                                            <input type="hidden" th:value="${item.id}" name="id">
+                                            <input type="hidden" value="edit" name="action" th:id="${'action-form-confirm-'+item.id}">
+                                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -127,7 +101,16 @@
         <!-- end footer -->
         <!-- ============================================================== -->
     </div>
+    <script  th:inline="javascript">
+        function confirmAction(id) {
+            let text = "Bạn có muốn xoá?";
+            if (confirm(text) === true) {
+                document.getElementById('action-form-confirm-'+id).value = 'delete';
+                document.getElementById('form-confirm-'+id).submit();
+            }
 
+        }
+    </script>
 </section>
 
 <!-- JavaScript Libraries -->
