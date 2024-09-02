@@ -33,11 +33,6 @@ public class UserManageController {
     @Autowired
     IPermissionService permissionService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    ///// Start Manage User /////
-
     @GetMapping("/manage-users")
     public String showUsers(ModelMap modelMap, @RequestParam(defaultValue = "1") int page,
                             @RequestParam(defaultValue = "9") int pageSize, String type, String value, String role) {
@@ -78,60 +73,6 @@ public class UserManageController {
                            @RequestParam( value = "permissions[]" , required = false)  ArrayList<String> permissions,
                            AdminUserCreationRequest request,
                            RedirectAttributes redirectAttributes) {
-//        String imageName = "";
-//        Set<RoleResponse> listRole = new HashSet<>();
-//        User userRedirect = User.builder()
-//                .name(name).username(username)
-//                .phoneNumber(phoneNumber).status(StringConstant.USER_STATUS_ACTIVE)
-//                .email(email).build();
-//        if(password != null && password.equals(rePassword)){
-//            if(userService.findByUsername(username) == null){
-//                if(Objects.equals(image.getOriginalFilename(),"")){
-//                    redirectAttributes.addFlashAttribute("userNew", userRedirect);
-//                    redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
-//                }else {
-//                    imageName = ProcessImage.upload(image,"users/");
-//                    String address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
-//                    if(optionsChoice.equals("yes")){
-//                        roles.forEach( a-> {
-//                            RoleResponse role = roleService.findById(a);
-//                            listRole.add(role);
-//                        });
-//                    }else if(optionsChoice.equals("no")) {
-//                        Set<PermissionResponse> listPermissions = new HashSet<>();
-//                        permissions.forEach(a-> {
-//                            PermissionResponse permission = permissionService.findById(a);
-//                            listPermissions.add(permission);
-//                        });
-//                        if(roleService.findByName("ROLE_ADMIN_" + roleName) == null){
-//                            Role role = Role.builder().name( "ROLE_ADMIN_" + roleName).permissions(listPermissions).build();
-//                            RoleResponse roleNew = roleService.save(role);
-//                            listRole.add(roleNew);
-//                        }else {
-//                            redirectAttributes.addFlashAttribute("userNew", userRedirect);
-//                            redirectAttributes.addFlashAttribute("errorRole", "Tên vai trò đã tồn tại!");
-//                            return "redirect:/admin/user/create-user";
-//                        }
-//                    }
-//                    User user = User.builder()
-//                            .name(name).username(username)
-//                            .phoneNumber(phoneNumber).status(StringConstant.USER_STATUS_ACTIVE)
-//                            .email(email).address(address).failedLoginAttempts(0)
-//                            .password(passwordEncoder.encode(password)).image(imageName)
-//                            .address(address).roles(listRole)
-//                            .build();
-//                    userService.save(user);
-//                }
-//            }else{
-//                redirectAttributes.addFlashAttribute("userNew", userRedirect);
-//                redirectAttributes.addFlashAttribute("errorUserName", "Tên đăng nhập đã tồn tại!");
-//
-//            }
-//        }else {
-//            redirectAttributes.addFlashAttribute("userNew", userRedirect);
-//            redirectAttributes.addFlashAttribute("errorPassword", "Mật khẩu và mật khẩu nhập lại không trùng khớp!");
-//
-//        }
 
         try {
             userService.adminSave(roles, request, permissions,redirectAttributes);
@@ -142,7 +83,6 @@ public class UserManageController {
 
         return "redirect:/admin/users/create-user";
     }
-
     ///// End Create User /////
 
     @ModelAttribute
@@ -154,8 +94,6 @@ public class UserManageController {
                 session.setAttribute("user", user);
                 m.addAttribute("user", user);
             }
-
-
         }
     }
 }

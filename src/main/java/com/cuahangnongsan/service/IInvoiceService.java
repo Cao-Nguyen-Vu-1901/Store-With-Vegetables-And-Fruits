@@ -20,12 +20,9 @@ public interface IInvoiceService {
     List<Invoice> findAll();
     List<Invoice> findByUpdateDateAndStatus(LocalDate date, String status);
     List<Invoice> findByMonthYearAndStatus(int month, int year, String status);
-    List<Invoice> findAllByOrderDate(LocalDate date);
     List<Invoice> findAllByStatus(String status);
-    List<Invoice> findAllByAddress(String address);
-    List<Invoice> findAllByCancelDate(LocalDate date);
-    List<Invoice> findAllByUserName(String name);
-    List<Invoice> findAllByPhoneNumber(String phoneNumber);
 
+    void pay(UserResponse userResponse,List<Cart> selectedProductsCart,String specificAddress, String ward, String district,
+             String cityProvince, boolean differentAddress, String  note);
 
 }

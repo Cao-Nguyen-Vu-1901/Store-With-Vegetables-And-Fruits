@@ -18,7 +18,9 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.cuahangnongsan.dto.response.*;
+
 @Controller
 @RequestMapping("/admin/invoices")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -30,17 +32,17 @@ public class InvoiceManageController {
     IUserService userService;
 
     ///// Begin show Invoice /////
-    @GetMapping({"/show-invoices/{id}" })
-    public String showInvoiceDetailWithId(ModelMap modelMap , @PathVariable String id){
+    @GetMapping({"/show-invoices/{id}"})
+    public String showInvoiceDetailWithId(ModelMap modelMap, @PathVariable String id) {
         Invoice invoice = invoiceService.findById(id);
 
         double totalPrice = 0;
-        for (InvoiceDetail item : invoice.getInvoiceDetails()){
+        for (InvoiceDetail item : invoice.getInvoiceDetails()) {
             totalPrice += item.getPrice() * item.getQuantity();
         }
 
         modelMap.addAttribute("invoice", invoice);
-        modelMap.addAttribute("totalPrice",totalPrice );
+        modelMap.addAttribute("totalPrice", totalPrice);
         return "admin/show/show-invoice-detail";
     }
 
@@ -49,8 +51,8 @@ public class InvoiceManageController {
     public String showAllInvoices(ModelMap modelMap,
                                   @RequestParam(defaultValue = "1") int page,
                                   @RequestParam(defaultValue = "9") int size,
-                                  String type, String value){
-        Page<InvoiceResponse> invoicePage = invoiceService.invoicePaging(page, size, type,value);
+                                  String type, String value) {
+        Page<InvoiceResponse> invoicePage = invoiceService.invoicePaging(page, size, type, value);
 
         modelMap.addAttribute("invoices", invoicePage.getContent());
         modelMap.addAttribute("currentPage", invoicePage.getNumber() + 1);
@@ -68,17 +70,18 @@ public class InvoiceManageController {
     ///// Begin manage invoice /////
 
     @PostMapping("/manage-invoices")
-    public String updateInvoice(ModelMap modelMap,  String status, String id){
+    public String updateInvoice(ModelMap modelMap, String status, String id) {
         Invoice invoice = invoiceService.findById(id);
-        if(invoice != null){
+        if (invoice != null) {
             invoice.setStatus(status);
             invoice.setUpdateDate(LocalDate.now());
             invoiceService.save(invoice);
         }
         return "redirect:/admin/invoices/manage-invoices";
     }
+
     @GetMapping("/manage-invoices")
-    public String showInvoicesWithStatus (ModelMap modelMap,  String status){
+    public String showInvoicesWithStatus(ModelMap modelMap, String status) {
         modelMap.addAttribute("invoices", status == null ? invoiceService.findAll() : invoiceService.findAllByStatus(status));
         modelMap.addAttribute("status", status);
         return "admin/manage/manage-invoice";
@@ -86,40 +89,13 @@ public class InvoiceManageController {
 
     ///// End manage invoice /////
     @ModelAttribute
-    public void commonUser(Principal p, Model m ) {
+    public void commonUser(Principal p, Model m) {
         if (p != null) {
             String username = p.getName();
             UserResponse user = userService.findByUsername(username);
-            if (user != null){
+            if (user != null) {
                 m.addAttribute("user", user);
             }
-
-
         }
     }
-
-    public List<Invoice> searchList(String type, String value){
-        List<Invoice> invoices = new ArrayList<>();
-
-        try {
-            if(type != null && value != null){
-                value = value.trim();
-                invoices = switch (type) {
-                    case "order-date" -> invoiceService.findAllByOrderDate(LocalDate.parse(value));
-                    case "status" -> invoiceService.findAllByStatus(value);
-                    case "cancel-date" -> invoiceService.findAllByCancelDate(LocalDate.parse(value));
-                    case "address" -> invoiceService.findAllByAddress("%"+value+"%");
-                    case "name" -> invoiceService.findAllByUserName("%"+value+"%");
-                    case "phone" -> invoiceService.findAllByPhoneNumber("%"+value+"%");
-                    default -> invoiceService.findAll();
-                };
-            }else{
-                invoices = invoiceService.findAll();
-            }
-        }catch (Exception e){
-            invoices = null;
-        }
-        return invoices;
-    }
-
 }

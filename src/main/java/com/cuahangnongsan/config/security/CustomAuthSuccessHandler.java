@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @Component
-public class CustomAuthSucessHandler implements AuthenticationSuccessHandler {
+public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -21,7 +21,7 @@ public class CustomAuthSucessHandler implements AuthenticationSuccessHandler {
 		Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 		roles.forEach(System.out::println);
 		if (roles.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/admin/");
+			response.sendRedirect("/admin");
 		} else {
 			response.sendRedirect("/");
 		}

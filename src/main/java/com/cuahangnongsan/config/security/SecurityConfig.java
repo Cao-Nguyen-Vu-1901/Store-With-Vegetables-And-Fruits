@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    public CustomAuthSucessHandler successHandler;
+    public CustomAuthSuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {

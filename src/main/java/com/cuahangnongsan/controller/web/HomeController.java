@@ -40,7 +40,6 @@ public class HomeController {
     @Autowired
     ICategoryService categoryService;
 
-
     @GetMapping({"/", "/home"})
     public String homePage(ModelMap model) {
         model.addAttribute("pageCurr", "home");
@@ -121,8 +120,6 @@ public class HomeController {
             if (user != null){
                  m.addAttribute("user", user);
             }
-
-
         }
     }
 

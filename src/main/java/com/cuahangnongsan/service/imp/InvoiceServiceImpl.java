@@ -1,11 +1,14 @@
 package com.cuahangnongsan.service.imp;
 
+import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
+import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.mapper.InvoiceMapper;
 import com.cuahangnongsan.repository.InvoiceDetailRepository;
 import com.cuahangnongsan.repository.InvoiceRepository;
+import com.cuahangnongsan.repository.UserRepository;
 import com.cuahangnongsan.service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import com.cuahangnongsan.dto.response.*;
 @Service
@@ -27,6 +31,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Autowired
     private InvoiceMapper invoiceMapper;
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void saveInvoiceAndInvoiceDetail(Invoice invoice, List<InvoiceDetail> invoiceDetails) {
         invoiceRepository.save(invoice);
@@ -101,34 +108,44 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return invoiceRepository.findByMonthYearAndStatus(month, year, status);
     }
 
-    @Override
-    public List<Invoice> findAllByOrderDate(LocalDate date) {
-        return invoiceRepository.findAllByOrderDate(date);
-    }
 
     @Override
     public List<Invoice> findAllByStatus(String status) {
         return invoiceRepository.findAllByStatus(status);
     }
-
     @Override
-    public List<Invoice> findAllByAddress(String address) {
-        return invoiceRepository.findAllByAddressLike(address);
-    }
+    public void pay(UserResponse userResponse,List<Cart> selectedProductsCart,String specificAddress,
+                    String ward, String district, String cityProvince,
+                    boolean differentAddress, String note) {
+        String address = "";
 
-    @Override
-    public List<Invoice> findAllByCancelDate(LocalDate date) {
-        return invoiceRepository.findAllByUpdateDate(date);
-    }
+        var user = userRepository.findById(userResponse.getId()).orElseThrow();
 
-    @Override
-    public List<Invoice> findAllByUserName(String name) {
-        return invoiceRepository.findAllByUserNameLike(name);
-    }
+        if(!differentAddress){
+            address = userResponse.getAddress();
+        } else {
+            address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
+        }
+        Invoice invoice = Invoice.builder()
+                .status(StringConstant.STATUS_ORDER_WAIT_PROCESS)
+                .address(address)
+                .user(user)
+                .updateDate(LocalDate.now())
+                .orderDate(LocalDate.now())
+                .build();
 
-    @Override
-    public List<Invoice> findAllByPhoneNumber(String phoneNumber) {
-        return invoiceRepository.findAllByPhoneNumberLike(phoneNumber);
-    }
+        List<InvoiceDetail> invoiceDetails = new ArrayList<>();
+        selectedProductsCart.forEach(a ->
+        {
+            InvoiceDetail invoiceDetail = InvoiceDetail.builder()
+                    .quantity(a.getQuantity())
+                    .price(a.getPrice())
+                    .product(Product.builder().id(a.getProductId()).build())
+                    .invoice(invoice)
+                    .build();
+            invoiceDetails.add(invoiceDetail);
+        });
 
+        saveInvoiceAndInvoiceDetail(invoice, invoiceDetails);
+    }
 }

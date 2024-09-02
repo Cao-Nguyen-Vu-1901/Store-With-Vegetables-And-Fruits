@@ -35,8 +35,6 @@ public class PostManageController {
     @Autowired
     IUserService userService;
 
-
-
     @GetMapping("/manage-posts")
     public String showPost(ModelMap modelMap){
         modelMap.addAttribute("posts", postService.findAll());
@@ -65,41 +63,6 @@ public class PostManageController {
         return "admin/create/create-post";
     }
 
-//    @PostMapping("update-post")
-//    public String updatePost(ModelMap modelMap, String id, String title,
-//                             String content, MultipartFile image, String shortDescription
-//                             , RedirectAttributes redirectAttributes     ) throws IOException {
-//
-//        if(Objects.equals(image.getOriginalFilename(), "") || content == null){
-//            redirectAttributes.addFlashAttribute("post",
-//                    Post.builder().title(title).content(content)
-//                            .shortDescription(shortDescription).build());
-//        }
-//
-//
-//
-//        Post oldPost = null;
-//        String imageName  = "";
-//        LocalDateTime createdTime = LocalDateTime.now();
-//        if(id != null){
-//            oldPost  = postService.findById(id);
-//            imageName = !Objects.equals(image.getOriginalFilename(), "")
-//                    ? ProcessImage.upload(image,"/posts")
-//                    : oldPost.getImage();
-//        }
-//
-//        Post post = Post.builder().id(id).title(title).content(content)
-//                .shortDescription(shortDescription).modifiedTime(LocalDateTime.now())
-//                .user((User) modelMap.getAttribute("user"))
-//                .image(imageName)
-//                .createdTime(oldPost != null ? oldPost.getCreatedTime() : createdTime)
-//                .build();
-//
-//
-//        postService.save(post);
-//        return "redirect:/admin/post/create-post" ;
-//    }
-
     @PostMapping("update-post")
     public String updatePost(ModelMap modelMap, String id, MultipartFile image, PostRequest request
             , RedirectAttributes redirectAttributes  ){
@@ -121,8 +84,6 @@ public class PostManageController {
             if (user != null) {
                 m.addAttribute("user", user);
             }
-
-
         }
     }
 }

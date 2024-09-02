@@ -33,8 +33,6 @@ public class CategoryManageController {
     @Autowired
     IUserService userService;
 
-    @Autowired
-    CategoryMapper categoryMapper;
 
     @GetMapping("/manage-categories")
     public String showViewManage(ModelMap modelMap ,String type, String value){

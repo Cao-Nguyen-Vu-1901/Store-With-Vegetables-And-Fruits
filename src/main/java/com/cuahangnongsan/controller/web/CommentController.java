@@ -19,9 +19,6 @@ public class CommentController {
     @Autowired
     private ICommentService commentService;
 
-    @Autowired
-    private IProductService productService;
-
     @PostMapping
     public ResponseEntity<CommentResponse> addComment(@RequestBody Comment comment, HttpSession modelMap) {
         UserResponse user = (UserResponse) modelMap.getAttribute("user");
@@ -34,7 +31,6 @@ public class CommentController {
         commentService.deleteById(cmt.getId());
     }
 
-
     @GetMapping("/{id}")
     public List<CommentResponse> getAllParentComments(@PathVariable String id) {
         List<CommentResponse> allComments = commentService.findAllByProductId(id);
@@ -42,7 +38,6 @@ public class CommentController {
                 .filter(comment -> comment.getParent() == null)
                 .collect(Collectors.toList());
     }
-
 
     @GetMapping
     public List<CommentResponse> getAllCommentsByProduct() {
@@ -52,13 +47,4 @@ public class CommentController {
                 .collect(Collectors.toList());
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Comment> getComment(@PathVariable Long id) {
-//        Comment comment = commentService.getCommentById(id);
-//        if (comment != null) {
-//            return ResponseEntity.ok(comment);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 }

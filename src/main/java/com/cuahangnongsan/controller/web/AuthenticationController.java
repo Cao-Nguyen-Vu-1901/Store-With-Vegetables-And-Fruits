@@ -19,14 +19,13 @@ public class AuthenticationController {
     @Autowired
     private IUserService userService;
 
-
     @GetMapping("/login")
-    public String login(ModelMap model, String error) {
+    public String login() {
         return "login-register/login";
     }
 
 	@GetMapping("/register")
-	public String register(ModelMap model) {
+	public String register() {
 		return "login-register/register";
 	}
 
@@ -34,12 +33,11 @@ public class AuthenticationController {
     public String register(@ModelAttribute UserRequest userRequest, @RequestParam("rePassword")String rePassword, HttpSession session) {
 
         try{
-            UserResponse response = userService.registerUser(userRequest, rePassword,session);
+            userService.registerUser(userRequest, rePassword,session);
         }catch (AppException appException){
             return "redirect:/register";
         }
         return "redirect:/register";
     }
-
 
 }

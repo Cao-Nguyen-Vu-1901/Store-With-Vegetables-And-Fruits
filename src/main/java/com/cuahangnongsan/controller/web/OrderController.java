@@ -42,13 +42,7 @@ public class OrderController {
     IInvoiceService invoiceService;
 
     @Autowired
-    IInvoiceDetailService invoiceDetailService;
-
-    @Autowired
     IUserService userService;
-
-    @Autowired
-    ProductMapper productMapper;
 
     public List<Cart> selectedProductsCart = new ArrayList<>();
 
@@ -57,7 +51,6 @@ public class OrderController {
         model.addAttribute("currentPage", "");
         return "web/cart";
     }
-
 
     @GetMapping("/check-out")
     public String checkout(ModelMap model) {
@@ -74,35 +67,10 @@ public class OrderController {
     public String pay(ModelMap model, String specificAddress, String ward, String district,
                       String cityProvince, boolean differentAddress, String  note) {
 
-
         if (!selectedProductsCart.isEmpty()) {
-            String address = "";
-            User user = (User) model.getAttribute("user");
-            if(differentAddress && user != null){
-                address = user.getAddress();
-            } else {
-                address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
-            }
-            Invoice invoice = Invoice.builder()
-                    .status(StringConstant.STATUS_ORDER_WAIT_PROCESS)
-                    .address(address)
-                    .user(user)
-                    .orderDate(LocalDate.now())
-                    .build();
-
-            List<InvoiceDetail> invoiceDetails = new ArrayList<>();
-            selectedProductsCart.forEach(a ->
-            {
-                InvoiceDetail invoiceDetail = InvoiceDetail.builder()
-                        .quantity(a.getQuantity())
-                        .price(a.getPrice())
-                        .product(Product.builder().id(a.getProductId()).build())
-                        .invoice(invoice)
-                        .build();
-                invoiceDetails.add(invoiceDetail);
-            });
-
-            invoiceService.saveInvoiceAndInvoiceDetail(invoice, invoiceDetails);
+            UserResponse user = (UserResponse) model.getAttribute("user");
+            invoiceService.pay(user,selectedProductsCart,specificAddress,ward,district,cityProvince,
+                    differentAddress,note);
             return "redirect:/user/success-pay";
         } else {
             return "redirect:/home";

@@ -1,6 +1,6 @@
 package com.cuahangnongsan.config.firebase;
 
-import com.cuahangnongsan.service.imp.CartServiceImpl;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -20,7 +20,7 @@ public class FirebaseInitializer {
     public static synchronized void getFirebaseApp() throws IOException {
         if (firebaseApp == null) {
             InputStream serviceAccount =
-                    CartServiceImpl.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
+                    FirebaseInitializer.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
             if (serviceAccount == null) {
                 throw new FileNotFoundException("Resource not found: serviceAccountKey.json");
             }

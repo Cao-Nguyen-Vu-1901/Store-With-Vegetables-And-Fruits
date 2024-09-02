@@ -67,70 +67,6 @@ public class ProductManageController {
         return urlRedirect;
     }
 
-//    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
-//
-//    @PostMapping("/save-product")
-//    public String saveProduct(ModelMap modelMap, String id,
-//                              MultipartFile file, ProductRequest request, RedirectAttributes redirectAttributes)
-//            throws IOException {
-//
-//        Product oldProduct = null;
-//
-////        String currentDir = System.getProperty("user.dir");
-////
-////        Path resourcePath = Paths.get(currentDir, "src", "main", "resources\\static\\img\\products");
-//
-//        StringBuilder fileNames = new StringBuilder();
-//        Category category = categoryService.findById(request.getCategoryId());
-//
-//        Product product = productMapper.toProduct(request);
-//        product.setCreatedDate(LocalDate.now());
-//        product.setCategory(category);
-//        product.setId(id);
-//        ProductResponse responseCreate = productMapper.toProductResponse(product);
-//
-//        if (file != null) {
-//            if (Objects.equals(file.getOriginalFilename(), "") && id == null) {
-//                redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
-//                redirectAttributes.addFlashAttribute("product",  responseCreate);
-//                return "redirect:/admin/product/create-product";
-//            } else if (!Objects.equals(file.getOriginalFilename(), "")) {
-//                fileNames.append(ProcessImage.upload(file));
-//                product.setImage(fileNames.toString());
-//                product.setModifiedDate(LocalDate.now());
-//            }
-//        } else if(id == null) {
-//            redirectAttributes.addFlashAttribute("errorImage", "Vui lòng chọn ảnh!");
-//            redirectAttributes.addFlashAttribute("product", responseCreate);
-//            return "redirect:/admin/product/create-product";
-//        }
-//
-//        if (id != null) {
-//            oldProduct = productService.findById(id);
-//            product.setImage(!fileNames.toString().isEmpty() ? fileNames.toString() : oldProduct.getImage());
-//            product.setId(id);
-//            product.setCreatedDate(oldProduct.getCreatedDate());
-//        }
-//
-//        Product checkProduct = productService.findByName(request.getName().trim());
-//
-//        if (checkProduct != null) {
-//            if (id != null && !checkProduct.getId().equals(id)) {
-//                redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
-//                redirectAttributes.addFlashAttribute("product", responseCreate);
-//                return "redirect:/admin/product/create-product";
-//            } else if (id == null) {
-//                redirectAttributes.addFlashAttribute("errorName", "Tên sản phẩm đã tồn tại!");
-//                redirectAttributes.addFlashAttribute("product", responseCreate);
-//                return "redirect:/admin/product/create-product";
-//            }
-//        }
-//
-//        productService.save(product);
-//
-//        return "redirect:/admin/product/create-product";
-//
-//    }
 
     @GetMapping("/create-product")
     public String createProduct(ModelMap model) {
@@ -150,7 +86,6 @@ public class ProductManageController {
             return "redirect:/admin/products/create-product";
         }
         return "redirect:/admin/products/create-product";
-
     }
 
     @ModelAttribute
@@ -161,8 +96,6 @@ public class ProductManageController {
             if (user != null) {
                 m.addAttribute("user", user);
             }
-
-
         }
     }
 

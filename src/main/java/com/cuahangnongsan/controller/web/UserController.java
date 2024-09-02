@@ -45,7 +45,6 @@ public class UserController {
         return "web/change-information";
     }
 
-    //    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
     @PostMapping("/change-information")
     public String saveInformation(UserUpdateRequest request, ModelMap model) throws IOException {
         model.addAttribute("pageCurr", "");

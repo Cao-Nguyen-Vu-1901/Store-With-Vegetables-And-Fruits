@@ -79,7 +79,7 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping({"/",})
+    @GetMapping
     public String home(ModelMap modelMap) {
 
         List<Invoice> invoices = invoiceService.findAll();

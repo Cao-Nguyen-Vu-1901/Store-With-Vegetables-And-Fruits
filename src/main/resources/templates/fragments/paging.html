@@ -1,11 +1,11 @@
 <a th:fragment="paging(pageNum, label, tooltip)" class="page-link"
   th:href="@{'/shop?' + ${condition!=null && condition!=''? 'condition=' + condition + '&' : ''}
           + 'page=' + ${pageNum} + '&size=' + ${pageSize}
-          + ${sortField!=null && sortField!=''? 'sortField=' + sortField + '&' : ''}
-          + ${sortDirection!=null && sortDirection!=''? 'sortDirection=' + sortDirection + '&' : ''}
-          + ${category!=null && category!=''? 'category=' + category + '&' : ''}
-          + ${priceMin!=null && priceMin!=''? 'priceMin=' + priceMin + '&' : ''}
-          + ${priceMax!=null && priceMax!=''? 'priceMax=' + priceMax + '&' : ''}
+          + ${sortField!=null && sortField!=''? '&sortField=' + sortField + '&' : ''}
+          + ${sortDirection!=null && sortDirection!=''? '&sortDirection=' + sortDirection : ''}
+          + ${category!=null && category!=''? '&category=' + category : ''}
+          + ${priceMin!=null && priceMin!=''? '&priceMin=' + priceMin : ''}
+          + ${priceMax!=null && priceMax!=''? '&priceMax=' + priceMax : ''}
           }"
   th:title="${tooltip}" rel="tooltip">
   [[${label}]]
