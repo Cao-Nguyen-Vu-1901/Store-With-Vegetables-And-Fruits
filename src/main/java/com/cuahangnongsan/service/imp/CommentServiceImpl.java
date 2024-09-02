@@ -30,6 +30,10 @@ public class CommentServiceImpl implements ICommentService {
         return commentRepository.findById(id).orElse(null);
     }
 
-    // Add more methods as needed
+    @Override
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
+    }
+
 }
 

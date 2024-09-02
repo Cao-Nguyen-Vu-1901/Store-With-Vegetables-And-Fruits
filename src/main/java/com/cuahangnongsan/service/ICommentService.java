@@ -6,10 +6,14 @@ import com.cuahangnongsan.entity.Product;
 import java.util.List;
 
 public interface ICommentService {
-    public Comment saveComment(Comment comment);
+    Comment saveComment(Comment comment);
 
-    public List<Comment> findAllComments();
-    public List<Comment> findAllByProduct(Product product);
+    List<Comment> findAllComments();
+    List<Comment> findAllByProduct(Product product);
 
-    public Comment getCommentById(Long id);
+    Comment getCommentById(Long id);
+
+    void delete(Comment comment);
+
+
 }
