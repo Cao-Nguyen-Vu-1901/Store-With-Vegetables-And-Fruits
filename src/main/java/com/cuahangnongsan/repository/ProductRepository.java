@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,17 +18,27 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
     Page<Product> findAllByCategoryId(String id,Pageable pageable);
     Page<Product> findAllByCategoryIdAndName(String id,String name,Pageable pageable);
-    Page<Product> findAllByCategoryIdAndPriceBetween(String category_id, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findAllByNameAndPriceBetween(String name, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findAllByCategoryIdAndNameAndPriceBetween(String category_id,String name, BigDecimal price, BigDecimal price2, Pageable pageable);
-    Page<Product> findByPriceBetween(BigDecimal priceMin, BigDecimal priceMax,Pageable pageable);
+    Page<Product> findAllByCategoryIdAndDiscountPriceBetween(String category_id, BigDecimal discountPrice, BigDecimal price2, Pageable pageable);
+    Page<Product> findAllByNameAndDiscountPriceBetween(String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
+    Page<Product> findAllByCategoryIdAndNameAndDiscountPriceBetween(String category_id,String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
+    Page<Product> findByDiscountPriceBetween(BigDecimal priceMin, BigDecimal priceMax,Pageable pageable);
 
     Page<Product> findByNameLike(String name, Pageable pageable);
 
     @Query("select u from Product u where u.name like :name and u.id <> :id")
     List<Product> findAllByNameLikeButId(@Param("name")String name, @Param("id")String id);
 
-    List<Product> findAllByCategoryName(String categoryName);
+    @Query("select p from Product p where p.category.name like :name")
+    List<Product> findAllByCategoryName(@Param("name") String name);
 
+    List<Product> findAllByNameLike(String name);
+    List<Product> findAllByPrice(BigDecimal price);
+    List<Product> findAllByDiscountPrice(BigDecimal discount);
+    List<Product> findAllByUnit(String unit);
+    List<Product> findAllByQuantity(int quantity);
+    List<Product> findAllByRemaningQuantity(int remaningQuantity);
+    List<Product> findAllByDescriptionLike(String description);
+    List<Product> findAllByCreatedDate(LocalDate date);
+    List<Product> findAllByModifiedDate(LocalDate date);
 
 }

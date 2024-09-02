@@ -34,16 +34,17 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
   <script>
     const firebaseConfig = {
-      // apiKey: "AIzaSyCqljYrSHwpvLL7K8NlSzrhPhmN_vfA-b0",
-      // authDomain: "website-ban-nong-san.firebaseapp.com",
-      // databaseURL: "https://website-ban-nong-san-default-rtdb.asia-southeast1.firebasedatabase.app",
-      // projectId: "website-ban-nong-san",
-      // storageBucket: "website-ban-nong-san.appspot.com",
-      // messagingSenderId: "972886883382",
-      // appId: "1:972886883382:web:2824e2d3b382b4dce76c97"
+      apiKey: "AIzaSyCqljYrSHwpvLL7K8NlSzrhPhmN_vfA-b0",
+      authDomain: "website-ban-nong-san.firebaseapp.com",
+      databaseURL: "https://website-ban-nong-san-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "website-ban-nong-san",
+      storageBucket: "website-ban-nong-san.appspot.com",
+      messagingSenderId: "972886883382",
+      appId: "1:972886883382:web:2824e2d3b382b4dce76c97"
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
   </script>
 </head>
 <body>
@@ -97,8 +98,8 @@
           <div class="d-flex m-4 me-0">
             <a th:href="@{/user/cart}" id="cart-url" class="position-relative me-4 my-auto">
               <i class="fa fa-shopping-bag fa-2x"></i>
-              <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                    style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+              <span th:if="${ user != null}" class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+                    style="top: -5px; left: 15px; height: 20px; min-width: 20px;" id="count-cart-item"></span>
             </a>
           </div>
         </div>
@@ -109,12 +110,32 @@
   <!-- Navbar End -->
   <div th:replace="${content}"></div>
 
+  <input th:if="${user != null}" type="hidden" id="user-id" th:value="${user.id}">
+
   <div th:replace="fragments/defaultWebFooter :: div"></div>
 
   <!-- Back to Top -->
   <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
           class="fa fa-arrow-up"></i></a>
 
+  <script>
+    function reloadNumberCart(){
+      const inputUsID = document.getElementById('user-id')
+      if(inputUsID !== null){
+
+        const itemsRef = database.ref('carts/'+ inputUsID.value);
+
+        itemsRef.once('value')
+                .then(snapshot => {
+                  const data = snapshot.val();
+                  document.getElementById('count-cart-item').innerText = data ? (Array.isArray(data) ? data.length : Object.keys(data).length) : '0';
+                })
+                .catch(document.getElementById('count-cart-item').innerText = '0');
+      }
+    }
+
+    setInterval(reloadNumberCart, 2000);
+  </script>
 
   <!-- JavaScript Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

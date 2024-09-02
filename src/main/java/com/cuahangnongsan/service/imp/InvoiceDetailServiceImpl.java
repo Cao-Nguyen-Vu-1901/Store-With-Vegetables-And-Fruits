@@ -22,4 +22,9 @@ public class InvoiceDetailServiceImpl implements IInvoiceDetailService {
     public List<InvoiceDetail> fundAllByInvoice(Invoice invoice) {
         return invoiceDetailRepository.findAllByInvoice(invoice);
     }
+
+    @Override
+    public List<InvoiceDetail> fundAll() {
+        return invoiceDetailRepository.findAll();
+    }
 }
