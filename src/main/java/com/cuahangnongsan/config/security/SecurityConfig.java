@@ -35,7 +35,10 @@ public class SecurityConfig {
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return daoAuthenticationProvider;
 	}
-	
+	@Bean
+	public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+		return new CustomAuthenticationFailureHandler();
+	}
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
@@ -56,6 +59,7 @@ public class SecurityConfig {
 		.and()
 		.formLogin().loginPage("/login").loginProcessingUrl("/userLogin")
 		.successHandler(successHandler)
+				.failureHandler(customAuthenticationFailureHandler())
 		.permitAll();
 
 

@@ -9,6 +9,7 @@ import com.cuahangnongsan.service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -44,4 +45,40 @@ public class InvoiceServiceImpl implements IInvoiceService {
     public List<Invoice> findAllByUser(User user) {
         return invoiceRepository.findAllByUser(user);
     }
+
+    @Override
+    public List<Invoice> findAll() {
+        return invoiceRepository.findAll();
+    }
+
+    @Override
+    public List<Invoice> findAllByOrderDate(LocalDate date) {
+        return invoiceRepository.findAllByOrderDate(date);
+    }
+
+    @Override
+    public List<Invoice> findAllByStatus(String status) {
+        return invoiceRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public List<Invoice> findAllByAddress(String address) {
+        return invoiceRepository.findAllByAddressLike(address);
+    }
+
+    @Override
+    public List<Invoice> findAllByCancelDate(LocalDate date) {
+        return invoiceRepository.findAllByCancelDate(date);
+    }
+
+    @Override
+    public List<Invoice> findAllByUserName(String name) {
+        return invoiceRepository.findAllByUserNameLike(name);
+    }
+
+    @Override
+    public List<Invoice> findAllByPhoneNumber(String phoneNumber) {
+        return invoiceRepository.findAllByPhoneNumberLike(phoneNumber);
+    }
+
 }

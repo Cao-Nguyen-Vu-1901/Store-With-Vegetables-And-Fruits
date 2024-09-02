@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWebAdmin::layout(~{::section})}">
+<head>
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+
+</head>
+
+<body>
+
+<!-- Content Start -->
+<section>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Quản lý</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/invoice/manage-invoice}" class="breadcrumb-link">Hoá đơn đặt hàng</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Thông tin hoá đơn</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+            <div class="row">
+
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- striped table -->
+                <!-- ============================================================== -->
+                <div class="col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Danh sách hoá đơn</h5>
+                        <div class="card-body">
+                            <form class="needs-validation" method="get" th:action="@{/admin/invoice/manage-invoice}">
+                                <div class="form-row">
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <select class="form-control" name="type">
+                                            <option value="order-date">Ngày tạo</option>
+                                            <option value="status">Trạng thái</option>
+                                            <option value="cancel-date">Ngày huỷ</option>
+                                            <option value="address">Địa chỉ</option>
+                                            <option value="name">Người đặt</option>
+                                            <option value="phone">Số điện thoại</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+                                        <input type="text" class="form-control" name="value"
+                                               placeholder="Tìm kiếm" required="">
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead class="text-center">
+                                <tr>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Ngày huỷ</th>
+                                    <th scope="col">Địa chỉ</th>
+                                    <th scope="col">Người đặt</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col" class="col-2">&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                <tr th:each=" item : ${invoices}">
+                                    <th th:text="${item.orderDate}" scope="row"></th>
+                                    <td th:text="${item.status}"></td>
+                                    <td th:text="${item.cancelDate}"></td>
+                                    <td th:text="${item.address}"></td>
+                                    <td th:text="${item.user.name}"></td>
+                                    <td th:text="${item.user.phoneNumber}"></td>
+                                    <td>
+                                        <a th:href="@{'/admin/invoice/manage-invoice/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end striped table -->
+                <!-- ============================================================== -->
+            </div>
+
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+
+</section>
+
+<!-- JavaScript Libraries -->
+
+</body>
+
+</html>

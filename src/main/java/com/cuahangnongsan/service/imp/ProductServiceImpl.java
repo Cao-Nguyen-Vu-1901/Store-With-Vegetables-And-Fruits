@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -23,6 +24,12 @@ public class ProductServiceImpl implements IProductService {
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
     @Override
     public Page<Product> findAllByCate(Pageable pageable, String id) {
         return productRepository.findAllByCategoryId(id,pageable);
@@ -36,6 +43,61 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> findAllByCategoryName(String categoryName) {
         return productRepository.findAllByCategoryName(categoryName);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productRepository.delete(product);
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> findAllByNameLike(String name) {
+        return productRepository.findAllByNameLike(name);
+    }
+
+    @Override
+    public List<Product> findAllByPrice(BigDecimal price) {
+        return productRepository.findAllByPrice(price);
+    }
+
+    @Override
+    public List<Product> findAllByDiscountPrice(BigDecimal discount) {
+        return productRepository.findAllByDiscountPrice(discount);
+    }
+
+    @Override
+    public List<Product> findAllByUnit(String unit) {
+        return productRepository.findAllByUnit(unit);
+    }
+
+    @Override
+    public List<Product> findAllByDescriptionLike(String description) {
+        return productRepository.findAllByDescriptionLike(description);
+    }
+
+    @Override
+    public List<Product> findAllByQuantity(int quantity) {
+        return productRepository.findAllByQuantity(quantity);
+    }
+
+    @Override
+    public List<Product> findAllByRemaningQuantity(int remaningQuantity) {
+        return productRepository.findAllByRemaningQuantity(remaningQuantity);
+    }
+
+    @Override
+    public List<Product> findAllByCreatedDate(LocalDate date) {
+        return productRepository.findAllByCreatedDate(date);
+    }
+
+    @Override
+    public List<Product> findAllByModifiedDate(LocalDate date) {
+        return productRepository.findAllByModifiedDate(date);
     }
 
     @Override
@@ -73,17 +135,17 @@ public class ProductServiceImpl implements IProductService {
 
 
         if (category != null && !category.isEmpty() && priceMin != null && priceMax != null && name != null) {
-            return productRepository.findAllByCategoryIdAndNameAndPriceBetween(category , name, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByCategoryIdAndNameAndDiscountPriceBetween(category , name, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null && !category.isEmpty() && priceMin != null && priceMax != null) {
-            return productRepository.findAllByCategoryIdAndPriceBetween(category, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByCategoryIdAndDiscountPriceBetween(category, new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null && !category.isEmpty() && name != null) {
             return productRepository.findAllByCategoryIdAndName(category,name, pageable);
         } else if (priceMin != null && priceMax != null && name != null) {
-            return productRepository.findAllByNameAndPriceBetween(name,new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findAllByNameAndDiscountPriceBetween(name,new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         } else if (category != null) {
             return productRepository.findAllByCategoryId(category, pageable);
         } else if (priceMin != null && priceMax != null) {
-            return productRepository.findByPriceBetween( new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
+            return productRepository.findByDiscountPriceBetween( new BigDecimal(priceMin), new BigDecimal(priceMax), pageable);
         }else if (name != null ) {
             return productRepository.findByNameLike("%"+name+"%",pageable);
         } else {
