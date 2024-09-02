@@ -79,13 +79,22 @@
                         <div id="submenu-4" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/create-product}">Sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/categories/create-category}">Danh mục sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/create-user}">Quản trị viên</a>
+                                    <a class="nav-link" th:href="@{/admin/products/create-product}">Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/create-post}">Bài viết</a>
+                                    <a class="nav-link" th:href="@{/admin/users/create-user}">Quản trị viên</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/posts/create-post}">Bài viết</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/roles/create-role}">Vai trò</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/permissions/create-permission}">Quyền</a>
                                 </li>
                             </ul>
                         </div>
@@ -98,29 +107,49 @@
                         <div id="submenu-5" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/category/manage-category}">Danh mục sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/categories/manage-categories}">Danh mục sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/product/manage-product}">Sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/products/manage-products}">Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5-1" aria-controls="submenu-5-1">Người dùng</a>
                                     <div id="submenu-5-1" class="collapse submenu" style="">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=admin'}">Admin</a>
+                                                <a class="nav-link" th:href="@{'/admin/users/manage-users?role=admin'}">Admin</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=user'}">User</a>
+                                                <a class="nav-link" th:href="@{'/admin/users/manage-users?role=user'}">User</a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/invoice/manage-invoice}">Hoá đơn</a>
+                                    <a class="nav-link" th:href="@{/admin/roles/manage-roles}">Vai trò</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/admin/post/manage-post}">Bài viết</a>
+                                    <a class="nav-link" th:href="@{/admin/permissions/manage-permissions}">Quyền</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6-1" aria-controls="submenu-6-1">Hoá đơn</a>
+                                    <div id="submenu-6-1" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{/admin/invoices/show-invoices}">Danh sách</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{/admin/invoices/manage-invoices}">Cập nhật trạng thái</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/posts/manage-posts}">Bài viết</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/comments/manage-comments}">Bình luận</a>
                                 </li>
                             </ul>
                         </div>

@@ -1,17 +1,24 @@
 package com.cuahangnongsan.service;
-
+import com.cuahangnongsan.dto.response.*;
+import com.cuahangnongsan.dto.request.CategoryRequest;
 import com.cuahangnongsan.entity.Category;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 
 public interface ICategoryService {
-    List<Category> findAll();
+    List<CategoryResponse> findAll();
+    List<CategoryResponse> findAllByNameLike(String name);
+    List<CategoryResponse> findAllByCodeLike(String code);
 
-    Category save(Category category);
+    CategoryResponse save(String id, CategoryRequest request, RedirectAttributes redirectAttributes);
 
-    Category findById(String id);
+    CategoryResponse findByIdCategoryResponse(String id);
+    Category findByIdCategory(String id);
+    CategoryResponse findByName(String name);
+    CategoryResponse findByCode(String code);
 
-    void delete(Category category);
+    void deleteById(String id);
 
 }

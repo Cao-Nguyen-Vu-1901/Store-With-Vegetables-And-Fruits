@@ -2,7 +2,10 @@ package com.cuahangnongsan.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,14 +14,17 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-public class Role {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String name;
+    String id;
+    String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Permission> permissions;
+    Set<Permission> permissions = new HashSet<>();
+
+
 
 }

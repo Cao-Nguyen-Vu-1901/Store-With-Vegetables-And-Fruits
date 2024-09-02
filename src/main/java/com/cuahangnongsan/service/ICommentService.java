@@ -1,19 +1,22 @@
 package com.cuahangnongsan.service;
 
 import com.cuahangnongsan.entity.Comment;
-import com.cuahangnongsan.entity.Product;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
+import com.cuahangnongsan.dto.response.*;
 public interface ICommentService {
-    Comment saveComment(Comment comment);
 
-    List<Comment> findAllComments();
-    List<Comment> findAllByProduct(Product product);
+    List<CommentResponse> findAll();
+    List<CommentResponse> findAllByProductId(String id);
+    List<CommentResponse> findAllByCreatedDateBefore(LocalDateTime time);
+    List<CommentResponse> findAllByUsernameLike(String username);
+    List<CommentResponse> findAllByContentLike(String content);
 
-    Comment getCommentById(Long id);
+    CommentResponse findById(Long id);
 
-    void delete(Comment comment);
+    CommentResponse save(Comment comment, UserResponse user);
+    void deleteById(Long id);
 
 
 }

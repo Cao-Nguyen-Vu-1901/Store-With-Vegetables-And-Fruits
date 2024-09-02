@@ -22,8 +22,18 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Page<Product> findAllByNameAndDiscountPriceBetween(String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
     Page<Product> findAllByCategoryIdAndNameAndDiscountPriceBetween(String category_id,String name, BigDecimal discountPrice, BigDecimal discountPrice2, Pageable pageable);
     Page<Product> findByDiscountPriceBetween(BigDecimal priceMin, BigDecimal priceMax,Pageable pageable);
+    Page<Product> findAllByCategoryNameLike(String name, Pageable pageable);
 
-    Page<Product> findByNameLike(String name, Pageable pageable);
+    Page<Product> findAllByPriceLessThan(BigDecimal price, Pageable pageable);
+    Page<Product> findAllByDiscountPriceLessThan(BigDecimal discountPrice, Pageable pageable);
+    Page<Product> findAllByUnit(String unit, Pageable pageable);
+    Page<Product> findAllByQuantityLessThan(int quantity, Pageable pageable);
+    Page<Product> findAllByRemaningQuantityLessThan(int remainingQuantity, Pageable pageable);
+    Page<Product> findAllByDescriptionLike(String description, Pageable pageable);
+
+    Page<Product> findAllByCreatedDate(LocalDate createdDate, Pageable pageable);
+    Page<Product> findAllByModifiedDate(LocalDate modifiedDate, Pageable pageable);
+    Page<Product> findAllByNameLike(String name, Pageable pageable);
 
     @Query("select u from Product u where u.name like :name and u.id <> :id")
     List<Product> findAllByNameLikeButId(@Param("name")String name, @Param("id")String id);
@@ -41,4 +51,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findAllByCreatedDate(LocalDate date);
     List<Product> findAllByModifiedDate(LocalDate date);
 
+    @Query("select p from Product p where extract(month from p.createdDate) = :month and" +
+            " extract(year from p.createdDate) = :year ")
+    List<Product> findAllByMonthYear(@Param("month") int month, @Param("year") int year);
+
+    Product findByName(String name);
 }

@@ -5,12 +5,15 @@ import com.cuahangnongsan.entity.Invoice;
 import com.cuahangnongsan.entity.InvoiceDetail;
 import com.cuahangnongsan.entity.Product;
 import com.cuahangnongsan.entity.User;
-import com.cuahangnongsan.modal.response.Cart;
+import com.cuahangnongsan.dto.response.Cart;
+import com.cuahangnongsan.mapper.ProductMapper;
 import com.cuahangnongsan.service.IInvoiceDetailService;
 import com.cuahangnongsan.service.IInvoiceService;
 import com.cuahangnongsan.service.IProductService;
 import com.cuahangnongsan.service.IUserService;
 import com.cuahangnongsan.util.ProcessString;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,23 +28,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import com.cuahangnongsan.dto.response.*;
 @Controller
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderController {
 
     @Autowired
-    private IProductService productService;
+    IProductService productService;
 
     @Autowired
-    private IInvoiceService invoiceService;
+    IInvoiceService invoiceService;
 
     @Autowired
-    private IInvoiceDetailService invoiceDetailService;
+    IInvoiceDetailService invoiceDetailService;
 
     @Autowired
-    private IUserService userService;
+    IUserService userService;
+
+    @Autowired
+    ProductMapper productMapper;
 
     public List<Cart> selectedProductsCart = new ArrayList<>();
 
@@ -77,7 +84,7 @@ public class OrderController {
                 address = specificAddress + ", " + ward + ", " + district + ", " + cityProvince;
             }
             Invoice invoice = Invoice.builder()
-                    .status("Đang xử lý")
+                    .status(StringConstant.STATUS_ORDER_WAIT_PROCESS)
                     .address(address)
                     .user(user)
                     .orderDate(LocalDate.now())
@@ -106,9 +113,12 @@ public class OrderController {
     public String successPay(ModelMap model) {
         if (!selectedProductsCart.isEmpty()) {
             model.addAttribute("currentPage", "");
-            List<Product> sameProducts = new ArrayList<>();
+            List<ProductResponse> sameProducts = new ArrayList<>();
             selectedProductsCart.forEach(a -> {
-                List<Product> products = productService.findAllByNameLikeButCurrent("%" + ProcessString.getFirstName(a.getProductName()) + "%", a.getProductId());
+                List<ProductResponse> products =
+                        productService.findAllByNameLikeButCurrent(
+                                "%" + ProcessString.getFirstName(a.getProductName()) + "%",
+                                a.getProductId());
                 sameProducts.addAll(products);
             });
             sameProducts.forEach(a -> {
@@ -138,7 +148,7 @@ public class OrderController {
     public String showOrders(String type, ModelMap model){
         User user = (User) model.getAttribute("user");
         List<Invoice> invoices = null;
-        if(type == null){
+        if(type == null || type.equals("all")){
             type = "all";
             invoices = invoiceService.findAllByUser(user);
         }else {
@@ -154,7 +164,7 @@ public class OrderController {
         Invoice invoice = invoiceService.findById(invoiceId);
         if(invoice != null){
             invoice.setStatus(StringConstant.STATUS_ORDER_CANCEL);
-            invoice.setCancelDate(LocalDate.now());
+            invoice.setUpdateDate(LocalDate.now());
             invoiceService.save(invoice);
         }
         return "redirect:/user/orders";
@@ -164,7 +174,7 @@ public class OrderController {
     public void commonUser(Principal p, Model m) {
         if (p != null) {
             String username = p.getName();
-            User user = userService.findByUsername(username);
+            UserResponse user = userService.findByUsername(username);
             if (user != null)
                 m.addAttribute("user", user);
         }

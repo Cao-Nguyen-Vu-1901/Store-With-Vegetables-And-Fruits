@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/defaultWebAdmin::layout(~{::section})}">
+<head>
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+
+</head>
+
+<body>
+
+<!-- Content Start -->
+<section>
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Quản lý</h2>
+                        <div class="card-body">
+                            <form class="needs-validation" method="get" th:action="@{/admin/comments/manage-comments}">
+                                <div class="form-row">
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <select class="form-control" name="type">
+                                            <option value="content">Nội dung</option>
+                                            <option value="createdDate">Ngày tạo</option>
+                                            <option value="username">Người tạo</option>
+                                            <option value="product">Sản phẩm</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+                                        <input type="text" class="form-control" name="value"
+                                               placeholder="Tìm kiếm" required>
+
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/comments/manage-comments}" class="breadcrumb-link">Bình luận</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+            <div class="row">
+
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- striped table -->
+                <!-- ============================================================== -->
+                <div class="col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Danh sách bình luận</h5>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr class="text-center">
+                                    <th scope="col" class="col-2">Nội dung</th>
+                                    <th scope="col">Người tạo</th>
+                                    <th scope="col" class="col-1-10">Ngày tạo</th>
+                                    <th scope="col" class="col-1-10">Sản phẩm</th>
+                                    <th scope="col" class="col-1-10">&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                <tr th:each=" item : ${comments}">
+                                    <th th:text="${item.content}" scope="row"></th>
+                                    <td>
+                                        <img class="rounded-circle" th:src=" ${item.imageUser} " width="80px" height="80px"
+                                             style="object-fit: cover" alt="Hình ảnh"/>
+                                        <p th:text="${item.username}"></p>
+                                    </td>
+                                    <td th:text="${item.createdDate}"></td>
+                                    <td th:text="${item.product.name}"></td>
+                                    <td>
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/comment/delete-comment}" method="post">
+                                            <input type="hidden" th:value="${item.id}" name="id">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])" >
+                                                <i class="fas fa-window-close"></i>
+                                            </button>
+                                            <a th:href="@{'/admin/comments/show-detail-comments/' + ${item.id}}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end striped table -->
+                <!-- ============================================================== -->
+            </div>
+
+
+        </div>
+
+    </div>
+    <script  th:inline="javascript">
+        function confirmAction(id) {
+            let text = "Bạn có muốn xoá?";
+            if (confirm(text) === true) {
+                document.getElementById('form-confirm-'+id).submit();
+            }
+
+        }
+    </script>
+</section>
+
+<!-- JavaScript Libraries -->
+
+</body>
+
+</html>
