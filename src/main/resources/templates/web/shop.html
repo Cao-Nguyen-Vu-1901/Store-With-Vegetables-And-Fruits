@@ -163,7 +163,7 @@
                                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                              style="top: 10px; left: 10px;">
                                         </div>
-                                        <div th:if="${today.until(item.createDate).getDays() > -3 && today.until(item.createDate).getDays() <= 0}"
+                                        <div th:if="${today.until(item.createdDate).getDays() > -3 && today.until(item.createdDate).getDays() <= 0}"
                                              class="text-secondary bg-danger px-3 py-1 rounded position-absolute"
                                              style="top: 10px; left: 120px; font-weight: bolder">
                                             Mới nhất
@@ -199,7 +199,7 @@
                                     </div>
                                 </div>
                                 <div th:unless="${products.size() > 0}" class="col-md-6 col-lg-6 col-xl-4">
-                                    <span>No tutorials found!</span>
+                                    <span>Không có dữ liệu! Vui lòng thử lại!</span>
                                 </div>
 
 

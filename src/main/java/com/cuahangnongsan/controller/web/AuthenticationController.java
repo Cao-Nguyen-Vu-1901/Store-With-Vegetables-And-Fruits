@@ -1,6 +1,7 @@
 package com.cuahangnongsan.controller.web;
 
 
+import com.cuahangnongsan.constant.StringConstant;
 import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.IUserService;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class AuthenticationController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
-    public String login(ModelMap model) {
+    public String login(ModelMap model, String error) {
         return "login-register/login";
     }
 
@@ -49,6 +50,7 @@ public class AuthenticationController {
                 userService.save(User.builder().name(userRequest.getName()).username(userRequest.getUsername())
                         .email(userRequest.getEmail()).phoneNumber(userRequest.getPhoneNumber())
                         .password(passwordEncoder.encode(userRequest.getPassword())).address("")
+                        .status(StringConstant.USER_STATUS_ACTIVE)
                         .image("https://firebasestorage.googleapis.com/v0/b/website-ban-nong-san.appspot.com/o/users%2Fuser-avatar.jpg?alt=media&token=722a0001-b720-4398-9e32-56090424f53c").build());
                 session.setAttribute("msg", "Đăng ký thành công! Vui lòng đăng nhập lại");
             }

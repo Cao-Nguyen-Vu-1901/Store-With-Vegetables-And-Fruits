@@ -8,4 +8,5 @@ import java.util.List;
 public interface IInvoiceDetailService {
     void save(InvoiceDetail invoiceDetail);
     List<InvoiceDetail> fundAllByInvoice(Invoice invoice);
+    List<InvoiceDetail> fundAll();
 }

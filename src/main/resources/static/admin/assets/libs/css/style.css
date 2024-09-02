@@ -247,14 +247,14 @@ label {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
-    font-size: 15px;
+    font-size: 18px;
     color: #71748d;
 }
 
 .form-control {
     display: block;
     width: 100%;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 1.42857143;
     color: #71748d;
     background-color: #fff;
@@ -1690,7 +1690,7 @@ Left Navigation Sidebar
 .nav-left-sidebar .navbar-nav .nav-item {}
 
 .nav-left-sidebar .navbar-nav .nav-link {
-    font-size: 14px;
+    font-size: 16px;
     padding: 12px;
     /* margin-bottom: 2px; */
     color: #71789e;
@@ -4110,7 +4110,7 @@ Pills vertical
 
 .label {
     padding: 3px 10px;
-    line-height: 13px;
+    line-height: 18px;
     color: #fff;
     font-weight: 400;
     border-radius: 2px;

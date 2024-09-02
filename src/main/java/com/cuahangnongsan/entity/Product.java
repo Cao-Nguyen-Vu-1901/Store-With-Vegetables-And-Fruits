@@ -15,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +34,8 @@ public class Product implements Serializable {
 
     BigDecimal discountPrice;
 
+    String unit;
+
     int quantity;
 
 
@@ -43,7 +46,9 @@ public class Product implements Serializable {
     @Column(columnDefinition = "TEXT")
     String description;
 
-    LocalDate createDate;
+    LocalDate createdDate;
+
+    LocalDate modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

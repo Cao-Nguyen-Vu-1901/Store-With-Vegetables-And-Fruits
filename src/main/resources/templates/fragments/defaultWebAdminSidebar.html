@@ -44,7 +44,10 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Chart</a>
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3">
+                            <i class="fas fa-fw fa-chart-pie"></i>
+                            Chart
+                        </a>
                         <div id="submenu-3" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
@@ -69,43 +72,72 @@
                         </div>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Thêm mới</a>
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4">
+                            <i class="fab fa-fw fa-wpforms"></i>
+                            Thêm mới
+                        </a>
                         <div id="submenu-4" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="form-elements.html">Sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/create-product}">Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="form-validation.html">Quản trị viên</a>
+                                    <a class="nav-link" th:href="@{/admin/create-user}">Quản trị viên</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="multiselect.html">Bài viết</a>
+                                    <a class="nav-link" th:href="@{/admin/create-post}">Bài viết</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Quản lý</a>
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5">
+                            <i class="fas fa-fw fa-table"></i>
+                            Quản lý
+                        </a>
                         <div id="submenu-5" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="general-table.html">Sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/category/manage-category}">Danh mục sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="data-tables.html">Người dùng</a>
+                                    <a class="nav-link" th:href="@{/admin/product/manage-product}">Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="data-tables.html">Hoá đơn</a>
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5-1" aria-controls="submenu-5-1">Người dùng</a>
+                                    <div id="submenu-5-1" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=admin'}">Admin</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{'/admin/user/manage-user?role=user'}">User</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="data-tables.html">Bài viết</a>
+                                    <a class="nav-link" th:href="@{/admin/invoice/manage-invoice}">Hoá đơn</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="data-tables.html">Danh mục sản phẩm</a>
+                                    <a class="nav-link" th:href="@{/admin/post/manage-post}">Bài viết</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-5">-->
+<!--                            <i class="fas fa-fw fa-table"></i>-->
+<!--                            Thông tin-->
+<!--                        </a>-->
+<!--                        <div id="submenu-6" class="collapse submenu" style="">-->
+<!--                            <ul class="nav flex-column">-->
+<!--                                <li class="nav-item">-->
+<!--                                    <a class="nav-link" th:href="@{/admin/manage-category}">Danh mục sản phẩm</a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </li>-->
 
                 </ul>
             </div>

@@ -2,8 +2,8 @@ package com.cuahangnongsan.constant;
 
 public class StringConstant {
     public static final String SIGNER_KEY = "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij";
-    public static final String USER_STATUS_ACTIVE = "ACTIVE";
-    public static final String USER_STATUS_DISABLE = "DISABLE";
+    public static final boolean USER_STATUS_ACTIVE = true;
+    public static final boolean USER_STATUS_DISABLE = false;
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
