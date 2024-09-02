@@ -1,17 +1,14 @@
 package com.cuahangnongsan.controller.web;
 
+import com.cuahangnongsan.dto.response.*;
 import com.cuahangnongsan.entity.Comment;
-import com.cuahangnongsan.entity.Product;
-import com.cuahangnongsan.entity.User;
 import com.cuahangnongsan.service.ICommentService;
 import com.cuahangnongsan.service.IProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,23 +23,21 @@ public class CommentController {
     private IProductService productService;
 
     @PostMapping
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment, HttpSession modelMap) {
-        User user = (User) modelMap.getAttribute("user");
-        comment.setCreateDate(LocalDateTime.now());
-        if(user != null){
-            comment.setUsername(user.getUsername());
-            comment.setImageUser(user.getImage());
-        }
-        Product product = productService.findById(comment.getProduct().getId());
-        comment.setProduct(product);
-        Comment savedComment = commentService.saveComment(comment);
+    public ResponseEntity<CommentResponse> addComment(@RequestBody Comment comment, HttpSession modelMap) {
+        UserResponse user = (UserResponse) modelMap.getAttribute("user");
+        CommentResponse savedComment = commentService.save(comment, user);
         return ResponseEntity.ok(savedComment);
     }
+    @DeleteMapping
+    public void deleteComment(@RequestBody Comment comment) {
+        CommentResponse cmt = commentService.findById(comment.getId());
+        commentService.deleteById(cmt.getId());
+    }
+
 
     @GetMapping("/{id}")
-    public List<Comment> getAllParentComments(@PathVariable String id) {
-        Product product = productService.findById(id);
-        List<Comment> allComments = commentService.findAllByProduct(product);
+    public List<CommentResponse> getAllParentComments(@PathVariable String id) {
+        List<CommentResponse> allComments = commentService.findAllByProductId(id);
         return allComments.stream()
                 .filter(comment -> comment.getParent() == null)
                 .collect(Collectors.toList());
@@ -50,8 +45,8 @@ public class CommentController {
 
 
     @GetMapping
-    public List<Comment> getAllCommentsByProduct() {
-        List<Comment> allComments = commentService.findAllComments();
+    public List<CommentResponse> getAllCommentsByProduct() {
+        List<CommentResponse> allComments = commentService.findAll();
         return allComments.stream()
                 .filter(comment -> comment.getParent() == null)
                 .collect(Collectors.toList());

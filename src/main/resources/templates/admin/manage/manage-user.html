@@ -26,13 +26,11 @@
                     <div class="page-header">
                         <h2 class="pageheader-title">Quản lý</h2>
                         <div class="card-body">
-                            <form class="needs-validation" method="get" th:action="@{/admin/user/manage-user}">
+                            <form class="needs-validation" method="get" th:action="@{/admin/users/manage-users}">
                                 <div class="form-row">
                                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                         <select class="form-control" name="type">
                                             <option value="name">Tên</option>
-                                            <option value="dob">Ngày sinh</option>
-                                            <option value="gender">Giới tính</option>
                                             <option value="email">Email</option>
                                             <option value="address">Địa chỉ</option>
                                             <option value="status">Trạng thái</option>
@@ -53,7 +51,7 @@
                         <div class="page-breadcrumb">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a th:href="@{/admin/user/manage-user}" class="breadcrumb-link">Người dùng</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/users/manage-users}" class="breadcrumb-link">Người dùng</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                                 </ol>
                             </nav>
@@ -79,8 +77,6 @@
                                 <thead>
                                 <tr class="text-center">
                                     <th scope="col" class="col-2">Tên</th>
-                                    <th scope="col" class="col-1-10">Ngày sinh</th>
-                                    <th scope="col" class="col-1-10">Giới tính</th>
                                     <th scope="col">Email</th>
                                     <th scope="col" class="col-1-10">Số điện thoại</th>
                                     <th scope="col">Địa chỉ</th>
@@ -91,14 +87,12 @@
                                 <tbody class="text-center">
                                 <tr th:each=" item : ${users}">
                                     <th th:text="${item.name}" scope="row"></th>
-                                    <th th:text="${item.dob}" scope="row"></th>
-                                    <td th:text="${item.gender}"></td>
                                     <td th:text="${item.email}"></td>
                                     <td th:text="${item.phoneNumber}"></td>
                                     <td th:text="${item.address}"></td>
                                     <td th:text="${item.status}"></td>
                                     <td>
-                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/user/manage-user}" method="post">
+                                        <form th:id="${'form-confirm-'+item.id}" th:action="@{/admin/users/manage-users}" method="post">
                                             <input type="hidden" th:value="${item.id}" name="id">
                                             <button type="button" class="btn btn-sm btn-outline-secondary" th:onclick="confirmAction([[${item.id}]])" >
                                                 <i class="fas fa-window-close"></i>
@@ -112,11 +106,53 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ============================================================== -->
                 <!-- end striped table -->
                 <!-- ============================================================== -->
             </div>
+            <div class="row"  >
+                <div class="col-sm-12 col-md-5"  >
+                    <div class="dataTables_info" id="example4_info" role="status" aria-live="polite"
+                         th:if="${totalPages > 0}" th:text="${'Tổng cộng: '+ currentPage + '/'+ totalPages }"></div>
+                </div>
+                <div class="col-sm-12 col-md-7"  >
+                    <div class="dataTables_paginate paging_simple_numbers" id="example4_paginate"
+                    >
+                        <ul class="pagination">
+                            <li class="paginate_button page-item"  th:classappend="${currentPage == 1 ? 'disabled' : 'previous'}">
+                                <a th:replace="fragments/adminUserPaging :: adminUserPaging(1, '<<', 'First Page')"></a></li>
+                            <li class="paginate_button page-item" th:classappend="${currentPage == 1 ? 'disabled' : 'previous'}">
+                                <a th:replace="fragments/adminUserPaging :: adminUserPaging(${currentPage - 1}, '<', 'Previous')" class="page-link">
+                                </a>
+                            </li>
+                            <li class="paginate_button page-item" th:if="${currentPage - 2 > 1}">
+                                <a class="page-link"> ...
+                                </a>
+                            </li>
+                            <li class="paginate_button page-item" th:classappend="${page == currentPage} ? 'active'"
+                                th:each="page : ${ #numbers.sequence(currentPage > 2 ? currentPage - 2 : 1,
+                                                currentPage + 2 < totalPages ? currentPage + 2 : totalPages )} ">
+                                <a th:replace="fragments/adminUserPaging :: adminUserPaging(${page}, ${page}, 'Page '+ ${page})"></a>
+                            </li>
+                            <li class="paginate_button page-item" th:if="${currentPage + 2 < totalPages}">
+                                <a class="page-link"> ...
+                                </a>
+                            </li>
+                            <li class="paginate_button page-item"
+                                th:classappend="${ currentPage == totalPages ? 'disabled' : 'next'}">
+                                <a class="page-link" th:replace="fragments/adminUserPaging :: adminUserPaging(${currentPage + 1}, '>', 'Next')"></a>
+                            </li>
+                            <li class="paginate_button page-item" th:classappend="${currentPage == totalPages ? 'disabled' : 'next'}">
+                                <a class="page-link" th:replace="fragments/adminUserPaging :: adminUserPaging(${totalPages}, '>>', 'Last Page') ">
+                                </a>
+                            </li>
 
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
         </div>
 

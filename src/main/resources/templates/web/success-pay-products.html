@@ -40,7 +40,7 @@
                                     <div th:each="item : ${products}" class="col-md-6 col-lg-4 col-xl-3">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <img th:src="@{'/img/products/' + ${item.image} }"
+                                                <img th:src=" ${item.image} "
                                                      style="height: 35vh;  object-fit: cover;"
                                                      class="img-fluid w-100 rounded-top"
                                                      alt="">

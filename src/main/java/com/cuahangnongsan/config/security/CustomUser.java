@@ -1,6 +1,8 @@
 package com.cuahangnongsan.config.security;
 
 import com.cuahangnongsan.entity.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,17 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Setter
+@Getter
 public class CustomUser implements UserDetails {
 
 	private User user;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public CustomUser(User user) {
 		super();
@@ -31,14 +27,19 @@ public class CustomUser implements UserDetails {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		user.getRoles().forEach(
 				a-> {
-					SimpleGrantedAuthority authority = new SimpleGrantedAuthority(a.getName());
-					authorities.add(authority);
+					authorities.add(new SimpleGrantedAuthority(a.getName()));
+					a.getPermissions().forEach(p -> {
+						authorities.add(new SimpleGrantedAuthority(p.getName()));
+					});
+
 				}
 		);
 
 
 		return authorities;
 	}
+
+
 
 	@Override
 	public String getPassword() {

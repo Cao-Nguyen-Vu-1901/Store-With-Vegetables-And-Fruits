@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layouts/defaultWebAdmin::layout(~{::section})}">
 <head>
-  <meta charset="utf-8">
-  <title>DASHMIN - Bootstrap Admin Template</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
 
 </head>
@@ -16,134 +16,316 @@
 <!-- Content Start -->
 <section>
 
-  <div class="dashboard-wrapper">
-    <div class="container-fluid  dashboard-content">
-      <!-- ============================================================== -->
-      <!-- pageheader -->
-      <!-- ============================================================== -->
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="page-header">
-            <h2 class="pageheader-title">Form Validations </h2>
-            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce
-              sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
-            <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Forms</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Form Validations</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ============================================================== -->
-      <!-- end pageheader -->
-      <!-- ============================================================== -->
-
-
-      <div class="row">
-        <!-- ============================================================== -->
-        <!-- basic form -->
-        <!-- ============================================================== -->
-        <div class="col-md-12 col-sm-12 col-12">
-          <div class="card">
-            <h5 class="card-header">Basic Form</h5>
-            <div class="card-body">
-              <form action="#" id="basicform" data-parsley-validate="">
-                <div class="form-group">
-                  <label for="inputUserName">User Name</label>
-                  <input id="inputUserName" type="text" name="name" data-parsley-trigger="change"
-                         required="" placeholder="Enter user name" autocomplete="off"
-                         class="form-control">
-                  <div class="text-danger">
-                    Please provide a valid text.
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail">Email address</label>
-                  <input id="inputEmail" type="email" name="email" data-parsley-trigger="change"
-                         required="" placeholder="Enter email" autocomplete="off"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label for="inputPassword">Password</label>
-                  <input id="inputPassword" type="password" placeholder="Password" required=""
-                         class="form-control">
-                </div>
-                <div class="custom-file mb-3 col-sm-6">
-                  <input type="file" class="custom-file-input" id="customFile">
-                  <label class="custom-file-label" for="customFile">File Input</label>
-                </div>
-                <div class="form-group">
-                  <label for="input-select">Example Select</label>
-                  <select class="form-control col-sm-6" id="input-select">
-                    <option>Choose Example</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Repeat Password</label>
-                  <div class="col-sm-6">
-                    <div class="custom-controls-stacked">
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck1" name="ck1" type="checkbox"
-                               data-parsley-multiple="groups" value="bar"
-                               data-parsley-mincheck="2"
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 1</span>
-                      </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck2" name="ck2" type="checkbox"
-                               data-parsley-multiple="groups" value="bar2"
-                               data-parsley-mincheck="2"
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 2</span>
-                      </label>
-                      <label class="custom-control custom-checkbox">
-                        <input id="ck3" name="ck3" type="checkbox"
-                               data-parsley-multiple="groups" value="bar3"
-                               data-parsley-mincheck="2" required=""
-                               data-parsley-errors-container="#error-container1"
-                               class="custom-control-input"><span
-                              class="custom-control-label">Option 3</span>
-                      </label>
-                      <div id="error-container1"></div>
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Thêm mới</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/users/manage-users}" class="breadcrumb-link">Danh sách</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
-                  </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-sm-6 pb-2 pb-sm-4 pb-lg-0 pr-0">
-                    <label class="be-checkbox custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input"><span
-                            class="custom-control-label">Remember me</span>
-                    </label>
-                  </div>
-                  <div class="col-sm-6 pl-0">
-                    <p class="text-right">
-                      <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                      <button class="btn btn-space btn-secondary">Cancel</button>
-                    </p>
-                  </div>
-                </div>
-              </form>
             </div>
-          </div>
-        </div>
-        <!-- ============================================================== -->
-        <!-- end basic form -->
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
 
-      </div>
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic form -->
+                <!-- ============================================================== -->
+                <div class="col-md-12 col-sm-12 col-12">
+
+                    <div class="tab-regular">
+                        <ul class="nav nav-tabs nav-fill" id="myTab7" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab-justify" data-toggle="tab" href="#home-justify"
+                                   role="tab" aria-controls="home" aria-selected="true">Tạo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab-justify" data-toggle="tab" href="#profile-justify"
+                                   role="tab" aria-controls="profile" aria-selected="false">Danh sách</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent7">
+                            <div class="tab-pane fade show active" id="home-justify" role="tabpanel"
+                                 aria-labelledby="home-tab-justify">
+                                <div class="card">
+                                    <h5 class="card-header">Thông tin chi tiết</h5>
+                                    <div class="card-body">
+                                        <form th:action="@{/admin/users/save-user}" id="basicform"
+                                              enctype="multipart/form-data" method="post">
+                                            <div class="form-group">
+                                                <label for="inputName">Họ và tên</label>
+                                                <input id="inputName" type="text" name="name"
+                                                       data-parsley-trigger="change"
+                                                       th:value="${userNew != null && userNew.name != null ? userNew.name : ''}"
+                                                       required autocomplete="off"
+                                                       class="form-control">
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputUserName">Tên đăng nhập</label>
+                                                <input id="inputUserName" type="text" name="username"
+                                                       data-parsley-trigger="change"
+                                                       th:value="${userNew != null && userNew.username !=null ? userNew.username : ''}"
+                                                       required autocomplete="off"
+                                                       class="form-control">
+                                                <div class="text-danger" th:if="${errorUserName != null}" th:text="${errorUserName}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputEmail">Email</label>
+                                                <input id="inputEmail" type="email" name="email"
+                                                       th:value="${userNew != null && userNew.email != null ? userNew.email : ''}"
+                                                       class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPhoneNumber">Số điện thoại</label>
+                                                <input id="inputPhoneNumber" type="text" name="phoneNumber"
+                                                       th:value="${userNew != null && userNew.phoneNumber != null ? userNew.phoneNumber : ''}"
+                                                       class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="city">Tỉnh - Thành phố</label>
+                                                <select class="form-control col-sm-6" id="city" onchange="populateDistricts(this.selectedIndex)" name="cityProvince">
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="district">Quận - Huyện</label>
+                                                <select class="form-control col-sm-6" id="district" onchange="updateWards(this.selectedIndex)" name="district">
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ward">Phường - Xã</label>
+                                                <select class="form-control col-sm-6" id="ward" name="ward" >
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputSpecificAddress">Địa chỉ cụ thể</label>
+                                                <input id="inputSpecificAddress" type="text" name="specificAddress"
+                                                       class="form-control" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="inputPassword">Mật khẩu</label>
+                                                <input id="inputPassword" type="password" name="password"
+                                                       class="form-control" required>
+                                                <div class="text-danger" th:if="${errorPassword != null}" th:text="${errorPassword}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputRePassword">Nhập lại mật khẩu</label>
+                                                <input id="inputRePassword" type="password" name="rePassword"
+                                                       class="form-control" required>
+                                            </div>
+                                            <div class="custom-file mb-3 col-sm-6">
+                                                <input type="file" class="custom-file-input" id="customFile"
+                                                       name="image" required>
+                                                <label class="custom-file-label" for="customFile">Hình ảnh</label>
+                                                <div class="text-danger" th:if="${errorImage != null}" th:text="${errorImage}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Tuỳ chọn cách tạo vai trò</label>
+                                                <div class="col-sm-12 pl-0">
+                                                    <label class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" name="optionsChoice" value="yes" checked
+                                                               class="custom-control-input" required><span
+                                                            class="custom-control-label">Chọn từ danh sách có sẵn</span>
+                                                    </label>
+                                                    <label class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" name="optionsChoice" value="no"
+                                                               class="custom-control-input" required><span
+                                                            class="custom-control-label">Thêm mới</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" id="form-group-select-role">
+                                                <label for="multi-select-role">Vai trò</label>
+                                                <select id="multi-select-role" class="multi-select-permission"
+                                                        name="roles[]" multiple>
+                                                    <option th:each=" item : ${roles} " th:value="${item.id}"
+                                                            th:text="${item.name}"></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group" id="form-group-input-role" style="display: none">
+                                                <label for="inputRole">Tên vai trò</label>
+                                                <input id="inputRole" type="text" name="roleName"
+                                                       data-parsley-trigger="change"
+                                                       placeholder="Ví dụ: MANAGE, STAFF, SUPERVISOR"
+                                                       autocomplete="off"
+                                                       class="form-control">
+                                                <div class="text-danger" th:if="${errorRole != null}" th:text="${errorRole}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" id="form-group-select-permission" style="display: none">
+                                                <label for="multi-select-permission">Danh sách quyền</label>
+                                                <select id="multi-select-permission" class="multi-select-permission"
+                                                        name="permissions[]" multiple>
+                                                    <option th:each=" item : ${permissions} " th:value="${item.id}"
+                                                            th:text="${item.name}"></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-12 pl-0">
+                                                    <p class="text-right">
+                                                        <button type="submit" class="btn btn-space btn-primary">Lưu
+                                                        </button>
+                                                        <button class="btn btn-space btn-secondary" onclick="goBack()">
+                                                            Huỷ
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile-justify" role="tabpanel"
+                                 aria-labelledby="profile-tab-justify">
+                                <div class="card" id="u-list">
+                                    <h5 class="card-header">Danh sách vai trò và quyền</h5>
+                                    <div class="card-body">
+                                        <div th:each="rol : ${roles}">
+                                            <h5 th:text="${rol.name}"></h5>
+                                            <ul style="margin-left: 20px" th:each="pe : ${rol.permissions}">
+                                                <li th:text="${pe.name}"></li>
+                                            </ul>
+                                        </div>
+
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end basic form -->
+
+        </div>
 
 
     </div>
+    <script>
+        let data;  // Variable to store the JSON data once loaded
 
-  </div>
+        // Fetch JSON data from the file
+        async function loadDivisions() {
+            try {
+                const response = await fetch('/data/nested-divisions.json');
+                data = await response.json();
+                populateCityDropdown();
+            } catch (error) {
+                console.error('Error loading JSON:', error);
+            }
+        }
+
+        function populateCityDropdown() {
+            const citySelect = document.getElementById('city');
+
+            data.forEach((city, index) => {
+                const option = document.createElement('option');
+                option.value = city.name;
+                option.textContent = city.name;
+                citySelect.appendChild(option);
+            });
+
+            // Initialize districts and wards for the first city
+            if (data.length > 0) {
+                populateDistricts(0);
+            }
+        }
+
+        function populateDistricts(cityIndex) {
+            const districtSelect = document.getElementById('district');
+
+            // Clear existing district options
+            districtSelect.innerHTML = '';
+
+            const districts = data[cityIndex].districts;
+
+            districts.forEach((district, index) => {
+                const option = document.createElement('option');
+                option.value = district.name;
+                option.textContent = district.name;
+                districtSelect.appendChild(option);
+            });
+
+            // Initialize wards for the first district
+            if (districts.length > 0) {
+                updateWards(0);
+            }
+        }
+
+        function updateWards(districtIndex) {
+            const cityIndex = document.getElementById('city').selectedIndex;
+            const wardSelect = document.getElementById('ward');
+
+            // Clear existing ward options
+            wardSelect.innerHTML = '';
+
+            const wards = data[cityIndex].districts[districtIndex].wards;
+
+            wards.forEach((ward, index) => {
+                const option = document.createElement('option');
+                option.value =  ward.name;
+                option.textContent = ward.name;
+                wardSelect.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDivisions);
+    </script>
+    <script>
+
+            document.querySelectorAll('input[type="radio"][name="optionsChoice"]').forEach(radio => {
+                // Thêm sự kiện 'change' cho mỗi radio button
+                radio.addEventListener('change', (event) => {
+                    // In ra giá trị của radio button được chọn
+                    console.log('Đã chọn:', event.target.value + '');
+                    var displayRadioYes = '', displayRadioNo = ''
+                    if (event.target.value === 'yes') {
+                        displayRadioYes = 'block'
+                        displayRadioNo = 'none';
+                    } else {
+                        displayRadioYes = 'none'
+                        displayRadioNo = 'block';
+                    }
+                    document.getElementById('form-group-select-role').style.display = displayRadioYes
+                    document.getElementById('form-group-input-role').style.display = displayRadioNo
+                    document.getElementById('form-group-select-permission').style.display = displayRadioNo
+                });
+            });
+
+        function goBack() {
+            window.history.back();
+        }
+
+    </script>
 
 </section>
 

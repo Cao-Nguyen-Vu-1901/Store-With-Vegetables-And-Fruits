@@ -8,7 +8,6 @@ public class StringConstant {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public static final String STATUS_ORDER_WAIT_PROCESS = "WAIT_PROCESS";
-    public static final String STATUS_ORDER_WAIT_PAY = "WAIT_PAY";
     public static final String STATUS_ORDER_DELIVERY = "DELIVERY";
     public static final String STATUS_ORDER_WAIT_SHIPPING = "WAIT_SHIPPING";
     public static final String STATUS_ORDER_FINISH = "FINISH";

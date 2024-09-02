@@ -1,0 +1,10 @@
+
+<a th:fragment="adminProductPaging(pageNum, label, tooltip)"
+   th:href="@{'/admin/products/manage-products?' + 'page=' + ${pageNum}
+               + '&size='+ ${pageSize}
+               + ${type != null ? '&type='+ type : ''}
+               + ${value!= null ? '&value=' + value : '' }
+                } "
+  class="page-link" th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>
