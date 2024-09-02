@@ -94,7 +94,11 @@
                             <table th:each=" item : ${invoices}" class="table">
                                 <div class="d-flex justify-content-between">
                                     <p th:text="${'Ngày đặt hàng: '+item.orderDate.toString()}" class="mb-0 mt-4"></p>
+
                                     <p th:if="${item.updateDate != null}" th:text="${'Ngày cập nhật: '+item.updateDate.toString()}" class="mb-0 mt-4"></p>
+
+                                    <p th:if="${item.cancelDate != null}" th:text="${'Ngày huỷ: '+item.cancelDate.toString()}" class="mb-0 mt-4"></p>
+
 
                                     <form th:if="${type == 'WAIT_PROCESS'}" th:action="@{/user/cancel-order}"
                                           method="post">
